@@ -97,3 +97,59 @@ automation:
               "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Empty customer memory · local storage · no imported private data",
             } %}
             {{ translations.get(states('input_text.luna_memory_status'), states('input_text.luna_memory_status')) }}
+
+      # Vertaalde basisstatussen voor alle Luna-modules:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_installation_status}
+        data: {value: "READY"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_safety_status}
+        data: {value: "SAFE · fail-closed"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_memory_status}
+        data: {value: "EMPTY · ready to learn"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_timeline_status}
+        data: {value: "EMPTY"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_prediction_status}
+        data: {value: "WAITING FOR DATA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_routine_status}
+        data: {value: "SHADOW · no pattern"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_planner_status}
+        data: {value: "NO PROPOSAL"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_health_status}
+        data: {value: "WAITING FOR SELFCHECK"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_selfcheck_status}
+        data: {value: "WAITING FOR CHECK"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_learning_status}
+        data: {value: "LEARNING"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_analytics_status}
+        data: {value: "WAITING FOR DATA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_evidence_status}
+        data: {value: "NO EVIDENCE"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_decision_status}
+        data: {value: "NO DECISION"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_voice_status}
+        data: {value: "OFF"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_maintenance_status}
+        data: {value: "NOT NEEDED"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_config_status}
+        data: {value: "CONFIGURATION NEEDED"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_metrics_status}
+        data: {value: "OFF"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_queue_status}
+        data: {value: "EMPTY"}
