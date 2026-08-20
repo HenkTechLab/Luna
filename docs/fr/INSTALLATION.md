@@ -1,47 +1,46 @@
 # Luna - guide d'installation pour Home Assistant
 
-## Installation sécurisée
+## Installation en une commande
 
-Luna fonctionne par défaut en mode fail-closed. Le contrôle physique, l'exécution du planificateur, l'auto-récupération et l'inférence IA locale restent désactivés jusqu'à ce que l'utilisateur les configure volontairement.
-
-## Prérequis
-
-- Installation Home Assistant fonctionnelle
-- Accès à `/config`
-- Accès à `configuration.yaml`
-- Sauvegarde récente de Home Assistant
-
-## Installation
-
-Copiez le dépôt sur le système Home Assistant ou exécutez :
+Ouvrez l'**App Terminal & SSH** de Home Assistant et exécutez :
 
 ```sh
-sh install_luna.sh fr
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- fr
 ```
 
-L'installateur copie Luna vers `/config/luna`, sauvegarde les fichiers existants pertinents et n'écrase jamais aveuglément `automations.yaml` ou `scripts.yaml`.
+Il n'est pas nécessaire de cloner le dépôt. L'installateur télécharge Luna, crée une sauvegarde et installe les fichiers dans `/config/luna`.
 
-Si l'installateur demande une configuration manuelle, ajoutez les packages Luna sous la section existante `homeassistant:` -> `packages:`. Ne créez pas une deuxième section `homeassistant:`.
+## Éléments installés
 
-## Automatisations, helpers, scripts et Luna Test
+- packages Luna et les sept modules linguistiques
+- documentation
+- exports/références nettoyés
+- tableau de bord Luna basé sur le tableau de bord Luna Test
 
-`/config/luna/exports` contient des exports source/référence nettoyés pour les automatisations, helpers et scripts, y compris `luna_test_*`. Ces fichiers ne sont volontairement **pas activés automatiquement** et ne sont pas fusionnés aveuglément avec une installation Home Assistant existante.
+Les fichiers `automations.yaml` et `scripts.yaml` existants ne sont jamais écrasés aveuglément. `luna_test_*` reste du matériel de test/référence désactivé.
 
-La couche d'installation sûre se trouve dans `/config/luna/packages`.
+## Enregistrement des packages
+
+Si les packages Luna ne sont pas encore enregistrés, l'installateur affiche le bloc exact à ajouter dans la section existante `homeassistant:` -> `packages:`. Ne créez jamais une deuxième section `homeassistant:`.
+
+## Tableau de bord
+
+L'installateur place le tableau de bord ici :
+
+```text
+/config/luna/dashboard/luna-dashboard.yaml
+```
+
+Pour des raisons de sécurité, les fichiers internes `.storage` ne sont pas modifiés. Si le tableau de bord n'est pas enregistré, l'installateur affiche le bloc `lovelace:` nécessaire. Après enregistrement, validation et redémarrage, **Luna** apparaît dans la barre latérale.
 
 ## Vérification
 
 1. Validez la configuration Home Assistant.
-2. Ne redémarrez pas tant qu'une erreur de configuration existe.
-3. Redémarrez Home Assistant après validation réussie.
-4. Ouvrez Outils de développement -> États et recherchez `luna`.
-5. Vérifiez `input_select.luna_language_taal`.
-6. Sélectionnez la langue souhaitée.
+2. Ne redémarrez pas en cas d'erreur.
+3. Redémarrez après validation réussie.
+4. Ouvrez le tableau de bord Luna.
+5. Vérifiez `input_select.luna_language_taal` et sélectionnez la langue.
 
-## IA locale
+## Sécurité
 
-L'IA locale est facultative. Vérifiez d'abord Luna sans IA. Configurez ensuite le backend local et sélectionnez le mode local via `input_select.luna_ai_mode`.
-
-## Important
-
-Installez et vérifiez Luna d'abord. Configurez ensuite seulement les appareils, l'exécution du planificateur, l'auto-récupération ou l'IA locale.
+Le contrôle physique, l'exécution du planificateur, l'auto-récupération et l'IA locale restent fail-closed jusqu'à leur configuration volontaire par l'utilisateur. L'IA locale est facultative.
