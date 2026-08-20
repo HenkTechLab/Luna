@@ -1,62 +1,46 @@
 # Luna - Home Assistant installation guide
 
-## Safe installation
+## One-command installation
 
-Luna is fail-closed by default. Physical control, planner execution, self-recovery and local AI inference remain disabled until the user deliberately configures them.
-
-## Requirements
-
-- Working Home Assistant installation
-- Access to `/config`
-- Access to `configuration.yaml`
-- A recent Home Assistant backup
-
-## Installation
-
-Copy the repository to the Home Assistant system or run:
+Open the Home Assistant Terminal & SSH App and run:
 
 ```sh
-sh install_luna.sh en
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- en
 ```
 
-The installer copies Luna to `/config/luna`, creates a backup of relevant existing files and never blindly overwrites existing `automations.yaml` or `scripts.yaml`.
+No repository clone is required. The installer downloads Luna, creates a backup and installs the files under `/config/luna`.
 
-Add these entries under the existing `homeassistant:` -> `packages:` section when the installer reports that manual configuration is required:
+## What is installed
 
-```yaml
-    luna: !include luna/packages/luna.yaml
-    luna_modules: !include luna/packages/luna_modules.yaml
-    luna_advanced_modules: !include luna/packages/luna_advanced_modules.yaml
-    luna_nederlands: !include luna/packages/languages/nederlands.yaml
-    luna_english: !include luna/packages/languages/english.yaml
-    luna_deutsch: !include luna/packages/languages/deutsch.yaml
-    luna_francais: !include luna/packages/languages/francais.yaml
-    luna_espanol: !include luna/packages/languages/espanol.yaml
-    luna_italiano: !include luna/packages/languages/italiano.yaml
-    luna_portugues: !include luna/packages/languages/portugues.yaml
+- Luna packages and all seven language modules
+- documentation
+- sanitized exports/reference material
+- the Luna dashboard YAML based on the Luna Test dashboard
+
+Existing `automations.yaml` and `scripts.yaml` are never blindly overwritten. `luna_test_*` remains disabled reference/test material.
+
+## Package registration
+
+If Luna packages are not registered yet, the installer prints the exact block that must be added under the existing `homeassistant:` -> `packages:` section. Never create a second `homeassistant:` section.
+
+## Dashboard
+
+The installer places the dashboard at:
+
+```text
+/config/luna/dashboard/luna-dashboard.yaml
 ```
 
-Do not create a second `homeassistant:` section.
-
-## Automations, helpers, scripts and Luna Test
-
-`/config/luna/exports` contains sanitized source/reference exports for automations, helpers and scripts, including `luna_test_*` material. These files are deliberately **not activated automatically**. They must not be blindly merged into an existing Home Assistant installation.
-
-The supported safe installation layer is `/config/luna/packages`.
+For safety the installer does not edit Home Assistant's internal `.storage` files. If the dashboard is not registered yet, it prints the exact `lovelace:` registration block. After registration and a valid restart, **Luna** appears in the sidebar.
 
 ## Verification
 
 1. Validate the Home Assistant configuration.
-2. Do not restart while validation reports an error.
-3. Restart Home Assistant after successful validation.
-4. Open Developer Tools -> States and search for `luna`.
-5. Verify `input_select.luna_language_taal`.
-6. Select the required language.
+2. Do not restart if validation reports an error.
+3. Restart after successful validation.
+4. Open the Luna dashboard.
+5. Verify `input_select.luna_language_taal` and select the required language.
 
-## Local AI
+## Safety
 
-Local AI is optional. First verify Luna without AI. Configure the local backend only afterwards and select the local mode through `input_select.luna_ai_mode`.
-
-## Important
-
-Install and verify Luna first. Only then configure devices, planner execution, self-recovery or local AI.
+Physical control, planner execution, self-recovery and local AI remain fail-closed until deliberately configured. Local AI is optional.
