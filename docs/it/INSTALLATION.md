@@ -1,46 +1,42 @@
 # Luna - guida di installazione per Home Assistant
 
-## Installazione con un solo comando
+## Un solo comando
 
-Aprire l'**App Terminal & SSH** di Home Assistant ed eseguire:
+Aprire l'**App Terminal & SSH** in Home Assistant.
+
+Dashboard nativo senza dipendenze frontend aggiuntive:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it native
 ```
 
-Non è necessario clonare prima il repository. L'installer scarica Luna, crea un backup e installa i file in `/config/luna`.
+Dashboard custom con Mushroom e card-mod:
 
-## Cosa viene installato
+```sh
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it custom
+```
 
-- package Luna e tutti i sette moduli linguistici
-- documentazione
-- esportazioni/riferimenti ripuliti
-- dashboard Luna basato sul dashboard Luna Test
+La variante custom richiede **Mushroom** e **card-mod** tramite HACS.
 
-I file `automations.yaml` e `scripts.yaml` esistenti non vengono sovrascritti alla cieca. `luna_test_*` rimane materiale di test/riferimento disattivato.
+## Installer
 
-## Registrazione dei package
+L'installer scarica Luna, crea un backup e installa package, lingue, documentazione, esportazioni ed entrambi i dashboard in `/config/luna`. I file `automations.yaml` e `scripts.yaml` esistenti non vengono sovrascritti.
 
-Se i package Luna non sono ancora registrati, l'installer mostra il blocco esatto da aggiungere nella sezione esistente `homeassistant:` -> `packages:`. Non creare una seconda sezione `homeassistant:`.
+Se `configuration.yaml` richiede ancora la registrazione, l'installer mostra il blocco esatto. I file interni `.storage` non vengono modificati.
 
 ## Dashboard
 
-L'installer colloca il dashboard in:
-
-```text
-/config/luna/dashboard/luna-dashboard.yaml
-```
-
-Per sicurezza i file interni `.storage` non vengono modificati. Se il dashboard non è ancora registrato, l'installer mostra il blocco `lovelace:` necessario. Dopo registrazione, verifica e riavvio, **Luna** appare nella barra laterale.
+- `luna-dashboard-native.yaml` - moderne schede standard di Home Assistant.
+- `luna-dashboard-custom.yaml` - interfaccia più ricca con Mushroom e card-mod.
 
 ## Verifica
 
 1. Validare la configurazione di Home Assistant.
-2. Non riavviare in presenza di errori.
+2. Non riavviare se esiste un errore di configurazione.
 3. Riavviare dopo una validazione riuscita.
-4. Aprire il dashboard Luna.
+4. Aprire Luna dalla barra laterale.
 5. Verificare `input_select.luna_language_taal` e selezionare la lingua.
 
 ## Sicurezza
 
-Controllo fisico, esecuzione del planner, autoripristino e AI locale rimangono fail-closed finché l'utente non li configura intenzionalmente. L'AI locale è opzionale.
+Controllo fisico, esecuzione del planner, autoripristino e AI locale rimangono fail-closed finché l'utente non li configura intenzionalmente.
