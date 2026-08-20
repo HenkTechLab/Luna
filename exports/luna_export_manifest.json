@@ -1,12 +1,16 @@
 {
   "product": "Luna",
-  "source": "Luna-Test",
+  "source": "Luna",
   "generated_utc": "2026-08-20",
-  "privacy": "No states, values, conversations, personal memory records, secrets, device IDs, IPs, or notifications exported.",
+  "privacy": "No states, values, conversations, personal memory records, secrets, device IDs, IPs, or notifications exported; private/person/device-specific helper records were excluded.",
   "counts": {
-    "source_automations": 91,
-    "source_helpers": 306,
-    "source_scripts": 8
+    "source_automation_search_matches": 91,
+    "automation_definitions_read": 91,
+    "source_helper_search_matches": 306,
+    "helper_definitions_read": 381,
+    "helpers_exported_sanitized": 363,
+    "source_scripts_read": 8,
+    "scripts_exported": 8
   },
   "automations": [
     {
@@ -2447,6 +2451,9 @@
     "conversation histories",
     "device and system bindings",
     "network addresses and credentials",
-    "real notification targets"
+    "real notification targets",
+    "person helpers and device/location-specific helper records excluded from sanitized export",
+    "notification targets replaced by notify.luna_placeholder",
+    "physical entity targets replaced by domain.luna_placeholder_*"
   ]
 }
