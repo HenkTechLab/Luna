@@ -2,27 +2,49 @@
 set -eu
 
 # Luna one-command multilingual installer for Home Assistant
-# Direct use:
-# curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl
+# Usage:
+# curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl native
+# curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl custom
 
 REPO_ZIP="https://github.com/HenkTechLab/Luna/archive/refs/heads/main.zip"
 HA_CONFIG="${HA_CONFIG:-/config}"
 LANG_CODE="${1:-en}"
+DASHBOARD_MODE="${2:-native}"
 WORKDIR="${TMPDIR:-/tmp}/luna-install-$$"
 BACKUP_DIR="$HA_CONFIG/luna_backup_$(date +%Y%m%d_%H%M%S)"
 LUNA_DIR="$HA_CONFIG/luna"
 
 case "$LANG_CODE" in
- nl) TITLE="Luna installatie"; DONE="Klaar";; de) TITLE="Luna Installation"; DONE="Fertig";; fr) TITLE="Installation Luna"; DONE="Terminé";; es) TITLE="Instalación Luna"; DONE="Terminado";; it) TITLE="Installazione Luna"; DONE="Completato";; pt) TITLE="Instalação Luna"; DONE="Concluído";; en|*) LANG_CODE="en"; TITLE="Luna installation"; DONE="Done";;
+  nl) TITLE="Luna installatie"; DONE="Klaar" ;;
+  de) TITLE="Luna Installation"; DONE="Fertig" ;;
+  fr) TITLE="Installation Luna"; DONE="Terminé" ;;
+  es) TITLE="Instalación Luna"; DONE="Terminado" ;;
+  it) TITLE="Installazione Luna"; DONE="Completato" ;;
+  pt) TITLE="Instalação Luna"; DONE="Concluído" ;;
+  en|*) LANG_CODE="en"; TITLE="Luna installation"; DONE="Done" ;;
 esac
 
-cleanup(){ rm -rf "$WORKDIR"; }
+case "$DASHBOARD_MODE" in
+  native)
+    DASHBOARD_FILE="luna-dashboard-native.yaml"
+    ;;
+  custom)
+    DASHBOARD_FILE="luna-dashboard-custom.yaml"
+    ;;
+  *)
+    echo "ERROR: dashboard must be 'native' or 'custom'."
+    exit 1
+    ;;
+esac
+
+cleanup() { rm -rf "$WORKDIR"; }
 trap cleanup EXIT INT TERM
 
 [ -d "$HA_CONFIG" ] || { echo "ERROR: Home Assistant config directory not found: $HA_CONFIG"; exit 1; }
 mkdir -p "$WORKDIR" "$BACKUP_DIR"
 
 echo "=== $TITLE ==="
+echo "Dashboard: $DASHBOARD_MODE"
 echo "[1/7] Download..."
 if command -v curl >/dev/null 2>&1; then
   curl -fsSL "$REPO_ZIP" -o "$WORKDIR/luna.zip"
@@ -37,18 +59,23 @@ command -v unzip >/dev/null 2>&1 || { echo "ERROR: unzip is required."; exit 1; 
 unzip -q "$WORKDIR/luna.zip" -d "$WORKDIR"
 SRC="$WORKDIR/Luna-main"
 [ -f "$SRC/packages/luna.yaml" ] || { echo "ERROR: Luna package missing."; exit 1; }
+[ -f "$SRC/dashboard/$DASHBOARD_FILE" ] || { echo "ERROR: selected dashboard file missing."; exit 1; }
 
 echo "[2/7] Backup..."
-for f in configuration.yaml automations.yaml scripts.yaml; do [ ! -f "$HA_CONFIG/$f" ] || cp -p "$HA_CONFIG/$f" "$BACKUP_DIR/$f"; done
+for f in configuration.yaml automations.yaml scripts.yaml; do
+  [ ! -f "$HA_CONFIG/$f" ] || cp -p "$HA_CONFIG/$f" "$BACKUP_DIR/$f"
+done
 [ ! -d "$LUNA_DIR" ] || cp -R "$LUNA_DIR" "$BACKUP_DIR/luna"
 
 echo "[3/7] Install files..."
-rm -rf "$LUNA_DIR.new"; mkdir -p "$LUNA_DIR.new"
+rm -rf "$LUNA_DIR.new"
+mkdir -p "$LUNA_DIR.new"
 cp -R "$SRC/packages" "$LUNA_DIR.new/packages"
 [ ! -d "$SRC/exports" ] || cp -R "$SRC/exports" "$LUNA_DIR.new/exports"
 [ ! -d "$SRC/docs" ] || cp -R "$SRC/docs" "$LUNA_DIR.new/docs"
 [ ! -d "$SRC/dashboard" ] || cp -R "$SRC/dashboard" "$LUNA_DIR.new/dashboard"
-rm -rf "$LUNA_DIR"; mv "$LUNA_DIR.new" "$LUNA_DIR"
+rm -rf "$LUNA_DIR"
+mv "$LUNA_DIR.new" "$LUNA_DIR"
 
 echo "[4/7] Check package registration..."
 CONFIG="$HA_CONFIG/configuration.yaml"
@@ -67,22 +94,22 @@ PACKAGE_BLOCK='    luna: !include luna/packages/luna.yaml
     luna_portugues: !include luna/packages/languages/portugues.yaml'
 
 echo "[5/7] Dashboard..."
-# Dashboard is installed as YAML because directly editing Home Assistant .storage is unsafe.
-# Registration is printed for manual insertion if not already present.
-DASHBOARD_BLOCK='lovelace:
+DASHBOARD_BLOCK="lovelace:
   dashboards:
     luna-dashboard:
       mode: yaml
       title: Luna
-      icon: mdi:robot
+      icon: mdi:robot-excited
       show_in_sidebar: true
-      filename: luna/dashboard/luna-dashboard.yaml'
+      filename: luna/dashboard/$DASHBOARD_FILE"
 DASHBOARD_REGISTERED=0
-[ -f "$CONFIG" ] && grep -q 'filename: luna/dashboard/luna-dashboard.yaml' "$CONFIG" && DASHBOARD_REGISTERED=1
+[ -f "$CONFIG" ] && grep -q "filename: luna/dashboard/$DASHBOARD_FILE" "$CONFIG" && DASHBOARD_REGISTERED=1
 
 echo "[6/7] Safety..."
-echo "exports/luna_test_* are reference/test material and are NOT automatically activated."
 echo "Existing automations.yaml and scripts.yaml are NOT overwritten."
+if [ "$DASHBOARD_MODE" = "custom" ]; then
+  echo "Custom dashboard requires HACS components: Mushroom and card-mod."
+fi
 
 echo "[7/7] $DONE."
 echo "Backup: $BACKUP_DIR"
@@ -99,5 +126,5 @@ fi
 
 echo ""
 echo "Validate Home Assistant configuration before restarting."
-echo "Dashboard file: $LUNA_DIR/dashboard/luna-dashboard.yaml"
+echo "Dashboard file: $LUNA_DIR/dashboard/$DASHBOARD_FILE"
 echo "Documentation: $LUNA_DIR/docs/$LANG_CODE"
