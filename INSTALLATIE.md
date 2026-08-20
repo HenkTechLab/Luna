@@ -1,104 +1,73 @@
-# Luna - duidelijke installatiehandleiding voor Home Assistant
+# Luna - installatiehandleiding voor Home Assistant
 
-## Aanbevolen installatie: één commando
+## Installeren met één commando
 
-Open in Home Assistant de **Terminal & SSH App** en voer dit commando uit:
+Open de **Terminal & SSH App** in Home Assistant en kies een dashboardvariant.
+
+### Optie 1 - Native
+
+Alleen standaard Home Assistant-kaarten, zonder extra frontend-afhankelijkheden:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl native
 ```
 
-De gebruiker hoeft Luna niet eerst te downloaden of met Git te clonen. De installer downloadt de actuele Luna-release rechtstreeks vanaf GitHub.
+### Optie 2 - Custom
+
+Luxere interface met Mushroom en card-mod:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl custom
+```
+
+Voor de custom variant moeten **Mushroom** en **card-mod** via HACS beschikbaar zijn.
 
 ## Wat de installer doet
 
 1. Controleert of `/config` beschikbaar is.
-2. Downloadt de Luna-repository.
+2. Downloadt Luna.
 3. Maakt een back-up van relevante bestaande configuratie.
 4. Installeert de Luna-packages onder `/config/luna/packages`.
 5. Kopieert documentatie en geschoonde exports.
-6. Installeert het Luna-dashboardbestand onder `/config/luna/dashboard/luna-dashboard.yaml`.
-7. Controleert of packages en dashboard al geregistreerd zijn.
-8. Toont exact welke regels nog in `configuration.yaml` moeten worden toegevoegd.
+6. Installeert beide dashboardbestanden onder `/config/luna/dashboard/`.
+7. Selecteert de gekozen dashboardvariant voor registratie.
+8. Toont exact welke regels eventueel nog in `configuration.yaml` moeten worden toegevoegd.
 9. Overschrijft bestaande `automations.yaml` en `scripts.yaml` niet.
-10. Activeert `luna_test_*` niet automatisch.
-11. Herstart Home Assistant niet automatisch.
+10. Herstart Home Assistant niet automatisch.
 
-## Waarom configuration.yaml niet blind automatisch wordt aangepast
+## Packages registreren
 
-De configuratie van iedere gebruiker kan anders zijn. Een shellscript dat zonder YAML-kennis automatisch regels in een bestaande `configuration.yaml` plaatst kan de configuratie beschadigen. Daarom toont de installer het exacte ontbrekende blok wanneer handmatige registratie nodig is.
+Wanneer de Luna-packages nog niet geregistreerd zijn, toont de installer het exacte blok dat onder de bestaande `homeassistant:` -> `packages:` sectie moet worden toegevoegd. Maak nooit een tweede `homeassistant:` sectie.
 
-## Luna-dashboard
+## Dashboard
 
-Het dashboard is gebaseerd op het werkende dashboard uit de Luna Test-installatie en gebruikt moderne Home Assistant sections/tile-kaarten.
-
-De installer plaatst het dashboard automatisch hier:
+De twee dashboardbestanden zijn:
 
 ```text
-/config/luna/dashboard/luna-dashboard.yaml
+/config/luna/dashboard/luna-dashboard-native.yaml
+/config/luna/dashboard/luna-dashboard-custom.yaml
 ```
 
-Als het dashboard nog niet geregistreerd is, toont de installer dit blok:
+De native variant gebruikt moderne sections, headings, tiles, badges en section backgrounds.
 
-```yaml
-lovelace:
-  dashboards:
-    luna-dashboard:
-      mode: yaml
-      title: Luna
-      icon: mdi:robot
-      show_in_sidebar: true
-      filename: luna/dashboard/luna-dashboard.yaml
-```
+De custom variant gebruikt Mushroom en card-mod voor extra styling, gradients, compacte statuskaarten en een meer uitgesproken command-center uiterlijk.
 
-Bestaat `lovelace:` al, voeg dan alleen de Luna-dashboarddefinitie correct aan de bestaande structuur toe. Maak geen dubbele hoofdsecties.
+De installer wijzigt geen interne Home Assistant `.storage` bestanden. Als dashboardregistratie nog nodig is, toont hij het juiste `lovelace:` blok.
 
-De installer wijzigt bewust geen interne Home Assistant `.storage` bestanden.
+## Automatiseringen, helpers en scripts
 
-## Luna-packages
-
-Wanneer de packages nog niet geregistreerd zijn, toont de installer het benodigde blok voor de bestaande `homeassistant:` -> `packages:` sectie. Maak nooit een tweede `homeassistant:` sectie.
-
-## Automations, helpers, scripts en Luna Test
-
-De map `/config/luna/exports` bevat geschoonde bron-/referentie-exporten van Luna-automations, helpers en scripts, inclusief `luna_test_*` materiaal.
-
-Deze exports worden bewust niet blind toegevoegd aan bestaande Home Assistant-configuraties. De veilige installeerbare Luna-laag staat onder `/config/luna/packages`.
+De map `/config/luna/exports` bevat geschoonde bronlogica voor automatiseringen, helpers en scripts. Deze wordt niet blind samengevoegd met bestaande configuratiebestanden. De veilige installeerbare Luna-laag staat onder `/config/luna/packages`.
 
 ## Na installatie
 
 1. Lees de uitvoer van de installer.
-2. Voeg alleen de aangegeven ontbrekende package- en dashboardregistratie toe.
+2. Voeg alleen ontbrekende package- en dashboardregistratie toe.
 3. Controleer de Home Assistant-configuratie.
-4. Herstart niet als er een fout wordt gemeld.
-5. Herstart Home Assistant na een geldige configuratiecontrole.
+4. Herstart niet wanneer Home Assistant een configuratiefout meldt.
+5. Herstart na een geldige configuratiecontrole.
 6. Open **Luna** in de zijbalk.
 7. Controleer `input_select.luna_language_taal`.
 8. Kies de gewenste taal.
-
-## Andere talen
-
-Gebruik hetzelfde installatiecommando met de gewenste taalcode:
-
-```sh
-# English
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- en
-
-# Deutsch
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- de
-
-# Français
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- fr
-
-# Español
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- es
-
-# Italiano
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it
-
-# Português
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- pt
-```
 
 ## Veiligheid
 
