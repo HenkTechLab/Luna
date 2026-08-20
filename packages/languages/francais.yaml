@@ -21,20 +21,20 @@ automation:
     actions:
       - action: input_text.set_value
         target: {entity_id: input_text.luna_language_status}
-        data: {value: Luna-taal: Français}
+        data: {value: "Luna-taal: Français"}
       - action: input_text.set_value
         target: {entity_id: input_text.luna_platformstatus}
         data:
           value: >-
             {% set translations = {
-              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA"
-              "BASIS · AI uitgeschakeld": "BASE · IA désactivée"
-              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible"
-              "AI · lokale backend bereikbaar": "IA · backend local disponible"
-              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes"
-              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif"
-              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique"
-              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée"
+              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA",
+              "BASIS · AI uitgeschakeld": "BASE · IA désactivée",
+              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible",
+              "AI · lokale backend bereikbaar": "IA · backend local disponible",
+              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes",
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif",
+              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique",
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée",
             } %}
             {{ translations.get(states('input_text.luna_platformstatus'), states('input_text.luna_platformstatus')) }}
       - action: input_text.set_value
@@ -42,14 +42,14 @@ automation:
         data:
           value: >-
             {% set translations = {
-              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA"
-              "BASIS · AI uitgeschakeld": "BASE · IA désactivée"
-              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible"
-              "AI · lokale backend bereikbaar": "IA · backend local disponible"
-              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes"
-              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif"
-              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique"
-              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée"
+              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA",
+              "BASIS · AI uitgeschakeld": "BASE · IA désactivée",
+              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible",
+              "AI · lokale backend bereikbaar": "IA · backend local disponible",
+              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes",
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif",
+              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique",
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée",
             } %}
             {{ translations.get(states('input_text.luna_prediction_status'), states('input_text.luna_prediction_status')) }}
       - action: input_text.set_value
@@ -57,14 +57,14 @@ automation:
         data:
           value: >-
             {% set translations = {
-              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA"
-              "BASIS · AI uitgeschakeld": "BASE · IA désactivée"
-              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible"
-              "AI · lokale backend bereikbaar": "IA · backend local disponible"
-              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes"
-              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif"
-              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique"
-              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée"
+              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA",
+              "BASIS · AI uitgeschakeld": "BASE · IA désactivée",
+              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible",
+              "AI · lokale backend bereikbaar": "IA · backend local disponible",
+              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes",
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif",
+              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique",
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée",
             } %}
             {{ translations.get(states('input_text.luna_health_status'), states('input_text.luna_health_status')) }}
       - action: input_text.set_value
@@ -72,14 +72,14 @@ automation:
         data:
           value: >-
             {% set translations = {
-              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA"
-              "BASIS · AI uitgeschakeld": "BASE · IA désactivée"
-              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible"
-              "AI · lokale backend bereikbaar": "IA · backend local disponible"
-              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes"
-              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif"
-              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique"
-              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée"
+              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA",
+              "BASIS · AI uitgeschakeld": "BASE · IA désactivée",
+              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible",
+              "AI · lokale backend bereikbaar": "IA · backend local disponible",
+              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes",
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif",
+              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique",
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée",
             } %}
             {{ translations.get(states('input_text.luna_planner_status'), states('input_text.luna_planner_status')) }}
       - action: input_text.set_value
@@ -87,13 +87,13 @@ automation:
         data:
           value: >-
             {% set translations = {
-              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA"
-              "BASIS · AI uitgeschakeld": "BASE · IA désactivée"
-              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible"
-              "AI · lokale backend bereikbaar": "IA · backend local disponible"
-              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes"
-              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif"
-              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique"
-              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée"
+              "AUTOMATISCH · basis zonder AI": "AUTOMATIQUE · mode de base sans IA",
+              "BASIS · AI uitgeschakeld": "BASE · IA désactivée",
+              "AI GEKOZEN · backend niet bereikbaar": "IA SÉLECTIONNÉE · backend indisponible",
+              "AI · lokale backend bereikbaar": "IA · backend local disponible",
+              "Geen voorspelling · onvoldoende klantgegevens": "Aucune prédiction · données client insuffisantes",
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · aucune connexion d'appareil · fail-closed actif",
+              "Voorstelstand · geen fysieke uitvoering": "Mode proposition · aucune exécution physique",
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Mémoire client vide · stockage local · aucune donnée privée importée",
             } %}
             {{ translations.get(states('input_text.luna_memory_status'), states('input_text.luna_memory_status')) }}
