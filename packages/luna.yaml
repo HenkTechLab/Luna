@@ -1,0 +1,220 @@
+# Luna klantinstallatiepakket
+# Veilig, lokaal en fail-closed. Geen apparaten, meldingen of privégegevens.
+
+input_select:
+  luna_installatieprofiel:
+    name: Luna installatieprofiel
+    icon: mdi:package-variant-closed
+    options: [Automatisch, Basis zonder AI, Lokale AI]
+  luna_language_taal:
+    name: Luna Language / Taal
+    icon: mdi:translate
+    options: [Nederlands, English, Deutsch, Français, Español, Italiano, Português]
+  luna_actiemodus:
+    name: Luna Actiemodus
+    icon: mdi:hand-back-right
+    options: [Leren, Voorstel, Actief]
+  luna_ai_mode:
+    name: Luna AI Mode
+    icon: mdi:brain
+    options: [Uit, Automatisch, Lokale AI]
+
+input_boolean:
+  luna_physical_control:
+    name: Luna fysieke bediening
+    icon: mdi:home-automation
+  luna_veilig_zelfherstel:
+    name: Luna veilig zelfherstel
+    icon: mdi:shield-check
+  luna_planner_uitvoering_ingeschakeld:
+    name: Luna planner uitvoering ingeschakeld
+    icon: mdi:calendar-check
+  luna_ollama_inference_actief:
+    name: Luna lokale AI-inference actief
+    icon: mdi:robot
+
+input_text:
+  luna_ai_backend_light: {name: Luna AI Backend Light, icon: mdi:brain, max: 255}
+  luna_ai_backend_heavy: {name: Luna AI Backend Heavy, icon: mdi:brain-circuit, max: 255}
+  luna_platformstatus: {name: Luna platformstatus, icon: mdi:state-machine, max: 255}
+  luna_language_status: {name: Luna taalstatus, icon: mdi:translate, max: 255}
+  luna_installation_status: {name: Luna installatiestatus, icon: mdi:package-check, max: 255}
+  luna_safety_status: {name: Luna veiligheidsstatus, icon: mdi:shield-check, max: 255}
+  luna_memory_status: {name: Luna geheugenstatus, icon: mdi:memory, max: 255}
+  luna_last_event: {name: Luna laatste gebeurtenis, icon: mdi:timeline-text, max: 255}
+  luna_answer: {name: Luna antwoord, icon: mdi:message-text, max: 255}
+
+input_button:
+  vraag_luna: {name: Vraag Luna, icon: mdi:chat-question}
+  wis_luna_antwoord: {name: Wis Luna antwoord, icon: mdi:message-remove}
+
+template:
+  - binary_sensor:
+      - name: Luna lokale AI beschikbaar
+        unique_id: luna_lokale_ai_beschikbaar
+        icon: mdi:robot
+        device_class: connectivity
+        state: >-
+          {% set p = states('input_select.luna_installatieprofiel') %}
+          {% set m = states('input_select.luna_ai_mode') %}
+          {% set ns = namespace(ok=false) %}
+          {% for ref in [states('input_text.luna_ai_backend_light'), states('input_text.luna_ai_backend_heavy')] %}
+            {% if p != 'Basis zonder AI' and m != 'Uit' and ref is match('^[a-z_]+\\.[a-z0-9_]+$') and states(ref) not in ['unknown','unavailable',''] %}
+              {% set ns.ok = true %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.ok }}
+      - name: Luna veilig fail-closed
+        unique_id: luna_veilig_fail_closed
+        icon: mdi:shield-lock
+        device_class: safety
+        state: >-
+          {{ is_state('input_boolean.luna_physical_control','off') and
+             is_state('input_boolean.luna_veilig_zelfherstel','off') and
+             is_state('input_boolean.luna_planner_uitvoering_ingeschakeld','off') and
+             is_state('input_boolean.luna_ollama_inference_actief','off') }}
+
+script:
+  luna_ai_router:
+    alias: Luna AI router
+    mode: restart
+    sequence:
+      - choose:
+          - conditions: [{condition: state, entity_id: binary_sensor.luna_lokale_ai_beschikbaar, state: "on"}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_answer}
+                data: {value: Lokale AI-backend gevonden; antwoordlaag kan worden gekoppeld.}
+        default:
+          - action: input_text.set_value
+            target: {entity_id: input_text.luna_answer}
+            data:
+              value: >-
+                {% set l = states('input_select.luna_language_taal') %}
+                {% if l == 'English' %}Luna is running in basic mode. No local AI backend is available.
+                {% elif l == 'Deutsch' %}Luna läuft im Basismodus. Kein lokales KI-Backend verfügbar.
+                {% elif l == 'Français' %}Luna fonctionne en mode de base. Aucun backend IA local disponible.
+                {% elif l == 'Español' %}Luna funciona en modo básico. No hay backend de IA local disponible.
+                {% elif l == 'Italiano' %}Luna funziona in modalità base. Nessun backend IA locale disponibile.
+                {% elif l == 'Português' %}Luna está no modo básico. Nenhum backend de IA local disponível.
+                {% else %}Luna werkt in basisstand. Er is geen lokale AI-backend beschikbaar.{% endif %}
+
+automation:
+  - id: luna_installatieprofiel_core
+    alias: Luna installatieprofiel Core
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/10"
+      - trigger: state
+        entity_id: [input_select.luna_installatieprofiel, input_select.luna_ai_mode, input_text.luna_ai_backend_light, input_text.luna_ai_backend_heavy, binary_sensor.luna_lokale_ai_beschikbaar]
+    actions:
+      - choose:
+          - conditions: [{condition: state, entity_id: input_select.luna_installatieprofiel, state: Basis zonder AI}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_platformstatus}
+                data: {value: BASIS · AI uitgeschakeld}
+          - conditions: [{condition: state, entity_id: binary_sensor.luna_lokale_ai_beschikbaar, state: "on"}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_platformstatus}
+                data: {value: AI · lokale backend bereikbaar}
+          - conditions: [{condition: state, entity_id: input_select.luna_installatieprofiel, state: Lokale AI}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_platformstatus}
+                data: {value: AI GEKOZEN · backend niet bereikbaar}
+        default:
+          - action: input_text.set_value
+            target: {entity_id: input_text.luna_platformstatus}
+            data: {value: AUTOMATISCH · basis zonder AI}
+
+  - id: luna_language_core
+    alias: Luna Language Core
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id: input_select.luna_language_taal
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_language_status}
+        data:
+          value: >-
+            {% set l = states('input_select.luna_language_taal') %}
+            {% if l == 'English' %}Luna language: English
+            {% elif l == 'Deutsch' %}Luna-Sprache: Deutsch
+            {% elif l == 'Français' %}Langue de Luna : Français
+            {% elif l == 'Español' %}Idioma de Luna: Español
+            {% elif l == 'Italiano' %}Lingua di Luna: Italiano
+            {% elif l == 'Português' %}Idioma da Luna: Português
+            {% else %}Luna-taal: Nederlands{% endif %}
+
+  - id: luna_safety_core
+    alias: Luna Safety Core
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/10"
+    actions:
+      - action: input_boolean.turn_off
+        target:
+          entity_id: [input_boolean.luna_physical_control, input_boolean.luna_veilig_zelfherstel, input_boolean.luna_planner_uitvoering_ingeschakeld, input_boolean.luna_ollama_inference_actief]
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_safety_status}
+        data: {value: FAIL-CLOSED · fysieke acties en zelfherstel uit}
+
+  - id: luna_installation_status_core
+    alias: Luna installatie status Core
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id: [input_select.luna_installatieprofiel, input_select.luna_ai_mode, binary_sensor.luna_lokale_ai_beschikbaar]
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_installation_status}
+        data:
+          value: >-
+            Profiel={{ states('input_select.luna_installatieprofiel') }} · AI={{ states('input_select.luna_ai_mode') }} · lokaal={{ states('binary_sensor.luna_lokale_ai_beschikbaar') }}
+
+  - id: luna_question_core
+    alias: Luna Vraag Core
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: input_button.vraag_luna
+    actions:
+      - action: script.luna_ai_router
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_last_event}
+        data: {value: Vraag ontvangen · veilige antwoordroute gebruikt}
+
+  - id: luna_clear_answer_core
+    alias: Luna antwoord wissen
+    mode: single
+    triggers:
+      - trigger: state
+        entity_id: input_button.wis_luna_antwoord
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_answer}
+        data: {value: ""}
+
+  - id: luna_memory_status_core
+    alias: Luna Memory Status Core
+    mode: single
+    triggers:
+      - trigger: homeassistant
+        event: start
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_memory_status}
+        data: {value: Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens}
