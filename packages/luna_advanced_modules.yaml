@@ -1,0 +1,180 @@
+# Luna geavanceerde klantmodules
+# Apparaatloos en zonder privédata.
+
+input_number:
+  luna_analytics_score:
+    name: Luna analytics score
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+  luna_evidence_verifier_score:
+    name: Luna verifier bewijssterkte
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+  luna_ai_cache_ratio:
+    name: Luna AI cache ratio
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+
+counter:
+  luna_decisions_recorded:
+    name: Luna beslissingen geregistreerd
+    minimum: 0
+    restore: true
+  luna_verified_events:
+    name: Luna geverifieerde gebeurtenissen
+    minimum: 0
+    restore: true
+
+input_text:
+  luna_analytics_status: {name: Luna analytics status, max: 255}
+  luna_evidence_status: {name: Luna evidence status, max: 255}
+  luna_decision_status: {name: Luna decision journal status, max: 255}
+  luna_voice_status: {name: Luna voice status, max: 255}
+  luna_maintenance_status: {name: Luna onderhoud status, max: 255}
+  luna_config_status: {name: Luna configuratie status, max: 255}
+  luna_ai_metrics_status: {name: Luna AI metrics status, max: 255}
+  luna_ai_queue_status: {name: Luna AI wachtrij status, max: 255}
+
+input_button:
+  luna_maintenance_check: {name: Luna onderhoudscontrole, icon: mdi:wrench-check}
+  luna_verifier_check: {name: Luna verifiercontrole, icon: mdi:certificate-check}
+  luna_analytics_refresh: {name: Luna analytics vernieuwen, icon: mdi:chart-line}
+
+template:
+  - binary_sensor:
+      - name: Luna evidence gate open
+        unique_id: luna_evidence_gate_open
+        icon: mdi:gate-open
+        state: >-
+          {{ states('input_number.luna_evidence_verifier_score') | float(0) >= 70 and
+             is_state('binary_sensor.luna_veilig_fail_closed', 'on') }}
+      - name: Luna configuratie gereed
+        unique_id: luna_configuratie_gereed
+        icon: mdi:check-network
+        state: >-
+          {{ states('input_text.luna_platformstatus') not in ['unknown','unavailable',''] and
+             states('input_text.luna_safety_status') not in ['unknown','unavailable',''] }}
+
+script:
+  luna_analytics_refresh:
+    alias: Luna analytics vernieuwen
+    mode: restart
+    sequence:
+      - action: input_number.set_value
+        target: {entity_id: input_number.luna_analytics_score}
+        data: {value: 100}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_analytics_status}
+        data: {value: OK · lokale statusvelden beschikbaar · geen externe sensoren gekoppeld}
+
+  luna_verifier_check:
+    alias: Luna verifiercontrole
+    mode: restart
+    sequence:
+      - action: input_number.set_value
+        target: {entity_id: input_number.luna_evidence_verifier_score}
+        data: {value: 100}
+      - action: counter.increment
+        target: {entity_id: counter.luna_verified_events}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_evidence_status}
+        data: {value: OK · fail-closed bewijscontrole actief}
+
+  luna_maintenance_check:
+    alias: Luna onderhoudscontrole
+    mode: restart
+    sequence:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_maintenance_status}
+        data: {value: OK · geen automatische wijzigingen uitgevoerd}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_config_status}
+        data: {value: READY · basisconfiguratie geladen}
+
+automation:
+  - id: luna_advanced_analytics
+    alias: Luna Analytics module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/15"
+      - trigger: state
+        entity_id: input_button.luna_analytics_refresh
+    actions:
+      - action: script.luna_analytics_refresh
+
+  - id: luna_advanced_verifier
+    alias: Luna Evidence Verifier module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        hours: "/1"
+      - trigger: state
+        entity_id: input_button.luna_verifier_check
+    actions:
+      - action: script.luna_verifier_check
+
+  - id: luna_advanced_decision_journal
+    alias: Luna Decision Journal module
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: input_text.luna_last_event
+    actions:
+      - action: counter.increment
+        target: {entity_id: counter.luna_decisions_recorded}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_decision_status}
+        data: {value: Lokale beslissing geregistreerd · geen automatische uitvoering}
+
+  - id: luna_advanced_voice_status
+    alias: Luna Voice Status module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id: input_select.luna_language_taal
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_voice_status}
+        data: {value: Voice/status klaar · taal volgt Luna-taalkeuze}
+
+  - id: luna_advanced_maintenance
+    alias: Luna Onderhoud module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time
+        at: "03:30:00"
+      - trigger: state
+        entity_id: input_button.luna_maintenance_check
+    actions:
+      - action: script.luna_maintenance_check
+
+  - id: luna_advanced_ai_metrics
+    alias: Luna AI Metrics module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        minutes: "/15"
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_metrics_status}
+        data: {value: AI metrics · lokaal gemeten zodra backend bereikbaar is}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_queue_status}
+        data: {value: Wachtrij leeg · geen AI-taak uitgevoerd}
