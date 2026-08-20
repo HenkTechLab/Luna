@@ -1,6 +1,6 @@
 # Luna bronexport
 
-Deze map bevat de geschoonde configuratielogica die rechtstreeks uit de actuele Luna-Test Home Assistant-configuratie is gelezen.
+Deze map bevat de geschoonde configuratielogica die rechtstreeks uit de actuele Luna-bronconfiguratie Home Assistant-configuratie is gelezen.
 
 ## Inventaris
 
