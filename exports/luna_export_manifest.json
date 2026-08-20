@@ -339,8 +339,8 @@
       "category": "core"
     },
     {
-      "entity_id": "automation.luna_planner_veilige_uitvoerder_woonkamerlicht",
-      "name": "Luna Planner - Veilige uitvoerder woonkamerlicht",
+      "entity_id": "automation.luna_planner_veilige_uitvoerder_placeholder_roomlicht",
+      "name": "Luna Planner - Veilige uitvoerder placeholder_roomlicht",
       "category": "core"
     },
     {
@@ -723,13 +723,13 @@
       "category": "core"
     },
     {
-      "entity_id": "input_number.luna_sensor_score_huiskamer",
+      "entity_id": "input_number.luna_sensor_score_placeholder_room",
       "name": "Luna sensor score placeholder_room",
       "helper_type": "input_number",
       "category": "core"
     },
     {
-      "entity_id": "input_number.luna_sensor_score_beweging_huiskamer",
+      "entity_id": "input_number.luna_sensor_score_beweging_placeholder_room",
       "name": "Luna sensor score beweging placeholder_room",
       "helper_type": "input_number",
       "category": "core"
@@ -741,7 +741,7 @@
       "category": "core"
     },
     {
-      "entity_id": "input_number.luna_sensor_score_keuken",
+      "entity_id": "input_number.luna_sensor_score_placeholder_room",
       "name": "Luna sensor score placeholder_room",
       "helper_type": "input_number",
       "category": "core"
@@ -1383,19 +1383,19 @@
       "category": "core"
     },
     {
-      "entity_id": "input_text.luna_geheugen_nixie",
+      "entity_id": "input_text.luna_geheugen_placeholder_device",
       "name": "Luna geheugen placeholder_device",
       "helper_type": "input_text",
       "category": "memory-schema"
     },
     {
-      "entity_id": "input_text.luna_geheugen_woonkamer",
+      "entity_id": "input_text.luna_geheugen_placeholder_room",
       "name": "Luna geheugen placeholder_room",
       "helper_type": "input_text",
       "category": "memory-schema"
     },
     {
-      "entity_id": "input_text.luna_geheugen_zonnescherm",
+      "entity_id": "input_text.luna_geheugen_placeholder_device",
       "name": "Luna geheugen placeholder_device",
       "helper_type": "input_text",
       "category": "memory-schema"
