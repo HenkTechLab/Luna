@@ -2,30 +2,27 @@
 
 Veilige, configureerbare Home Assistant-laag voor status, leren, planning en optionele lokale AI. Luna start zonder fysieke bediening, zelfherstel, planneruitvoering en AI-inference.
 
-## Installatie
+## Snelle installatie
 
-Kopieer de repository naar je Home Assistant-configuratie en voeg de pakketten expliciet toe:
+Open de Home Assistant Terminal & SSH App en kies een dashboardvariant.
 
-```yaml
-homeassistant:
-  packages:
-    luna: !include packages/luna.yaml
-    luna_modules: !include packages/luna_modules.yaml
-    luna_advanced_modules: !include packages/luna_advanced_modules.yaml
-    luna_nederlands: !include packages/languages/nederlands.yaml
-    luna_english: !include packages/languages/english.yaml
-    luna_deutsch: !include packages/languages/deutsch.yaml
-    luna_francais: !include packages/languages/francais.yaml
-    luna_espanol: !include packages/languages/espanol.yaml
-    luna_italiano: !include packages/languages/italiano.yaml
-    luna_portugues: !include packages/languages/portugues.yaml
+Volledig standaard Home Assistant:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl native
 ```
 
-Herlaad daarna Home Assistant-pakketten of herstart Home Assistant. Controleer in Ontwikkelaarstools → Statussen of de Luna-helpers beschikbaar zijn.
+Luxere variant met Mushroom en card-mod:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl custom
+```
+
+De custom variant vereist dat **Mushroom** en **card-mod** via HACS beschikbaar zijn.
 
 ## Taalmodules
 
-Er zijn zeven losse taalmodules: Nederlands, English, Deutsch, Français, Español, Italiano en Português. Kies de taal met `input_select.luna_language_taal`. Status-, fout-, planner-, geheugen-, test-, AI- en zelfcontrolemeldingen worden per module vertaald.
+Luna bevat zeven taalmodules: Nederlands, English, Deutsch, Français, Español, Italiano en Português. Kies de taal met `input_select.luna_language_taal`. Status-, fout-, planner-, geheugen-, AI- en zelfcontrolemeldingen worden per module vertaald.
 
 ## Veiligheidsinstellingen
 
@@ -37,32 +34,34 @@ De standaardwaarden zijn fail-closed:
 - lokale AI-inference: uit;
 - ontbrekende apparaten, diensten of AI: geen actie.
 
-Activeer fysieke of plannerfuncties pas nadat je eigen entiteiten als placeholders hebt ingevuld en afzonderlijk hebt getest. Meldtargets zijn niet inbegrepen.
+Activeer fysieke of plannerfuncties pas nadat de eigen entiteiten als placeholders zijn ingevuld en afzonderlijk zijn gecontroleerd. Meldtargets zijn niet inbegrepen.
 
 ## AI zonder en met lokale AI
 
-Zonder AI werkt Luna als veilige status-, leer- en controlelaag. Voor lokale AI kun je een lokaal backend (bijvoorbeeld Ollama) configureren via de AI-backendvelden en daarna `input_select.luna_ai_mode` op `Lokaal` zetten. De backend-URL en modelnaam blijven placeholders; er wordt niets naar een externe dienst gestuurd zonder eigen configuratie.
+Zonder AI werkt Luna als veilige status-, leer- en controlelaag. Voor lokale AI kan een lokaal backend, bijvoorbeeld Ollama, worden geconfigureerd via de AI-backendvelden. Zet daarna `input_select.luna_ai_mode` op `Lokaal`. De backend-URL en modelnaam blijven placeholders totdat de gebruiker deze zelf configureert.
 
-## Export en testmodules
+## Exports
 
-De map `exports/` bevat de geschoonde bronlogica uit de Luna-configuratie:
+De map `exports/` bevat geschoonde bronlogica voor automatiseringen, helpers en scripts. De veilige installeerbare gebruikerslaag staat onder `packages/`.
 
-- 91 automatiseringen gelezen en geëxporteerd;
-- 381 helperdefinities gelezen; 363 geschoonde helpers geëxporteerd;
-- 8 scripts gelezen en geëxporteerd;
-- 18 persoons-/apparaatgebonden helperrecords uitgesloten.
+## Dashboards
 
-Bestanden onder `exports/automations/luna_test_*.yaml`, `exports/helpers/luna_test_*.yaml` en `exports/scripts/luna_test.yaml` zijn gemarkeerde testmodules. Ze zijn bronexporten in JSON-vormige YAML-lijsten en worden niet automatisch geladen als klantpakket. De installeerbare klantpakketten staan onder `packages/`.
+Er zijn twee keuzes:
+
+- `dashboard/luna-dashboard-native.yaml` — uitsluitend standaard Home Assistant-kaarten;
+- `dashboard/luna-dashboard-custom.yaml` — premium interface met Mushroom en card-mod.
+
+De installer registreert de gekozen variant en overschrijft bestaande `automations.yaml` en `scripts.yaml` niet.
 
 ## Privacy
 
-Er zijn geen gesprekken, persoonlijke geheugenrecords, gebruikers-ID's, echte namen, locaties, IP/MAC-adressen, wachtwoorden, tokens, telefoons of meldkanalen opgenomen. Geheugenvelden zijn leeg en tellerinitialen zijn nul. Fysieke, telefoon-, netwerk- en systeembindingen zijn vervangen door placeholders.
+Er zijn geen gesprekken, persoonlijke geheugenrecords, gebruikers-ID's, echte namen, locaties, IP/MAC-adressen, wachtwoorden, tokens, telefoons of persoonlijke meldkanalen opgenomen. Geheugenvelden zijn leeg en tellerinitialen zijn nul. Fysieke, telefoon-, netwerk- en systeembindingen zijn vervangen door placeholders.
 
 ## Controle
 
 Controleer vóór gebruik:
 
-1. YAML-lijsten kunnen als YAML worden geparsed.
-2. Placeholder-entiteiten bestaan nog niet en veroorzaken daardoor fail-closed gedrag.
-3. Je configureert pas eigen entiteiten nadat de veilige basiscontrole geslaagd is.
-4. De repository bevat alleen de naam Luna.
+1. De Home Assistant-configuratie is geldig.
+2. Placeholder-entiteiten veroorzaken fail-closed gedrag zolang ze niet zijn gekoppeld.
+3. Eigen entiteiten worden pas geconfigureerd nadat de veilige basiscontrole is geslaagd.
+4. Optionele functies worden één voor één geactiveerd.
