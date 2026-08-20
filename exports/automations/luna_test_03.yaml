@@ -1568,7 +1568,7 @@
                   "entity_id": "input_text.luna_geheugen_placeholder_cover"
                 },
                 "data": {
-                  "value": "{{ now().strftime('%d-%m %H:%M') }} {{ trigger.id | replace('zon_','') | replace('_',' ') }}; lux {{ states('input_number.luna_shadow_numeric') }}; binnen {{ states('input_number.luna_shadow_numeric') }}C; buiten {{ states('sensor.luna_shadow_numeric_sensor') }}C; zonhoogte {{ state_attr('sun.sun','elevation') }}; weer {{ states('weather.forecast_thuis') }}"
+                  "value": "{{ now().strftime('%d-%m %H:%M') }} {{ trigger.id | replace('zon_','') | replace('_',' ') }}; lux {{ states('input_number.luna_shadow_numeric') }}; binnen {{ states('input_number.luna_shadow_numeric') }}C; placeholder_room {{ states('sensor.luna_shadow_numeric_sensor') }}C; zonhoogte {{ state_attr('sun.sun','elevation') }}; weer {{ states('weather.forecast_thuis') }}"
                 }
               }
             ]
