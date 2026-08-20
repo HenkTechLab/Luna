@@ -16,547 +16,456 @@
     {
       "entity_id": "automation.ai_luna_automation_beheer",
       "name": "AI - Luna Automation Beheer",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.ai_luna_effectmeting_eigen_acties",
       "name": "AI - Luna Effectmeting Eigen Acties",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.ai_luna_specialist_vraag",
       "name": "AI - Luna specialist vraag",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.ai_luna_voorspellende_huiscontrole",
       "name": "AI - Luna voorspellende huiscontrole",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.ai_luna_zelfstandig_ha_beheer",
       "name": "AI - Luna Zelfstandig HA Beheer",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.ai_wis_luna_antwoord",
       "name": "AI - Wis Luna antwoord",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ai_interactieve_prioriteit",
       "name": "Luna AI interactieve prioriteit",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ai_os_core",
       "name": "Luna AI OS Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ai_router_core",
       "name": "Luna AI Router Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_analytics_beslissing_beoordelen",
       "name": "Luna Analytics - Beslissing beoordelen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_analytics_core",
       "name": "Luna Analytics Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_analytics_sensorbeschikbaarheid",
       "name": "Luna Analytics - Sensorbeschikbaarheid",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_analytics_sensorstabiliteit",
       "name": "Luna Analytics - Sensorstabiliteit",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_antwoord_automatisch_wissen",
       "name": "Luna antwoord automatisch wissen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_autonomie_bewijspoort",
       "name": "Luna - Autonomie bewijspoort",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_autonomie_raad_dubbele_ai_controle",
       "name": "Luna Autonomie Raad - dubbele AI controle",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_builder_bridge_test",
       "name": "Luna Builder - Bridge test",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_builder_v2_functies_1408",
       "name": "Luna Builder - Builder v2 functies 1408",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_luna_builder_runtime_test",
       "name": "Luna Builder - Luna Builder - Runtime test",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_luna_builder_testhelpers_na_3_seconden",
       "name": "Luna Builder - Luna Builder testhelpers na 3 seconden",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_runtime_test",
       "name": "Luna Builder - Runtime test",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_sun_test_1408",
       "name": "Luna Builder - Sun test 1408",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_time_test_1408",
       "name": "Luna Builder - Time test 1408",
-      "state": "off",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_v3_autonome_kwaliteitsbewaking",
       "name": "Luna Builder V3 - Autonome kwaliteitsbewaking",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_v3_effectfeedback",
       "name": "Luna Builder V3 - Effectfeedback",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_builder_veilige_uitvoerwachtrij",
       "name": "Luna Builder - veilige uitvoerwachtrij",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_coach_sensorbetrouwbaarheid_en_verbeteradvies",
       "name": "Luna Coach - sensorbetrouwbaarheid en verbeteradvies",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_comfort_learning_core",
       "name": "Luna Comfort Learning Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_config_readiness_core",
       "name": "Luna Config Readiness Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_conflict_watch_algemeen",
       "name": "Luna Conflict Watch - algemeen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_conflict_watch_zonwering",
       "name": "Luna Conflict Watch - zonwering",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_core_initialiseer_timeline_en_explain",
       "name": "Luna Core - Initialiseer Timeline en Explain",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_dagelijkse_bundeling",
       "name": "Luna Dagelijkse Bundeling",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_decision_journal_core",
       "name": "Luna Decision Journal Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_deterministische_verifier",
       "name": "Luna - Deterministische verifier",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_energiecoach_core",
       "name": "Luna Energiecoach Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_entity_relations_relatiekaart",
       "name": "Luna Entity Relations - relatiekaart",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_evidence_core",
       "name": "Luna Evidence Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_explain_bouw_uitleg_bij_sturing",
       "name": "Luna Explain - Bouw uitleg bij sturing",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_health_algemene_entity_negeerlijst",
       "name": "Luna Health - algemene entity negeerlijst",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_health_core",
       "name": "Luna Health Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_health_entity_weer_gebruiken",
       "name": "Luna Health - entity weer gebruiken",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_impliciete_feedback_core",
       "name": "Luna Impliciete Feedback Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_installatieprofiel_core",
       "name": "Luna installatieprofiel Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_kennisveroudering_core",
       "name": "Luna Kennisveroudering Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_knowledge_core",
       "name": "Luna Knowledge Core",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_laatste_sturing_vastleggen",
       "name": "Luna - laatste sturing vastleggen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_language_core",
       "name": "Luna Language Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_learning_intake",
       "name": "Luna Learning Intake",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_leergeheugen_feedback",
       "name": "Luna leergeheugen feedback",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_mega_integrator_core",
       "name": "Luna Mega Integrator Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_memory_core_registreer_beslissing",
       "name": "Luna Memory Core - Registreer beslissing",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_memory_duurzame_deduplicatie",
       "name": "Luna Memory - duurzame deduplicatie",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_memory_ervaringsarchief",
       "name": "Luna Memory - Ervaringsarchief",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_memory_index_categoriegeheugen",
       "name": "Luna Memory Index - Categoriegeheugen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ollama_backend_status",
       "name": "Luna Ollama backend status",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ollama_metrics_samenvatting",
       "name": "Luna Ollama metrics samenvatting",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ollama_queue_watchdog",
       "name": "Luna Ollama queue watchdog",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_ollama_resource_sampler",
       "name": "Luna Ollama resource sampler",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_onderhoudssamenvatting",
       "name": "Luna - Onderhoudssamenvatting",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_persistent_memory_retention",
       "name": "Luna Persistent Memory Retention",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_persoonlijke_assistent_core",
       "name": "Luna Persoonlijke Assistent Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_physical_control_guard",
       "name": "Luna Physical Control Guard",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_planner_annulering_registreren",
       "name": "Luna Planner - Annulering registreren",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_planner_bevestiging_registreren",
       "name": "Luna Planner - Bevestiging en veilige lampactie",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_planner_veilige_uitvoerder_woonkamerlicht",
       "name": "Luna Planner - Veilige uitvoerder woonkamerlicht",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_planner_veiligheidscontrole",
       "name": "Luna Planner - Veiligheidscontrole",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_prediction_core",
       "name": "Luna Prediction Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_prediction_expliciete_positieve_beoordeling",
       "name": "Luna Prediction - expliciete positieve beoordeling",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_proactieve_voorstellen",
       "name": "Luna Proactieve Voorstellen",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_qwen8b_nachttest_heartbeat",
       "name": "Luna Qwen8B nachttest heartbeat",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_regressietest_core",
       "name": "Luna - Regressietest Core",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_regression_watch",
       "name": "Luna Regression Watch",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_routine_core",
       "name": "Luna Routine Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_runtime_core",
       "name": "Luna Runtime Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_safety_state_core",
       "name": "Luna Safety State Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_selfcheck_core",
       "name": "Luna Selfcheck Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_shadow_automation_target",
       "name": "Luna Shadow Automation Target",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_simulatie_evaluatie",
       "name": "Luna Simulatie Evaluatie",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_simulatie_voorbereiding",
       "name": "Luna Simulatie Voorbereiding",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_storage_core",
       "name": "Luna Storage Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_test_veiligheidsbewaking",
       "name": "Luna Test - Veiligheidsbewaking",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_timeline_core",
       "name": "Luna Timeline Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_timeline_hot_memory_retentie",
       "name": "Luna Timeline - hot memory retentie",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_trace_core",
       "name": "Luna Trace Core",
-      "state": "off",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_v1_functionele_validatie",
       "name": "Luna v1 - Functionele validatie",
-      "state": "on",
       "category": "test"
     },
     {
       "entity_id": "automation.luna_verifier_core",
       "name": "Luna Verifier Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_voice_status",
       "name": "Luna Voice Status",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_vooruitblik_en_afwijking_core",
       "name": "Luna Vooruitblik en Afwijking Core",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_windmeter_dagpiek_bijwerken",
       "name": "Luna windmeter - dagpiek bijwerken",
-      "state": "on",
       "category": "core"
     },
     {
       "entity_id": "automation.luna_windmeter_dagpiek_reset",
       "name": "Luna windmeter - dagpiek reset",
-      "state": "on",
       "category": "core"
     }
   ],
@@ -815,13 +724,13 @@
     },
     {
       "entity_id": "input_number.luna_sensor_score_huiskamer",
-      "name": "Luna sensor score huiskamer",
+      "name": "Luna sensor score placeholder_room",
       "helper_type": "input_number",
       "category": "core"
     },
     {
       "entity_id": "input_number.luna_sensor_score_beweging_huiskamer",
-      "name": "Luna sensor score beweging huiskamer",
+      "name": "Luna sensor score beweging placeholder_room",
       "helper_type": "input_number",
       "category": "core"
     },
@@ -833,7 +742,7 @@
     },
     {
       "entity_id": "input_number.luna_sensor_score_keuken",
-      "name": "Luna sensor score keuken",
+      "name": "Luna sensor score placeholder_room",
       "helper_type": "input_number",
       "category": "core"
     },
@@ -1475,19 +1384,19 @@
     },
     {
       "entity_id": "input_text.luna_geheugen_nixie",
-      "name": "Luna geheugen nixie",
+      "name": "Luna geheugen placeholder_device",
       "helper_type": "input_text",
       "category": "memory-schema"
     },
     {
       "entity_id": "input_text.luna_geheugen_woonkamer",
-      "name": "Luna geheugen woonkamer",
+      "name": "Luna geheugen placeholder_room",
       "helper_type": "input_text",
       "category": "memory-schema"
     },
     {
       "entity_id": "input_text.luna_geheugen_zonnescherm",
-      "name": "Luna geheugen zonnescherm",
+      "name": "Luna geheugen placeholder_device",
       "helper_type": "input_text",
       "category": "memory-schema"
     },
@@ -2401,43 +2310,35 @@
   "scripts": [
     {
       "entity_id": "script.luna_end_to_end_selftest",
-      "name": "Luna End-to-End Selftest",
-      "state": "off"
+      "name": "Luna End-to-End Selftest"
     },
     {
       "entity_id": "script.luna_import_marker",
-      "name": "Luna Import Marker",
-      "state": "off"
+      "name": "Luna Import Marker"
     },
     {
       "entity_id": "script.luna_ollama_background_queue",
-      "name": "Luna Ollama achtergrondwachtrij",
-      "state": "off"
+      "name": "Luna Ollama achtergrondwachtrij"
     },
     {
       "entity_id": "script.luna_ollama_queue",
-      "name": "Luna Ollama wachtrij",
-      "state": "off"
+      "name": "Luna Ollama wachtrij"
     },
     {
       "entity_id": "script.luna_ollama_router",
-      "name": "Luna Ollama router",
-      "state": "off"
+      "name": "Luna Ollama router"
     },
     {
       "entity_id": "script.luna_regression_selftest",
-      "name": "Luna Regression Selftest",
-      "state": "off"
+      "name": "Luna Regression Selftest"
     },
     {
       "entity_id": "script.luna_sandbox_guard",
-      "name": "Luna Sandbox Guard",
-      "state": "off"
+      "name": "Luna Sandbox Guard"
     },
     {
       "entity_id": "script.luna_test_selfcheck",
-      "name": "Luna Test Selfcheck",
-      "state": "off"
+      "name": "Luna Test Selfcheck"
     }
   ],
   "exported_packages": [
