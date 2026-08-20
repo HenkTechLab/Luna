@@ -1,0 +1,2122 @@
+[
+  {
+    "id": "1787235703372",
+    "alias": "Luna Prediction - expliciete positieve beoordeling",
+    "description": "Prediction Feedback v1.0. Alleen een expliciete druk op Luna beslissing goed telt als bewezen positief leerpunt. De nieuwste automatische verlichting- of zonweringsbeslissing kan maximaal één keer positief worden beoordeeld. Stuurt geen apparaten aan.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_button.luna_beslissing_goed",
+        "id": "goed"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "licht": "{{ states('input_text.luna_memory_verlichting') }}",
+          "zon": "{{ states('input_text.luna_memory_zonwering') }}",
+          "licht_tijd": "{{ as_timestamp(states.input_text.luna_memory_verlichting.last_changed, 0) }}",
+          "zon_tijd": "{{ as_timestamp(states.input_text.luna_memory_zonwering.last_changed, 0) }}",
+          "categorie": "{{ 'verlichting' if licht_tijd >= zon_tijd else 'zonwering' }}",
+          "record": "{{ licht if licht_tijd >= zon_tijd else zon }}",
+          "sleutel": "{{ (categorie ~ '|' ~ record)[:220] }}",
+          "vorige": "{{ states('input_text.luna_prediction_laatste_beoordeling') }}"
+        }
+      },
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ ' | automatisch |' in record and sleutel not in vorige }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_prediction_goede_beslissingen_totaal"
+                }
+              },
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_analytics_goede_beslissingen_vandaag"
+                },
+                "continue_on_error": true
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_prediction_laatste_beoordeling"
+                },
+                "data": {
+                  "value": "{{ ('GOED|' ~ sleutel)[:255] }}"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_analytics_laatste_inzicht"
+                },
+                "data": {
+                  "value": "{{ (now().strftime('%d-%m %H:%M:%S') ~ ' · ' ~ categorie ~ ' BEWEZEN_GOED · expliciete positieve feedback')[:255] }}"
+                }
+              },
+              {
+                "action": "todo.add_item",
+                "target": {
+                  "entity_id": "todo.luna_timeline"
+                },
+                "data": {
+                  "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') }} · LEERBEWIJS · BEWEZEN_GOED",
+                  "description": "{{ ('Expliciete positieve beoordeling voor ' ~ categorie ~ '. Beslissing=' ~ record)[:500] }}"
+                },
+                "continue_on_error": true
+              },
+              {
+                "action": "automation.trigger",
+                "target": {
+                  "entity_id": "automation.luna_prediction_core"
+                },
+                "data": {
+                  "skip_condition": false
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_analytics_laatste_inzicht"
+            },
+            "data": {
+              "value": "{{ now().strftime('%d-%m %H:%M:%S') }} · positieve beoordeling niet geteld · geen nieuwe automatische beslissing of al beoordeeld"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "queued",
+    "max": 5,
+    "initial_state": false
+  },
+  {
+    "id": "1787235709141",
+    "alias": "Luna Proactieve Voorstellen",
+    "description": "Luna Proactief v1.1. Stelt alleen iets voor wanneer Routine Core deterministisch BEWEZEN_PATROON meldt: minimaal 5 passende voorbeelden op minimaal 3 verschillende dagen en minimaal 85% zekerheid. Dit bewijst herhaling, niet causaliteit. Voert nooit zelf een actie uit en herhaalt hetzelfde voorstel niet.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_routine_status"
+      },
+      {
+        "trigger": "time",
+        "at": "18:10:00"
+      }
+    ],
+    "conditions": [
+      {
+        "condition": "numeric_state",
+        "entity_id": "input_number.luna_routine_betrouwbaarheid",
+        "above": 84
+      },
+      {
+        "condition": "state",
+        "entity_id": "input_text.luna_leerfase",
+        "state": "BEWEZEN_PATROON"
+      },
+      {
+        "condition": "numeric_state",
+        "entity_id": "input_number.luna_routine_bewijsvoorbeelden",
+        "above": 4
+      },
+      {
+        "condition": "numeric_state",
+        "entity_id": "input_number.luna_routine_bewijsdagen",
+        "above": 2
+      },
+      {
+        "condition": "template",
+        "value_template": "{{ states('input_text.luna_routine_status') not in ['unknown','unavailable','none',''] and 'BEWEZEN_PATROON' in states('input_text.luna_routine_status') and states('input_text.luna_routine_status') != states('input_text.luna_proactief_voorstel') }}"
+      }
+    ],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_proactief_voorstel"
+        },
+        "data": {
+          "value": "{{ states('input_text.luna_routine_status')[:255] }}"
+        }
+      },
+      {
+        "action": "logbook.log",
+        "data": {
+          "name": "Luna fail-closed",
+          "message": "Geblokkeerde productieactie: notify.luna_placeholder · target=\"geen target\"",
+          "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
+          "domain": "Luna"
+        },
+        "continue_on_error": true
+      }
+    ],
+    "mode": "single",
+    "initial_state": false
+  },
+  {
+    "id": "1787235715475",
+    "alias": "Luna Qwen8B nachttest heartbeat",
+    "description": "Tijdelijke heartbeat voor de lokale Qwen3 8B nachttest. Telt iedere 5 seconden zolang de test actief is, zodat HA-responsiviteit tijdens inference achteraf uit Recorder kan worden beoordeeld.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time_pattern",
+        "seconds": "/5"
+      }
+    ],
+    "conditions": [
+      {
+        "condition": "state",
+        "entity_id": "input_boolean.luna_qwen8b_nachttest_actief",
+        "state": "on"
+      }
+    ],
+    "actions": [
+      {
+        "action": "counter.increment",
+        "target": {
+          "entity_id": "counter.luna_qwen8b_heartbeat"
+        }
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent",
+    "initial_state": false
+  },
+  {
+    "id": "1787235741462",
+    "alias": "Luna - Regressietest Core",
+    "description": "Regressietest v1.3. Deterministische gratis controle van Luna-kern plus Mega Integrator, kwaliteitsmeters, forecast-horizons, routine-stabiliteit en fail-closed consistentie.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start",
+        "id": "start"
+      },
+      {
+        "trigger": "time",
+        "at": "04:00:00",
+        "id": "dagelijks"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_button.luna_regressietest_nu",
+        "id": "handmatig"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "proven": "{{ states('counter.luna_prediction_goede_beslissingen_totaal')|int(0) + states('counter.luna_prediction_slechte_beslissingen_totaal')|int(0) }}",
+          "prediction": "{{ states('input_number.luna_prediction_betrouwbaarheid')|float(0) }}",
+          "fouten": "{% set ns=namespace(x=[]) %}{% set required=['automation.ai_luna_specialist_vraag','automation.luna_prediction_core','automation.luna_analytics_core','automation.luna_analytics_beslissing_beoordelen','automation.luna_autonomie_bewijspoort','automation.luna_builder_veilige_uitvoerwachtrij','automation.luna_timeline_hot_memory_retentie','automation.luna_entity_relations_relatiekaart','automation.luna_routine_core','automation.luna_proactieve_voorstellen','automation.luna_ollama_metrics_samenvatting','automation.luna_ollama_backend_status','automation.luna_selfcheck_core','automation.luna_memory_duurzame_deduplicatie','automation.luna_decision_journal_core','automation.luna_impliciete_feedback_core','automation.luna_kennisveroudering_core','automation.luna_comfort_learning_core','automation.luna_vooruitblik_en_afwijking_core','automation.luna_simulatie_voorbereiding','automation.luna_simulatie_evaluatie','automation.luna_persoonlijke_assistent_core','automation.luna_mega_integrator_core'] %}{% for e in required %}{% if states(e) != 'on' %}{% set ns.x=ns.x+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% if state_attr('automation.ai_luna_specialist_vraag','mode') != 'queued' %}{% set ns.x=ns.x+['vraagmotor mode!=' ~ (state_attr('automation.ai_luna_specialist_vraag','mode')|string)] %}{% endif %}{% if state_attr('automation.luna_analytics_beslissing_beoordelen','mode') != 'parallel' %}{% set ns.x=ns.x+['evaluator mode!=' ~ (state_attr('automation.luna_analytics_beslissing_beoordelen','mode')|string)] %}{% endif %}{% for e in ['counter.luna_prediction_goede_beslissingen_totaal','counter.luna_prediction_slechte_beslissingen_totaal','counter.luna_prediction_onbekende_beslissingen_totaal','input_text.luna_laatste_uitvoeringsstatus','input_text.luna_verifier_status'] %}{% if states(e) in ['unknown','unavailable'] %}{% set ns.x=ns.x+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% if states('todo.luna_timeline')|int(9999) > 200 %}{% set ns.x=ns.x+['hot Timeline=' ~ states('todo.luna_timeline') ~ '>200'] %}{% endif %}{% if states('todo.luna_relatiekaart')|int(0) < 8 %}{% set ns.x=ns.x+['relatiekaart=' ~ states('todo.luna_relatiekaart') ~ '<8'] %}{% endif %}{% if proven|int(0) < 10 and not states('input_text.luna_autonomie_gereedheid').startswith('LEREN') %}{% set ns.x=ns.x+['autonomie niet LEREN bij <10 bewijs'] %}{% endif %}{% if prediction|float(0) < 70 and states('input_text.luna_autonomie_gereedheid').startswith('GEREED') %}{% set ns.x=ns.x+['autonomie GEREED bij Prediction<70'] %}{% endif %}{% for e in ['script.luna_ollama_router','script.luna_ollama_queue','script.luna_ollama_background_queue'] %}{% if states(e) in ['unknown','unavailable'] %}{% set ns.x=ns.x+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% for e in ['input_text.luna_ollama_backend_light','input_text.luna_ollama_backend_heavy','input_text.luna_ollama_metrics_status','input_text.luna_selfcheck_status','input_text.luna_memory_dedup_status','input_text.luna_doelprofiel','input_text.luna_decision_journal_status','input_text.luna_impliciete_feedback_status','input_text.luna_kennisveroudering_status','input_text.luna_comfortprofiel_status','input_text.luna_afwijking_status','input_text.luna_vooruitblik_status','input_text.luna_simulatie_status','input_text.luna_persoonlijke_assistent_status','input_text.luna_mega_status','input_text.luna_mega_pipeline_status','input_text.luna_mega_memory_quality','input_text.luna_mega_prediction_quality','input_text.luna_mega_safety_status','input_text.luna_forecast_10m','input_text.luna_forecast_1h','input_text.luna_forecast_later_today'] %}{% if states(e) in ['unknown','unavailable','none',''] %}{% set ns.x=ns.x+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% for e in ['input_number.luna_prediction_coverage','input_number.luna_ai_cache_ratio','input_number.luna_ai_4b_share','input_number.luna_routine_stability'] %}{% if states(e)|float(-1)<0 or states(e)|float(-1)>100 %}{% set ns.x=ns.x+[e ~ ' placeholder_room 0..100=' ~ states(e)] %}{% endif %}{% endfor %}{% if states('input_select.luna_actiemodus') != 'Safe Repair' and not states('input_text.luna_mega_safety_status').startswith('FAIL-CLOSED=JA') %}{% set ns.x=ns.x+['fail-closed inconsistent met actiemodus'] %}{% endif %}{% if states('input_text.luna_leerfase') not in ['GEEN_DATA','OBSERVATIE','VERMOEDEN','BEWEZEN_PATROON'] %}{% set ns.x=ns.x+['leerfase ongeldig=' ~ states('input_text.luna_leerfase')] %}{% endif %}{{ ns.x }}",
+          "aantal": "{{ fouten | count }}",
+          "status": "{{ 'PASS' if aantal|int(0)==0 else 'FAIL' }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_regressietest_status"
+        },
+        "data": {
+          "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · ' ~ status ~ ' · fouten=' ~ aantal ~ ((' · ' ~ (fouten|join('; '))) if aantal|int(0)>0 else ' · kern/router/metrics/geheugen/leerfase/autonomie OK'))[:255] }}"
+        }
+      },
+      {
+        "if": [
+          {
+            "condition": "template",
+            "value_template": "{{ aantal|int(0) > 0 }}"
+          }
+        ],
+        "then": [
+          {
+            "action": "todo.add_item",
+            "target": {
+              "entity_id": "todo.luna_timeline"
+            },
+            "data": {
+              "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') }} · REGRESSIETEST · FAIL",
+              "description": "{{ ('Deterministische Luna-regressietest faalde: ' ~ (fouten|join('; ')))[:500] }}"
+            },
+            "continue_on_error": true
+          }
+        ]
+      }
+    ],
+    "mode": "restart",
+    "max_exceeded": "silent",
+    "initial_state": false
+  },
+  {
+    "id": "1787174644088",
+    "alias": "Luna Regression Watch",
+    "description": "Voert de deterministische Luna regressiecontrole uit bij Home Assistant-start en elke zes uur. Test uitsluitend Luna-prototype-entiteiten; geen fysieke apparaatsturing en geen AI-aanroep.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "time_pattern",
+        "hours": "/6"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "script.luna_regression_selftest"
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787235749877",
+    "alias": "Luna Routine Core",
+    "description": "Luna Routine Core v2.0. Leert lokaal uit Timeline met dagdeel/dagtype/categorie, persistente kandidaatvergelijking en stabiliteit. Bewezen patroon blijft herhaling, nooit causaliteit; alleen shadow/simulatie, geen autonome uitvoering.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "03:25:00"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "todo.get_items",
+        "target": {
+          "entity_id": "todo.luna_timeline"
+        },
+        "data": {
+          "status": "needs_action"
+        },
+        "response_variable": "routine_timeline"
+      },
+      {
+        "variables": {
+          "routine_context": "{% set items=routine_timeline['todo.luna_timeline']['items']|default([],true) %}{% set ns=namespace(rows=[]) %}{% for i in items|reverse|list %}{% set s=i.summary|default('',true) %}{% if ns.rows|count < 100 and 'GESPREK' not in s and 'BUILDER' not in s and 'TEST' not in s %}{% set ns.rows=ns.rows+[s ~ ' | ' ~ ((i.description|default('',true))[:220])] %}{% endif %}{% endfor %}{{ ns.rows|join('\\n') }}"
+        },
+        "note": "Gebruik maximaal 100 recente niet-gespreksmatige Timeline-waarnemingen zodat de analyse begrensd en toekomstbestendig blijft."
+      },
+      {
+        "action": "script.luna_ollama_background_queue",
+        "data": {
+          "task_name": "Luna Routine Core",
+          "instructions": "Je bent Luna Routine Core. Analyseer uitsluitend onderstaande lokale Home Assistant Timeline. Zoek maximaal EEN herhaalbare routine die placeholder_user werk kan besparen.\n\nStrikte bewijsregels:\n- Geef samples als het aantal concrete vergelijkbare voorbeelden dat je daadwerkelijk in de context ziet.\n- Geef distinct_days als het aantal verschillende kalenderdagen waarop die passende voorbeelden voorkomen. Tel alleen datums die letterlijk in de context staan.\n- Nabije gebeurtenissen, volgorde of correlatie bewijzen GEEN oorzaak. Beschrijf alleen een herhaald patroon.\n- Negeer test-, builder- en gespreksregels; die zijn al grotendeels voorgefilterd.\n- Geen apparaatbediening, geen configwijziging, geen autonome automation.\n- candidate is een korte stabiele Nederlandse omschrijving die bij herhaalde analyses zo gelijk mogelijk blijft.\n- classificeer category uitsluitend als verlichting, zonwering, klimaat, energie, aanwezigheid, media, auto, systeem of overig.\n- classificeer daypart uitsluitend als nacht, ochtend, middag, avond of gemengd op basis van de tijden van de passende voorbeelden.\n- classificeer daytype uitsluitend als werkdag, weekend of gemengd op basis van de letterlijk zichtbare datums/dagen; als dit niet betrouwbaar afleidbaar is kies gemengd.\n- confidence is 0-100 en gaat over zekerheid dat de HERHALING echt in deze Timeline staat, niet over causaliteit.\n- suggest=true uitsluitend bij samples>=5, distinct_days>=3 en confidence>=85.\n- Als er onvoldoende bewijs is: suggest=false, candidate='Nog geen sterke routine gevonden'.\n\nTimeline:\n{{ routine_context }}",
+          "structure": {
+            "candidate": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "confidence": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "samples": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "suggest": {
+              "selector": {
+                "boolean": {}
+              },
+              "required": true
+            },
+            "reason": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "distinct_days": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 30,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "category": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "verlichting",
+                    "zonwering",
+                    "klimaat",
+                    "energie",
+                    "aanwezigheid",
+                    "media",
+                    "auto",
+                    "systeem",
+                    "overig"
+                  ]
+                }
+              },
+              "required": true
+            },
+            "daypart": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "nacht",
+                    "ochtend",
+                    "middag",
+                    "avond",
+                    "gemengd"
+                  ]
+                }
+              },
+              "required": true
+            },
+            "daytype": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "werkdag",
+                    "weekend",
+                    "gemengd"
+                  ]
+                }
+              },
+              "required": true
+            }
+          },
+          "cacheable": true,
+          "freshness": "stable",
+          "task_category": "routine"
+        },
+        "response_variable": "routine_ai"
+      },
+      {
+        "variables": {
+          "routine_samples": "{{ [0,[routine_ai.data.samples|int(0),100]|min]|max }}",
+          "routine_days": "{{ [0,[routine_ai.data.distinct_days|int(0),30]|min]|max }}",
+          "routine_conf": "{{ [0,[routine_ai.data.confidence|int(0),100]|min]|max }}"
+        }
+      },
+      {
+        "variables": {
+          "routine_phase": "{% if routine_samples|int(0) == 0 %}GEEN_DATA{% elif routine_samples|int(0) < 3 %}OBSERVATIE{% elif routine_samples|int(0) < 5 or routine_days|int(0) < 3 or routine_conf|int(0) < 85 %}VERMOEDEN{% else %}BEWEZEN_PATROON{% endif %}"
+        }
+      },
+      {
+        "variables": {
+          "routine_candidate": "{{ routine_ai.data.candidate|default('Nog geen sterke routine gevonden',true)|trim }}",
+          "routine_prev": "{{ states('input_text.luna_routine_candidate_previous')|trim }}",
+          "routine_valid_candidate": "{{ routine_samples|int(0)>0 and routine_candidate|lower != 'nog geen sterke routine gevonden' }}",
+          "routine_same": "{{ routine_samples|int(0)>0 and routine_candidate|lower != 'nog geen sterke routine gevonden' and routine_prev|lower == routine_candidate|lower }}",
+          "routine_category": "{{ routine_ai.data.category|default('overig',true) }}",
+          "routine_daypart": "{{ routine_ai.data.daypart|default('gemengd',true) }}",
+          "routine_daytype": "{{ routine_ai.data.daytype|default('gemengd',true) }}"
+        }
+      },
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ routine_same }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_routine_streak"
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "action": "counter.reset",
+            "target": {
+              "entity_id": "counter.luna_routine_streak"
+            }
+          },
+          {
+            "if": [
+              {
+                "condition": "template",
+                "value_template": "{{ routine_valid_candidate }}"
+              }
+            ],
+            "then": [
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_routine_streak"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "variables": {
+          "routine_streak": "{{ states('counter.luna_routine_streak')|int(0) }}",
+          "routine_stability": "{{ [routine_conf|int(0), routine_samples|int(0)*10, routine_days|int(0)*25, routine_streak|int(0)*25, 100]|min if routine_valid_candidate else 0 }}"
+        }
+      },
+      {
+        "action": "input_number.set_value",
+        "target": {
+          "entity_id": "input_number.luna_routine_stability"
+        },
+        "data": {
+          "value": "{{ routine_stability }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_routine_candidate_previous"
+        },
+        "data": {
+          "value": "{{ routine_candidate[:255] }}"
+        }
+      },
+      {
+        "action": "input_number.set_value",
+        "target": {
+          "entity_id": "input_number.luna_routine_betrouwbaarheid"
+        },
+        "data": {
+          "value": "{{ routine_conf }}"
+        }
+      },
+      {
+        "action": "input_number.set_value",
+        "target": {
+          "entity_id": "input_number.luna_routine_bewijsvoorbeelden"
+        },
+        "data": {
+          "value": "{{ routine_samples }}"
+        }
+      },
+      {
+        "action": "input_number.set_value",
+        "target": {
+          "entity_id": "input_number.luna_routine_bewijsdagen"
+        },
+        "data": {
+          "value": "{{ routine_days }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_leerfase"
+        },
+        "data": {
+          "value": "{{ routine_phase }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_routine_status"
+        },
+        "data": {
+          "value": "{% if routine_phase == 'BEWEZEN_PATROON' and routine_ai.data.suggest|default(false) %}{{ (routine_candidate ~ ' · BEWEZEN_PATROON · SHADOW/SIMULATIE · cat=' ~ routine_category ~ ' · ' ~ routine_daypart ~ '/' ~ routine_daytype ~ ' · voorbeelden=' ~ routine_samples ~ ' · dagen=' ~ routine_days ~ ' · zekerheid=' ~ routine_conf ~ '% · stabiliteit=' ~ routine_stability ~ '%')[:255] }}{% else %}{{ (routine_phase ~ ' · SHADOW · kandidaat=' ~ routine_candidate ~ ' · cat=' ~ routine_category ~ ' · ' ~ routine_daypart ~ '/' ~ routine_daytype ~ ' · voorbeelden=' ~ routine_samples ~ ' · dagen=' ~ routine_days ~ ' · zekerheid=' ~ routine_conf ~ '% · stabiliteit=' ~ routine_stability ~ '%')[:255] }}{% endif %}"
+        }
+      }
+    ],
+    "mode": "single",
+    "initial_state": false
+  },
+  {
+    "id": "1787173908991",
+    "alias": "Luna Runtime Core",
+    "description": "Generieke module-runtime voor de publieke Luna-prototypeomgeving. Verwerkt uitsluitend interne Lunaevents voor Memory, Decision Journal, Prediction, Routine, Comfort, Forecast/Anomaly, Personal Assistant en AI-router. Stuurt geen fysieke apparaten aan.",
+    "triggers": [
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "memory"
+        },
+        "id": "memory"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "decision"
+        },
+        "id": "decision"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "prediction"
+        },
+        "id": "prediction"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "routine"
+        },
+        "id": "routine"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "comfort"
+        },
+        "id": "comfort"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "forecast"
+        },
+        "id": "forecast"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "anomaly"
+        },
+        "id": "anomaly"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "assistant"
+        },
+        "id": "assistant"
+      },
+      {
+        "trigger": "event",
+        "event_type": "luna_runtime_event",
+        "event_data": {
+          "module": "ai"
+        },
+        "id": "ai"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "memory"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_memory_last_record"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('record','EMPTY')[:255] }}"
+                }
+              },
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_memory_records"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_memory_status"
+                },
+                "data": {
+                  "value": "{{ ('READY · records=' ~ (states('counter.luna_memory_records') | int(0)))[:100] }}"
+                }
+              },
+              {
+                "action": "todo.add_item",
+                "target": {
+                  "entity_id": "todo.luna_persistent_memory"
+                },
+                "data": {
+                  "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') ~ ' · MEMORY · ' ~ trigger.event.data.get('record','EMPTY')[:160] }}",
+                  "description": "{{ ('type=memory | source=luna_runtime_event | record=' ~ trigger.event.data.get('record','EMPTY'))[:1000] }}"
+                },
+                "continue_on_error": true
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_storage_status"
+                },
+                "data": {
+                  "value": "{{ ('READY · persistent memory · last=memory · records=' ~ states('counter.luna_memory_records'))[:255] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "decision"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_decision_last_record"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('record','EMPTY')[:255] }}"
+                }
+              },
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_decision_records"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_decision_journal_status"
+                },
+                "data": {
+                  "value": "{{ ('READY · decisions=' ~ (states('counter.luna_decision_records') | int(0)))[:100] }}"
+                }
+              },
+              {
+                "action": "todo.add_item",
+                "target": {
+                  "entity_id": "todo.luna_persistent_memory"
+                },
+                "data": {
+                  "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') ~ ' · DECISION · ' ~ trigger.event.data.get('record','EMPTY')[:150] }}",
+                  "description": "{{ ('type=decision | source=luna_runtime_event | record=' ~ trigger.event.data.get('record','EMPTY'))[:1000] }}"
+                },
+                "continue_on_error": true
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_storage_status"
+                },
+                "data": {
+                  "value": "{{ ('READY · persistent memory · last=decision · decisions=' ~ states('counter.luna_decision_records'))[:255] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "prediction"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_prediction_reliability"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('reliability',0) | float(0) }}"
+                }
+              },
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_prediction_coverage"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('coverage',0) | float(0) }}"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_prediction_status"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('status','LEARNING · no evidence')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "routine"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_routine_reliability"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('reliability',0) | float(0) }}"
+                }
+              },
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_routine_evidence_days"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('evidence_days',0) | float(0) }}"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_routine_status"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('status','SHADOW · no pattern')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "comfort"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_comfort_status"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('status','LEARNING · no personal data')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "forecast"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_forecast_10m"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('forecast_10m','WAITING FOR DATA')[:100] }}"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_forecast_1h"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('forecast_1h','WAITING FOR DATA')[:100] }}"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_forecast_later"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('forecast_later','WAITING FOR DATA')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "anomaly"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_anomaly_status"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('status','NO ANOMALY')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "assistant"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_personal_assistant_status"
+                },
+                "data": {
+                  "value": "{{ trigger.event.data.get('status','READY · read-only')[:100] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "ai"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_ai_router_status"
+                },
+                "data": {
+                  "value": "{{ ('mode=' ~ states('input_select.luna_ai_mode') ~ ' · ' ~ trigger.event.data.get('status','no backend') ~ ' · advisory only')[:255] }}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "mode": "queued",
+    "max": 20
+  },
+  {
+    "id": "1787221919605",
+    "alias": "Luna Selfcheck Core",
+    "description": "Luna Selfcheck v1.3. Controleert zonder AI Luna-kern plus Mega Integrator, nieuwe kwaliteitsmetingen, drie forecast-horizons en fail-closed consistentie. Meldt alleen echte foutovergangen.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start",
+        "id": "start"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/15",
+        "id": "periodiek"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "start"
+              }
+            ],
+            "sequence": [
+              {
+                "delay": {
+                  "minutes": 5
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "variables": {
+          "oude_status": "{{ states('input_text.luna_selfcheck_status') }}",
+          "backend_light": "{{ states('input_text.luna_ollama_backend_light') | trim }}",
+          "backend_heavy": "{{ states('input_text.luna_ollama_backend_heavy') | trim }}",
+          "kritieke_automations": [
+            "automation.luna_timeline_hot_memory_retentie",
+            "automation.luna_ollama_queue_watchdog",
+            "automation.luna_ollama_resource_sampler",
+            "automation.luna_ollama_metrics_samenvatting",
+            "automation.luna_health_core",
+            "automation.luna_prediction_core",
+            "automation.luna_routine_core",
+            "automation.luna_autonomie_bewijspoort",
+            "automation.luna_memory_index_categoriegeheugen",
+            "automation.luna_memory_duurzame_deduplicatie",
+            "automation.luna_ollama_backend_status",
+            "automation.luna_decision_journal_core",
+            "automation.luna_impliciete_feedback_core",
+            "automation.luna_kennisveroudering_core",
+            "automation.luna_comfort_learning_core",
+            "automation.luna_vooruitblik_en_afwijking_core",
+            "automation.luna_simulatie_voorbereiding",
+            "automation.luna_simulatie_evaluatie",
+            "automation.luna_persoonlijke_assistent_core",
+            "automation.luna_mega_integrator_core"
+          ],
+          "kritieke_scripts": [
+            "script.luna_ollama_router",
+            "script.luna_ollama_queue",
+            "script.luna_ollama_background_queue"
+          ],
+          "kritieke_helpers": [
+            "input_text.luna_mega_status",
+            "input_text.luna_mega_pipeline_status",
+            "input_text.luna_mega_memory_quality",
+            "input_text.luna_mega_prediction_quality",
+            "input_text.luna_mega_safety_status",
+            "input_number.luna_prediction_coverage",
+            "input_number.luna_ai_cache_ratio",
+            "input_number.luna_ai_4b_share",
+            "input_text.luna_forecast_10m",
+            "input_text.luna_forecast_1h",
+            "input_text.luna_forecast_later_today"
+          ]
+        }
+      },
+      {
+        "variables": {
+          "issues_json": "{% set ns=namespace(items=[]) %}{% if 'PASS' not in states('input_text.luna_regressietest_status') %}{% set ns.items=ns.items+['regressietest niet PASS'] %}{% endif %}{% if states('todo.luna_timeline')|int(0) > 200 %}{% set ns.items=ns.items+['Timeline placeholder_room 200 (' ~ states('todo.luna_timeline') ~ ')'] %}{% endif %}{% for e in kritieke_automations %}{% if states(e) != 'on' %}{% set ns.items=ns.items+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% for e in kritieke_scripts %}{% if states(e) in ['unknown','unavailable'] %}{% set ns.items=ns.items+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% for e in kritieke_helpers %}{% if states(e) in ['unknown','unavailable','none',''] %}{% set ns.items=ns.items+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{% if states('input_select.luna_actiemodus') != 'Safe Repair' and not states('input_text.luna_mega_safety_status').startswith('FAIL-CLOSED=JA') %}{% set ns.items=ns.items+['Mega safety niet fail-closed bij huidige actiemodus'] %}{% endif %}{% if backend_light in ['', 'unknown', 'unavailable', 'none'] or states(backend_light) in ['unknown','unavailable'] %}{% set ns.items=ns.items+['light AI-backend niet beschikbaar'] %}{% endif %}{% if backend_heavy in ['', 'unknown', 'unavailable', 'none'] or states(backend_heavy) in ['unknown','unavailable'] %}{% set ns.items=ns.items+['heavy AI-backend niet beschikbaar'] %}{% endif %}{% if is_state('input_boolean.luna_ollama_inference_actief','on') and is_state('script.luna_ollama_queue','off') and (as_timestamp(now())-as_timestamp(states.input_boolean.luna_ollama_inference_actief.last_changed,as_timestamp(now()))) > 180 %}{% set ns.items=ns.items+['stale inference-vlag >3 min'] %}{% endif %}{{ ns.items|to_json }}"
+        }
+      },
+      {
+        "variables": {
+          "issues": "{{ issues_json|from_json([]) }}",
+          "nieuwe_status": "{{ (now().strftime('%d-%m %H:%M') ~ ' · ' ~ ('FOUT · ' ~ (issues|count) ~ ' · ' ~ (issues|join(' | ')) if issues|count>0 else 'OK · kern/router/geheugen/fail-closed gezond'))[:255] }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_selfcheck_status"
+        },
+        "data": {
+          "value": "{{ nieuwe_status }}"
+        }
+      },
+      {
+        "action": "input_datetime.set_datetime",
+        "target": {
+          "entity_id": "input_datetime.luna_selfcheck_laatste"
+        },
+        "data": {
+          "datetime": "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+        }
+      },
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ issues|count > 0 and not oude_status.startswith('FOUT') and ' · FOUT · ' not in oude_status }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "persistent_notification.create",
+                "data": {
+                  "notification_id": "luna_selfcheck",
+                  "title": "Luna selfcheck: fout",
+                  "message": "{{ issues|join('\\n- ') }}"
+                }
+              },
+              {
+                "action": "logbook.log",
+                "data": {
+                  "name": "Luna Selfcheck",
+                  "message": "{{ 'FOUT · ' ~ (issues|join(' | ')) }}",
+                  "entity_id": "input_text.luna_selfcheck_status",
+                  "domain": "luna_ai"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ issues|count == 0 and ('FOUT' in oude_status) }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "persistent_notification.dismiss",
+                "data": {
+                  "notification_id": "luna_selfcheck"
+                }
+              },
+              {
+                "action": "logbook.log",
+                "data": {
+                  "name": "Luna Selfcheck",
+                  "message": "Hersteld · alle gecontroleerde Luna-kernonderdelen OK",
+                  "entity_id": "input_text.luna_selfcheck_status",
+                  "domain": "luna_ai"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent"
+  },
+  {
+    "id": "1787236111559",
+    "alias": "Luna Shadow Automation Target",
+    "description": "Veilige dummy voor productie-automationverwijzingen in Luna.",
+    "triggers": [
+      {
+        "trigger": "event",
+        "event_type": "Luna_shadow_automation"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "logbook.log",
+        "data": {
+          "name": "Luna shadow",
+          "message": "Veilige shadow-automation geactiveerd; geen fysieke uitvoer.",
+          "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
+          "domain": "Luna"
+        }
+      }
+    ],
+    "mode": "single",
+    "initial_state": false
+  },
+  {
+    "id": "1787235756784",
+    "alias": "Luna Simulatie Evaluatie",
+    "description": "Luna Simulatie v1.0 evaluatie. Toetst dagelijks de bewezen routine virtueel aan recente ervaringen. Alleen registratie; niets wordt uitgevoerd.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "03:50:00"
+      }
+    ],
+    "conditions": [
+      {
+        "condition": "state",
+        "entity_id": "input_text.luna_leerfase",
+        "state": "BEWEZEN_PATROON"
+      }
+    ],
+    "actions": [
+      {
+        "action": "todo.get_items",
+        "target": {
+          "entity_id": "todo.luna_ervaringsgeheugen"
+        },
+        "data": {
+          "status": "needs_action"
+        },
+        "response_variable": "sim_resp"
+      },
+      {
+        "variables": {
+          "items": "{{ sim_resp['todo.luna_ervaringsgeheugen']['items'] | default([], true) }}",
+          "ctx": "{% set ns=namespace(r=[]) %}{% for i in items|reverse|list %}{% if ns.r|count < 50 %}{% set ns.r=ns.r+[i.summary ~ ' | ' ~ (i.description|default('',true))[:240]] %}{% endif %}{% endfor %}{{ ns.r|join(' || ') }}",
+          "candidate": "{{ states('input_text.luna_simulatie_kandidaat') }}"
+        }
+      },
+      {
+        "action": "script.luna_ollama_background_queue",
+        "data": {
+          "task_name": "Luna routine simulatie",
+          "instructions": "Toets kandidaat uitsluitend virtueel aan recente echte ervaringen. GOED alleen bij duidelijk positief bewijs; MIS bij duidelijke correctie of tegenspraak; anders ONZEKER. Stilte is geen succesbewijs. Geen apparaatbediening. Kandidaat={{ candidate }}. Ervaringen={{ ctx }}",
+          "structure": {
+            "resultaat": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "GOED",
+                    "MIS",
+                    "ONZEKER"
+                  ]
+                }
+              },
+              "required": true
+            },
+            "reden": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            }
+          },
+          "complexity": "light"
+        },
+        "response_variable": "sim_ai",
+        "continue_on_error": true
+      },
+      {
+        "if": [
+          {
+            "condition": "template",
+            "value_template": "{{ sim_ai is defined and sim_ai.data is defined }}"
+          }
+        ],
+        "then": [
+          {
+            "choose": [
+              {
+                "conditions": [
+                  {
+                    "condition": "template",
+                    "value_template": "{{ sim_ai.data.resultaat == 'GOED' }}"
+                  }
+                ],
+                "sequence": [
+                  {
+                    "action": "counter.increment",
+                    "target": {
+                      "entity_id": "counter.luna_simulatie_goede_dagen"
+                    }
+                  }
+                ]
+              },
+              {
+                "conditions": [
+                  {
+                    "condition": "template",
+                    "value_template": "{{ sim_ai.data.resultaat == 'MIS' }}"
+                  }
+                ],
+                "sequence": [
+                  {
+                    "action": "counter.increment",
+                    "target": {
+                      "entity_id": "counter.luna_simulatie_mislukte_dagen"
+                    }
+                  }
+                ]
+              }
+            ],
+            "default": [
+              {
+                "action": "counter.increment",
+                "target": {
+                  "entity_id": "counter.luna_simulatie_onzekere_dagen"
+                }
+              }
+            ]
+          },
+          {
+            "delay": {
+              "seconds": 1
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_simulatie_status"
+            },
+            "data": {
+              "value": "{% set g=states('counter.luna_simulatie_goede_dagen')|int(0) %}{% set m=states('counter.luna_simulatie_mislukte_dagen')|int(0) %}{% set o=states('counter.luna_simulatie_onzekere_dagen')|int(0) %}{{ (now().strftime('%d-%m %H:%M') ~ ' · ' ~ ('KLAAR_VOOR_VOORSTEL' if g>=7 and m<=1 else 'LEREN') ~ ' · ' ~ sim_ai.data.resultaat ~ ' · goed=' ~ g ~ ' mis=' ~ m ~ ' onzeker=' ~ o ~ ' · ' ~ sim_ai.data.reden)[:255] }}"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent",
+    "initial_state": false
+  },
+  {
+    "id": "1787235763150",
+    "alias": "Luna Simulatie Voorbereiding",
+    "description": "Luna Simulatie v1.0 voorbereiding. Selecteert de actuele bewezen routine als virtuele kandidaat en reset alleen de simulatiestatistiek wanneer de kandidaat echt verandert. Geen sturing.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "03:49:00"
+      }
+    ],
+    "actions": [
+      {
+        "variables": {
+          "routine": "{{ states('input_text.luna_routine_status') }}",
+          "fase": "{{ states('input_text.luna_leerfase') }}",
+          "candidate": "{% if 'kandidaat=' in routine %}{{ routine.split('kandidaat=',1)[1].split(' · voorbeelden=',1)[0]|trim }}{% elif ' · BEWEZEN_PATROON' in routine %}{{ routine.split(' · BEWEZEN_PATROON',1)[0]|trim }}{% else %}geen{% endif %}",
+          "vorige": "{{ states('input_text.luna_simulatie_kandidaat') }}"
+        }
+      },
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ fase != 'BEWEZEN_PATROON' or candidate in ['', 'geen', 'Nog geen sterke routine gevonden'] }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_simulatie_status"
+                },
+                "data": {
+                  "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · WACHT · nog geen bewezen routine voor simulatie')[:255] }}"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "template",
+                "value_template": "{{ candidate != vorige }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_simulatie_kandidaat"
+                },
+                "data": {
+                  "value": "{{ candidate[:255] }}"
+                }
+              },
+              {
+                "action": "counter.reset",
+                "target": {
+                  "entity_id": [
+                    "counter.luna_simulatie_goede_dagen",
+                    "counter.luna_simulatie_mislukte_dagen",
+                    "counter.luna_simulatie_onzekere_dagen"
+                  ]
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_simulatie_status"
+                },
+                "data": {
+                  "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · NIEUWE_KANDIDAAT · ' ~ candidate ~ ' · tellers gereset')[:255] }}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "mode": "single",
+    "initial_state": false
+  },
+  {
+    "id": "1787235770538",
+    "alias": "Luna Timeline - hot memory retentie",
+    "description": "Timeline Retentie v1.2. Houdt todo.luna_timeline automatisch op circa 160 recente gebeurtenissen. placeholder_room 200 start direct retentie; elke 15 minuten en om 03:15 is er een vangnet. Verplaatst in veilige batches van maximaal 100: eerst archiveren, daarna verwijderen uit hot memory.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "numeric_state",
+        "entity_id": "todo.luna_timeline",
+        "above": 200,
+        "id": "grens"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/15",
+        "id": "vangnet"
+      },
+      {
+        "trigger": "time",
+        "at": "03:15:00",
+        "id": "dagelijks"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "start_count": "{{ states('todo.luna_timeline') | int(0) }}"
+        }
+      },
+      {
+        "repeat": {
+          "while": [
+            {
+              "condition": "numeric_state",
+              "entity_id": "todo.luna_timeline",
+              "above": 160
+            }
+          ],
+          "sequence": [
+            {
+              "action": "todo.get_items",
+              "target": {
+                "entity_id": "todo.luna_timeline"
+              },
+              "data": {
+                "status": "needs_action"
+              },
+              "response_variable": "hot_response"
+            },
+            {
+              "variables": {
+                "hot_count": "{{ states('todo.luna_timeline') | int(0) }}",
+                "excess": "{{ [0, hot_count - 160] | max }}",
+                "batch": "{{ [excess | int(0), 100] | min }}",
+                "items": "{{ (hot_response['todo.luna_timeline']['items'] | default([], true))[:batch | int(0)] }}"
+              }
+            },
+            {
+              "repeat": {
+                "for_each": "{{ items }}",
+                "sequence": [
+                  {
+                    "action": "todo.add_item",
+                    "target": {
+                      "entity_id": "todo.luna_timeline_archief"
+                    },
+                    "data": {
+                      "item": "{{ repeat.item.summary }}",
+                      "description": "{{ repeat.item.description | default('', true) }}"
+                    }
+                  },
+                  {
+                    "action": "todo.remove_item",
+                    "target": {
+                      "entity_id": "todo.luna_timeline"
+                    },
+                    "data": {
+                      "item": "{{ repeat.item.uid }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "variables": {
+          "final_count": "{{ states('todo.luna_timeline') | int(0) }}",
+          "moved": "{{ [0, start_count - final_count] | max }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_onderhoud_status"
+        },
+        "data": {
+          "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · Timeline retentie v1.2 · verplaatst=' ~ moved ~ ' · hot=' ~ final_count ~ ' · doel<=160')[:255] }}"
+        },
+        "continue_on_error": true
+      }
+    ],
+    "mode": "queued",
+    "max": 10,
+    "max_exceeded": "silent",
+    "initial_state": false
+  },
+  {
+    "id": "1787235777402",
+    "alias": "Luna Trace Core",
+    "description": "Trace Core v1.2. Bewaart broncontext plus maximaal vijf automations die binnen 6 seconden rond dezelfde sturing getriggerd zijn als forensische KANDIDATEN. Timing is nooit causaal bewijs; exacte automationnaam blijft onbewezen zonder echte trace. Stuurt niets aan.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_laatste_sturing_trace_context"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "t": "{{ trigger.to_state.state if trigger is defined and trigger.to_state is defined else states('input_text.luna_laatste_sturing_trace_context') }}",
+          "entity": "{{ t.split('entity=')[1].split(';')[0] if 'entity=' in t else 'onbekend' }}",
+          "bron": "{{ t.split('bron=')[1].split(';')[0] if 'bron=' in t else 'onbekend' }}",
+          "kandidaten": "{% set uitsluiten=['automation.luna_trace_core','automation.luna_memory_core_registreer_beslissing','automation.luna_memory_index_categoriegeheugen','automation.luna_timeline_core','automation.luna_laatste_sturing_vastleggen','automation.luna_memory_ervaringsarchief'] %}{% set ns=namespace(x=[]) %}{% for a in states.automation %}{% set lt=state_attr(a.entity_id,'last_triggered') %}{% if a.entity_id not in uitsluiten and lt is not none and (as_timestamp(now())-as_timestamp(lt))|abs <= 6 and ns.x|count<5 %}{% set ns.x=ns.x+[a.entity_id] %}{% endif %}{% endfor %}{{ ns.x }}",
+          "kandidaat_tekst": "{{ kandidaten|join(', ') if kandidaten|count>0 else 'geen timingkandidaat' }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_explain_laatste_bewijs"
+        },
+        "data": {
+          "value": "{% if bron == 'automatisch' %}{{ ('Trace Core: ' ~ entity ~ ' veranderde via automatische HA-context. Timingkandidaten: ' ~ kandidaat_tekst ~ '. Dit is geen bewezen oorzaak; echte trace nodig.')[:255] }}{% elif bron == 'handmatig' %}{{ ('Trace Core: ' ~ entity ~ ' veranderde door handmatige bediening door een gebruiker.')[:255] }}{% else %}{{ ('Trace Core: ' ~ entity ~ ' veranderde; veroorzaker onbekend. Timingkandidaten: ' ~ kandidaat_tekst)[:255] }}{% endif %}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_trace_status"
+        },
+        "data": {
+          "value": "{{ ('entity=' ~ entity ~ ';bron=' ~ bron ~ ';kandidaten=' ~ kandidaat_tekst ~ ';bewijs=' ~ ('context+timing_kandidaat' if kandidaten|count>0 else ('context' if bron in ['automatisch','handmatig'] else 'onzeker')))[:255] }}"
+        }
+      },
+      {
+        "action": "todo.add_item",
+        "target": {
+          "entity_id": "todo.luna_timeline"
+        },
+        "data": {
+          "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') }} · TRACE · {{ entity }}",
+          "description": "{{ ('entity=' ~ entity ~ ' | bron=' ~ bron ~ ' | timingkandidaten=' ~ kandidaat_tekst ~ ' | timing is geen causaliteitsbewijs | exacte automationnaam vereist echte trace')[:500] }}"
+        },
+        "continue_on_error": true
+      }
+    ],
+    "mode": "queued",
+    "max": 20,
+    "initial_state": false
+  },
+  {
+    "id": "1787235784917",
+    "alias": "Luna v1 - Functionele validatie",
+    "description": "Luna kernvalidator v3.1. Controleert kernmodules, helpers, kritieke modes en regressietest; bewaakt nu ook het afgescheiden algemene geheugen. REGRESSIETEST FAIL blijft een harde validatiefout en blokkeert autonomie.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start",
+        "id": "start"
+      },
+      {
+        "trigger": "time_pattern",
+        "hours": "/1",
+        "minutes": 0,
+        "id": "periodiek"
+      },
+      {
+        "trigger": "state",
+        "entity_id": [
+          "automation.luna_ai_os_core",
+          "automation.luna_memory_core_registreer_beslissing",
+          "automation.luna_memory_index_categoriegeheugen",
+          "automation.luna_analytics_core",
+          "automation.luna_analytics_beslissing_beoordelen",
+          "automation.luna_analytics_sensorstabiliteit",
+          "automation.luna_prediction_core",
+          "automation.luna_health_core",
+          "automation.luna_laatste_sturing_vastleggen",
+          "automation.luna_voice_status",
+          "automation.ai_luna_zelfstandig_ha_beheer",
+          "automation.ai_luna_effectmeting_eigen_acties",
+          "input_text.luna_memory_laatste_beslissing",
+          "input_text.luna_analytics_laatste_inzicht",
+          "input_text.luna_prediction_laatste_voorspelling",
+          "input_text.luna_health_status",
+          "input_text.luna_knowledge_context",
+          "input_text.luna_explain_laatste_uitleg",
+          "input_text.luna_timeline_laatste_gebeurtenis",
+          "input_text.luna_trace_status",
+          "input_text.luna_voice_status",
+          "input_text.luna_ai_os_status",
+          "counter.luna_prediction_goede_beslissingen_totaal",
+          "counter.luna_prediction_slechte_beslissingen_totaal",
+          "input_text.luna_autonomie_gereedheid",
+          "input_text.luna_autonomie_leerervaring",
+          "input_text.luna_onderhoud_status",
+          "counter.luna_echte_werkbesparing",
+          "counter.luna_effectmetingen_totaal",
+          "automation.ai_luna_automation_beheer",
+          "automation.luna_shadow_automation_target",
+          "counter.luna_autonomie_safe_repair_goed",
+          "counter.luna_autonomie_safe_repair_niet_goed",
+          "input_text.luna_safe_repair_laatste_mislukte_entries",
+          "input_select.luna_actiemodus",
+          "input_boolean.luna_veilig_zelfherstel",
+          "input_number.luna_sensor_score_placeholder_room",
+          "input_number.luna_sensor_score_beweging_placeholder_room",
+          "input_number.luna_sensor_score_tv",
+          "input_number.luna_sensor_score_placeholder_room",
+          "automation.luna_conflict_watch_algemeen",
+          "input_text.luna_automation_scan_advies",
+          "counter.luna_autonomie_automation_beheer_goed",
+          "counter.luna_autonomie_automation_beheer_niet_goed",
+          "input_text.luna_safe_repair_laatste_succesvolle_entries",
+          "automation.luna_analytics_sensorbeschikbaarheid",
+          "automation.ai_luna_specialist_vraag",
+          "automation.luna_regressietest_core",
+          "automation.luna_deterministische_verifier",
+          "automation.luna_timeline_hot_memory_retentie",
+          "automation.luna_entity_relations_relatiekaart",
+          "automation.luna_prediction_expliciete_positieve_beoordeling",
+          "counter.luna_prediction_onbekende_beslissingen_totaal",
+          "input_text.luna_regressietest_status",
+          "input_text.luna_verifier_status",
+          "input_text.luna_laatste_uitvoeringsstatus",
+          "counter.luna_uitvoering_geslaagd",
+          "todo.luna_timeline_archief",
+          "todo.luna_relatiekaart",
+          "input_text.luna_algemeen_geheugen_laatste"
+        ],
+        "id": "kern_wijziging"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "kern_automations": [
+            "automation.luna_ai_os_core",
+            "automation.luna_memory_core_registreer_beslissing",
+            "automation.luna_memory_index_categoriegeheugen",
+            "automation.luna_analytics_core",
+            "automation.luna_analytics_beslissing_beoordelen",
+            "automation.luna_analytics_sensorstabiliteit",
+            "automation.luna_prediction_core",
+            "automation.luna_health_core",
+            "automation.luna_laatste_sturing_vastleggen",
+            "automation.luna_voice_status",
+            "automation.ai_luna_zelfstandig_ha_beheer",
+            "automation.ai_luna_effectmeting_eigen_acties",
+            "automation.ai_luna_automation_beheer",
+            "automation.luna_shadow_automation_target",
+            "automation.luna_conflict_watch_algemeen",
+            "automation.luna_analytics_sensorbeschikbaarheid",
+            "automation.ai_luna_specialist_vraag",
+            "automation.luna_regressietest_core",
+            "automation.luna_deterministische_verifier",
+            "automation.luna_timeline_hot_memory_retentie",
+            "automation.luna_entity_relations_relatiekaart",
+            "automation.luna_prediction_expliciete_positieve_beoordeling"
+          ],
+          "kern_helpers": [
+            "input_text.luna_memory_laatste_beslissing",
+            "input_text.luna_analytics_laatste_inzicht",
+            "input_text.luna_prediction_laatste_voorspelling",
+            "input_text.luna_health_status",
+            "input_text.luna_knowledge_context",
+            "input_text.luna_explain_laatste_uitleg",
+            "input_text.luna_timeline_laatste_gebeurtenis",
+            "input_text.luna_trace_status",
+            "input_text.luna_voice_status",
+            "input_text.luna_ai_os_status",
+            "counter.luna_prediction_goede_beslissingen_totaal",
+            "counter.luna_prediction_slechte_beslissingen_totaal",
+            "input_text.luna_autonomie_gereedheid",
+            "input_text.luna_autonomie_leerervaring",
+            "input_text.luna_onderhoud_status",
+            "counter.luna_echte_werkbesparing",
+            "counter.luna_effectmetingen_totaal",
+            "counter.luna_autonomie_safe_repair_goed",
+            "counter.luna_autonomie_safe_repair_niet_goed",
+            "input_text.luna_safe_repair_laatste_mislukte_entries",
+            "input_select.luna_actiemodus",
+            "input_boolean.luna_veilig_zelfherstel",
+            "input_number.luna_sensor_score_placeholder_room",
+            "input_number.luna_sensor_score_beweging_placeholder_room",
+            "input_number.luna_sensor_score_tv",
+            "input_number.luna_sensor_score_placeholder_room",
+            "input_text.luna_automation_scan_advies",
+            "counter.luna_autonomie_automation_beheer_goed",
+            "counter.luna_autonomie_automation_beheer_niet_goed",
+            "input_text.luna_safe_repair_laatste_succesvolle_entries",
+            "counter.luna_prediction_onbekende_beslissingen_totaal",
+            "input_text.luna_regressietest_status",
+            "input_text.luna_verifier_status",
+            "input_text.luna_laatste_uitvoeringsstatus",
+            "counter.luna_uitvoering_geslaagd",
+            "todo.luna_timeline_archief",
+            "todo.luna_relatiekaart",
+            "input_text.luna_algemeen_geheugen_laatste"
+          ],
+          "foute_automations": "{% set ns=namespace(x=[]) %}{% for e in kern_automations %}{% if states(e) != 'on' %}{% set ns.x=ns.x+[e ~ '=' ~ states(e)] %}{% endif %}{% endfor %}{{ ns.x }}",
+          "foute_helpers": "{% set ns=namespace(x=[]) %}{% for e in kern_helpers %}{% if states(e) == 'unavailable' %}{% set ns.x=ns.x+[e ~ '=unavailable'] %}{% endif %}{% endfor %}{{ ns.x }}",
+          "mode_fouten": "{% set verwacht={'automation.luna_conflict_watch_algemeen':'restart','automation.luna_health_core':'restart','automation.luna_prediction_core':'restart','automation.luna_ai_os_core':'restart','automation.luna_analytics_sensorstabiliteit':'queued','automation.luna_analytics_beslissing_beoordelen':'parallel','automation.luna_memory_core_registreer_beslissing':'queued','automation.ai_luna_effectmeting_eigen_acties':'restart','automation.ai_luna_zelfstandig_ha_beheer':'single','automation.ai_luna_automation_beheer':'single','automation.luna_shadow_automation_target':'single','automation.ai_luna_specialist_vraag':'queued','automation.luna_regressietest_core':'restart','automation.luna_deterministische_verifier':'restart','automation.luna_timeline_hot_memory_retentie':'queued','automation.luna_entity_relations_relatiekaart':'restart','automation.luna_prediction_expliciete_positieve_beoordeling':'queued'} %}{% set ns=namespace(x=[]) %}{% for e,m in verwacht.items() %}{% if state_attr(e,'mode') != m %}{% set ns.x=ns.x+[e ~ ' mode=' ~ (state_attr(e,'mode')|string) ~ ' verwacht=' ~ m] %}{% endif %}{% endfor %}{{ ns.x }}",
+          "fouten": "{{ (foute_automations | count) + (foute_helpers | count) + (mode_fouten | count) + (1 if states('input_text.luna_regressietest_status').startswith('FAIL') else 0) }}",
+          "status": "{{ 'Luna kern functioneel' if fouten | int(0) == 0 else 'Luna kern aandacht nodig' }}",
+          "wacht_op_data": "{% set ns=namespace(x=[]) %}{% for e in kern_helpers %}{% if states(e) == 'unknown' %}{% set ns.x=ns.x+[e] %}{% endif %}{% endfor %}{{ ns.x }}"
+        }
+      },
+      {
+        "action": "counter.set_value",
+        "target": {
+          "entity_id": "counter.luna_validatie_fouten"
+        },
+        "data": {
+          "value": "{{ fouten | int(0) }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_validatie_status"
+        },
+        "data": {
+          "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · ' ~ status ~ ' · fouten=' ~ fouten ~ ((' · automations: ' ~ (foute_automations | join(', '))) if foute_automations | count > 0 else '') ~ ((' · helpers: ' ~ (foute_helpers | join(', '))) if foute_helpers | count > 0 else '') ~ ((' · modes: ' ~ (mode_fouten | join(', '))) if mode_fouten | count > 0 else '') ~ ((' · regressie=' ~ states('input_text.luna_regressietest_status')) if states('input_text.luna_regressietest_status').startswith('FAIL') else '') ~ ((' · wacht op data: ' ~ (wacht_op_data | join(', '))) if wacht_op_data | count > 0 else ''))[:255] }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_core_status"
+        },
+        "data": {
+          "value": "{{ ('Luna v2 · ' ~ status ~ ' · validatiefouten ' ~ fouten ~ ' · Health ' ~ states('input_number.luna_ha_gezondheidsscore') ~ '% · Prediction ' ~ states('input_number.luna_prediction_betrouwbaarheid') ~ '%')[:255] }}"
+        }
+      }
+    ],
+    "mode": "restart",
+    "initial_state": false
+  },
+  {
+    "id": "1787235790454",
+    "alias": "Luna Voice Status",
+    "description": "Bewaakt de Luna antwoordstroom voor het AI OS. De bestaande Assist-pipeline blijft ongewijzigd.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_laatste_antwoord"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_voice_status"
+        },
+        "data": {
+          "value": "{{ ('Luna Assist actief · laatste antwoord ' ~ now().strftime('%d-%m %H:%M') ~ ' · ' ~ states('input_text.luna_laatste_antwoord'))[:255] }}"
+        }
+      }
+    ],
+    "mode": "restart",
+    "initial_state": false
+  },
+  {
+    "id": "1787235798688",
+    "alias": "Luna Vooruitblik en Afwijking Core",
+    "description": "Luna Vooruitblik/Afwijking v2.0. Scheidt drie voorspellingshorizons, bewijsniveau en anomaly-classificatie; vereist herhaling voordat een afwijking persistent heet. Alleen lokale analyse, nooit sturing.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time_pattern",
+        "hours": "/4",
+        "minutes": 10
+      }
+    ],
+    "actions": [
+      {
+        "action": "script.luna_ollama_background_queue",
+        "data": {
+          "task_name": "Luna vooruitblik en afwijking",
+          "instructions": "Analyseer uitsluitend de actuele lokale Home Assistant-context hieronder. Maak drie afzonderlijke verwachtingen: circa 10 minuten, circa 1 uur en later vandaag. Voorspellingen zijn verwachtingen, geen feiten. Scheid bij afwijkingen BEWEZEN, WAARSCHIJNLIJK en ONBEKEND. Noem iets nooit een bewezen storing zonder letterlijk hard bewijs in de context. Gebruik geen actuele state als bewijs voor een historische oorzaak en verzin geen automationnaam.\n\nClassificeer anomaly_class exact als: geen, observatie, afwijking_mogelijk, storing_onbewezen of onbekend. Geef anomaly_key als een korte stabiele beschrijving zonder tijdstempel; gebruik 'geen' als er geen concrete afwijking is. evidence_level exact laag, middel of hoog, gebaseerd op hoeveelheid onafhankelijke lokale signalen. Eén signaal of alleen AI-afleiding kan nooit hoog zijn.\n\nConsistentieregel: als Kritiek groter dan 0 is of Health letterlijk aandacht/waarschuwing/fout meldt, mag je NOOIT schrijven dat er geen waarschuwingen of problemen actief zijn. Benoem het bestaande Health-aandachtspunt dan in evidence, maar behandel een bekend onderhoudspunt niet automatisch als nieuwe anomalie.\n\nGeen apparaatbediening en geen configuratiewijziging.\nDoel={{ states('input_text.luna_doelprofiel') }}\nHealth={{ states('input_text.luna_health_status') }}\nKritiek={{ states('input_number.luna_health_kritieke_storingen') }}\nEnergie={{ states('input_text.luna_energiecoach_status') }}\nAnalytics={{ states('input_text.luna_analytics_laatste_inzicht') }}\nSensorscore={{ states('input_number.luna_analytics_sensorscore') }}%\nRoutine={{ states('input_text.luna_routine_status') }}\nComfort={{ states('input_text.luna_comfortprofiel_status') }}\nPrediction={{ states('input_text.luna_prediction_laatste_voorspelling') }}\nLaatste sturing={{ states('input_text.luna_laatste_sturing') }}\nMega data={{ states('input_text.luna_mega_data_quality') }}",
+          "structure": {
+            "anomaly_class": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "geen",
+                    "observatie",
+                    "afwijking_mogelijk",
+                    "storing_onbewezen",
+                    "onbekend"
+                  ]
+                }
+              },
+              "required": true
+            },
+            "anomaly_key": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "anomaly_summary": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "evidence_level": {
+              "selector": {
+                "select": {
+                  "options": [
+                    "laag",
+                    "middel",
+                    "hoog"
+                  ]
+                }
+              },
+              "required": true
+            },
+            "evidence": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "next_10m": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "confidence_10m": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "next_1h": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "confidence_1h": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "later_today": {
+              "selector": {
+                "text": {
+                  "multiline": false
+                }
+              },
+              "required": true
+            },
+            "confidence_later": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            },
+            "anomaly_confidence": {
+              "selector": {
+                "number": {
+                  "min": 0,
+                  "max": 100,
+                  "step": 1
+                }
+              },
+              "required": true
+            }
+          },
+          "complexity": "light",
+          "cacheable": false,
+          "freshness": "live",
+          "task_category": "status"
+        },
+        "response_variable": "vooruit_ai",
+        "continue_on_error": true
+      },
+      {
+        "if": [
+          {
+            "condition": "template",
+            "value_template": "{{ vooruit_ai is defined and vooruit_ai.data is defined }}"
+          }
+        ],
+        "then": [
+          {
+            "variables": {
+              "aclass": "{{ vooruit_ai.data.anomaly_class|default('onbekend',true) }}",
+              "akey": "{{ vooruit_ai.data.anomaly_key|default('geen',true)|trim|lower }}",
+              "aprev": "{{ states('input_text.luna_anomaly_previous')|trim|lower }}",
+              "meaningful": "{{ vooruit_ai.data.anomaly_class|default('onbekend',true) in ['observatie','afwijking_mogelijk','storing_onbewezen'] and vooruit_ai.data.anomaly_key|default('geen',true)|trim|lower not in ['','geen','onbekend'] }}",
+              "same": "{{ vooruit_ai.data.anomaly_class|default('onbekend',true) in ['observatie','afwijking_mogelijk','storing_onbewezen'] and vooruit_ai.data.anomaly_key|default('geen',true)|trim|lower == states('input_text.luna_anomaly_previous')|trim|lower }}",
+              "aconf": "{{ [0,[vooruit_ai.data.anomaly_confidence|int(0),100]|min]|max }}"
+            }
+          },
+          {
+            "choose": [
+              {
+                "conditions": [
+                  {
+                    "condition": "template",
+                    "value_template": "{{ same }}"
+                  }
+                ],
+                "sequence": [
+                  {
+                    "action": "counter.increment",
+                    "target": {
+                      "entity_id": "counter.luna_anomaly_streak"
+                    }
+                  }
+                ]
+              }
+            ],
+            "default": [
+              {
+                "action": "counter.reset",
+                "target": {
+                  "entity_id": "counter.luna_anomaly_streak"
+                }
+              },
+              {
+                "if": [
+                  {
+                    "condition": "template",
+                    "value_template": "{{ meaningful }}"
+                  }
+                ],
+                "then": [
+                  {
+                    "action": "counter.increment",
+                    "target": {
+                      "entity_id": "counter.luna_anomaly_streak"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "variables": {
+              "astreak": "{{ states('counter.luna_anomaly_streak')|int(0) }}",
+              "persist_label": "{% if not meaningful %}GEEN_PERSISTENTE_AFWIJKING{% elif states('counter.luna_anomaly_streak')|int(0) >= 2 %}PERSISTENTE_OBSERVATIE{% else %}EERSTE_OBSERVATIE{% endif %}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_anomaly_previous"
+            },
+            "data": {
+              "value": "{{ (akey if meaningful else 'geen')[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_anomaly_evidence_level"
+            },
+            "data": {
+              "value": "{{ ('niveau=' ~ vooruit_ai.data.evidence_level ~ ' · confidence=' ~ aconf ~ '% · streak=' ~ astreak ~ ' · bewijs=' ~ vooruit_ai.data.evidence)[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_forecast_10m"
+            },
+            "data": {
+              "value": "{{ ('10m · ' ~ (vooruit_ai.data.confidence_10m|int(0)) ~ '% · ' ~ vooruit_ai.data.next_10m)[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_forecast_1h"
+            },
+            "data": {
+              "value": "{{ ('1u · ' ~ (vooruit_ai.data.confidence_1h|int(0)) ~ '% · ' ~ vooruit_ai.data.next_1h)[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_forecast_later_today"
+            },
+            "data": {
+              "value": "{{ ('later · ' ~ (vooruit_ai.data.confidence_later|int(0)) ~ '% · ' ~ vooruit_ai.data.later_today)[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_afwijking_status"
+            },
+            "data": {
+              "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · ' ~ persist_label ~ ' · class=' ~ aclass ~ ' · ' ~ aconf ~ '% · ' ~ vooruit_ai.data.anomaly_summary)[:255] }}"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_vooruitblik_status"
+            },
+            "data": {
+              "value": "{{ (now().strftime('%d-%m %H:%M') ~ ' · 10m=' ~ (vooruit_ai.data.confidence_10m|int(0)) ~ '% · 1u=' ~ (vooruit_ai.data.confidence_1h|int(0)) ~ '% · later=' ~ (vooruit_ai.data.confidence_later|int(0)) ~ '% · details in horizonhelpers')[:255] }}"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent",
+    "initial_state": false
+  },
+  {
+    "id": "1787235806342",
+    "alias": "Luna windmeter - dagpiek bijwerken",
+    "description": "Bewaart de hoogste lokale windsnelheid van vandaag en reset dezelfde dagpiek om middernacht. Geconsolideerde vervanger van de aparte resetautomation.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_number.luna_shadow_numeric",
+        "id": "meting"
+      },
+      {
+        "trigger": "time",
+        "at": "00:00:00",
+        "id": "reset"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "reset"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_shadow_numeric"
+                },
+                "data": {
+                  "value": 0
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "trigger",
+                "id": "meting"
+              },
+              {
+                "condition": "template",
+                "value_template": "{{ is_number(states('input_number.luna_shadow_numeric')) and (states('input_number.luna_shadow_numeric') | float(0)) > (states('input_number.luna_shadow_numeric') | float(0)) }}"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_number.set_value",
+                "target": {
+                  "entity_id": "input_number.luna_shadow_numeric"
+                },
+                "data": {
+                  "value": "{{ states('input_number.luna_shadow_numeric') | float(0) }}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "mode": "restart",
+    "initial_state": false
+  },
+  {
+    "id": "1787235812626",
+    "alias": "Luna windmeter - dagpiek reset",
+    "description": "Reset winddagpiek om middernacht.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "00:00:00"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_number.set_value",
+        "target": {
+          "entity_id": "input_number.luna_shadow_numeric"
+        },
+        "data": {
+          "value": 0
+        }
+      }
+    ],
+    "mode": "single",
+    "initial_state": false
+  }
+]

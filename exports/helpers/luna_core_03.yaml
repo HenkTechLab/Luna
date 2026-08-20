@@ -1,0 +1,770 @@
+[
+  {
+    "id": "luna_antwoord_meta",
+    "name": "Luna antwoord meta",
+    "icon": "mdi:information-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_meta",
+    "original_name": "Luna antwoord meta"
+  },
+  {
+    "id": "luna_batterij_negeren",
+    "name": "Luna batterij negeren",
+    "icon": "mdi:battery-off-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_batterij_negeren",
+    "original_name": "Luna batterij negeren"
+  },
+  {
+    "id": "luna_core_context",
+    "name": "Luna Core context",
+    "icon": "mdi:database-search",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_core_context",
+    "original_name": "Luna Core context"
+  },
+  {
+    "id": "luna_validatie_status",
+    "name": "Luna validatie status",
+    "icon": "mdi:check-decagram",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_validatie_status",
+    "original_name": "Luna validatie status"
+  },
+  {
+    "id": "luna_memory_laatste_beslissing",
+    "name": "Luna Memory laatste beslissing",
+    "icon": "mdi:brain",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_laatste_beslissing",
+    "original_name": "Luna Memory laatste beslissing"
+  },
+  {
+    "id": "luna_memory_laatste_bron",
+    "name": "Luna Memory laatste bron",
+    "icon": "mdi:source-branch",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_laatste_bron",
+    "original_name": "Luna Memory laatste bron"
+  },
+  {
+    "id": "luna_memory_laatste_reden",
+    "name": "Luna Memory laatste reden",
+    "icon": "mdi:comment-question-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_laatste_reden",
+    "original_name": "Luna Memory laatste reden"
+  },
+  {
+    "id": "luna_memory_laatste_bewijs",
+    "name": "Luna Memory laatste bewijs",
+    "icon": "mdi:file-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_laatste_bewijs",
+    "original_name": "Luna Memory laatste bewijs"
+  },
+  {
+    "id": "luna_memory_klimaat",
+    "name": "Luna Memory klimaat",
+    "icon": "mdi:home-thermometer-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_klimaat",
+    "original_name": "Luna Memory klimaat"
+  },
+  {
+    "id": "luna_memory_beveiliging",
+    "name": "Luna Memory beveiliging",
+    "icon": "mdi:shield-home-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_beveiliging",
+    "original_name": "Luna Memory beveiliging"
+  },
+  {
+    "id": "luna_memory_aanwezigheid",
+    "name": "Luna Memory aanwezigheid",
+    "icon": "mdi:home-account",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_aanwezigheid",
+    "original_name": "Luna Memory aanwezigheid"
+  },
+  {
+    "id": "luna_memory_auto",
+    "name": "Luna Memory auto",
+    "icon": "mdi:car-connected",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_auto",
+    "original_name": "Luna Memory auto"
+  },
+  {
+    "id": "luna_memory_systeem",
+    "name": "Luna Memory systeem",
+    "icon": "mdi:server-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_systeem",
+    "original_name": "Luna Memory systeem"
+  },
+  {
+    "id": "luna_memory_sensoren",
+    "name": "Luna Memory sensoren",
+    "icon": "mdi:access-point-check",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_sensoren",
+    "original_name": "Luna Memory sensoren"
+  },
+  {
+    "id": "luna_memory_leerfeedback",
+    "name": "Luna Memory leerfeedback",
+    "icon": "mdi:school-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_leerfeedback",
+    "original_name": "Luna Memory leerfeedback"
+  },
+  {
+    "id": "luna_analytics_laatste_inzicht",
+    "name": "Luna Analytics laatste inzicht",
+    "icon": "mdi:head-lightbulb",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_analytics_laatste_inzicht",
+    "original_name": "Luna Analytics laatste inzicht"
+  },
+  {
+    "id": "luna_analytics_gisteren",
+    "name": "Luna Analytics gisteren",
+    "icon": "mdi:calendar-arrow-left",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_analytics_gisteren",
+    "original_name": "Luna Analytics gisteren"
+  },
+  {
+    "id": "luna_analytics_laatste_instabiele_sensor",
+    "name": "Luna Analytics laatste instabiele sensor",
+    "icon": "mdi:pulse",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_analytics_laatste_instabiele_sensor",
+    "original_name": "Luna Analytics laatste instabiele sensor"
+  },
+  {
+    "id": "luna_analytics_score_onderbouwing",
+    "name": "Luna Analytics score onderbouwing",
+    "icon": "mdi:information-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_analytics_score_onderbouwing",
+    "original_name": "Luna Analytics score onderbouwing"
+  },
+  {
+    "id": "luna_health_kritieke_problemen",
+    "name": "Luna Health kritieke problemen",
+    "icon": "mdi:alert-circle-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_kritieke_problemen",
+    "original_name": "Luna Health kritieke problemen"
+  },
+  {
+    "id": "luna_health_watchman",
+    "name": "Luna Health Watchman",
+    "icon": "mdi:shield-search",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_watchman",
+    "original_name": "Luna Health Watchman"
+  },
+  {
+    "id": "luna_health_apps_status",
+    "name": "Luna Health apps status",
+    "icon": "mdi:application-cog-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_apps_status",
+    "original_name": "Luna Health apps status"
+  },
+  {
+    "id": "luna_health_score_onderbouwing",
+    "name": "Luna Health score onderbouwing",
+    "icon": "mdi:information-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_score_onderbouwing",
+    "original_name": "Luna Health score onderbouwing"
+  },
+  {
+    "id": "luna_health_negeerlijst",
+    "name": "Luna Health negeerlijst",
+    "icon": "mdi:eye-off-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_negeerlijst",
+    "original_name": "Luna Health negeerlijst"
+  },
+  {
+    "id": "luna_health_advies",
+    "name": "Luna Health advies",
+    "icon": "mdi:format-list-numbered",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_health_advies",
+    "original_name": "Luna Health advies"
+  },
+  {
+    "id": "luna_globale_negeerlijst",
+    "name": "Luna globale negeerlijst",
+    "icon": "mdi:eye-off",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_globale_negeerlijst",
+    "original_name": "Luna globale negeerlijst"
+  },
+  {
+    "id": "luna_automation_conflict_advies",
+    "name": "Luna automation conflict advies",
+    "icon": "mdi:source-branch-alert",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_automation_conflict_advies",
+    "original_name": "Luna automation conflict advies"
+  },
+  {
+    "id": "luna_planner_voorstel",
+    "name": "Luna Planner Voorstel",
+    "icon": "mdi:clipboard-text-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_planner_voorstel",
+    "original_name": "Luna Planner Voorstel"
+  },
+  {
+    "id": "luna_planner_bewijs",
+    "name": "Luna Planner Bewijs",
+    "icon": "mdi:clipboard-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_planner_bewijs",
+    "original_name": "Luna Planner Bewijs"
+  },
+  {
+    "id": "luna_planner_bevestigingsresultaat",
+    "name": "Luna Planner Bevestigingsresultaat",
+    "icon": "mdi:shield-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_planner_bevestigingsresultaat",
+    "original_name": "Luna Planner Bevestigingsresultaat"
+  },
+  {
+    "id": "luna_planner_toegestane_acties",
+    "name": "Luna Planner Toegestane Acties",
+    "icon": "mdi:format-list-checks",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_planner_toegestane_acties",
+    "original_name": "Luna Planner Toegestane Acties"
+  },
+  {
+    "id": "luna_planner_veiligheidsstatus",
+    "name": "Luna Planner Veiligheidsstatus",
+    "icon": "mdi:shield-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_planner_veiligheidsstatus",
+    "original_name": "Luna Planner Veiligheidsstatus"
+  },
+  {
+    "id": "luna_prediction_laatste_voorspelling",
+    "name": "Luna Prediction laatste voorspelling",
+    "icon": "mdi:crystal-ball",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_prediction_laatste_voorspelling",
+    "original_name": "Luna Prediction laatste voorspelling"
+  },
+  {
+    "id": "luna_timeline_vorige_gebeurtenis",
+    "name": "Luna Timeline vorige gebeurtenis",
+    "icon": "mdi:timeline-text-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_timeline_vorige_gebeurtenis",
+    "original_name": "Luna Timeline vorige gebeurtenis"
+  },
+  {
+    "id": "luna_voice_status",
+    "name": "Luna Voice status",
+    "icon": "mdi:microphone-message",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_voice_status",
+    "original_name": "Luna Voice status"
+  },
+  {
+    "id": "luna_antwoord_bewijs_deel_1",
+    "name": "Luna antwoord bewijs deel 1",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_bewijs_deel_1",
+    "original_name": "Luna antwoord bewijs deel 1"
+  },
+  {
+    "id": "luna_antwoord_bewijs_deel_2",
+    "name": "Luna antwoord bewijs deel 2",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_bewijs_deel_2",
+    "original_name": "Luna antwoord bewijs deel 2"
+  },
+  {
+    "id": "luna_antwoord_bewijs_deel_3",
+    "name": "Luna antwoord bewijs deel 3",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_bewijs_deel_3",
+    "original_name": "Luna antwoord bewijs deel 3"
+  },
+  {
+    "id": "luna_laatste_sturing_trace_context",
+    "name": "Luna laatste sturing trace context",
+    "icon": "mdi:source-branch",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_sturing_trace_context",
+    "original_name": "Luna laatste sturing trace context"
+  },
+  {
+    "id": "luna_autonomie_voor_actie",
+    "name": "Luna autonomie voor actie",
+    "icon": "mdi:history",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_autonomie_voor_actie",
+    "original_name": "Luna autonomie voor actie"
+  },
+  {
+    "id": "luna_build_laatste_resultaat",
+    "name": "Luna Build laatste resultaat",
+    "icon": "mdi:text-box-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_build_laatste_resultaat",
+    "original_name": "Luna Build laatste resultaat"
+  },
+  {
+    "id": "luna_autonomie_leerervaring",
+    "name": "Luna autonomie leerervaring",
+    "icon": "mdi:brain",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_autonomie_leerervaring",
+    "original_name": "Luna autonomie leerervaring"
+  },
+  {
+    "id": "luna_safe_repair_laatste_mislukte_entries",
+    "name": "Luna Safe Repair laatste mislukte entries",
+    "icon": "mdi:tools",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_safe_repair_laatste_mislukte_entries",
+    "original_name": "Luna Safe Repair laatste mislukte entries"
+  },
+  {
+    "id": "luna_automation_scan_advies",
+    "name": "Luna automation scan advies",
+    "icon": "mdi:source-branch",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_automation_scan_advies",
+    "original_name": "Luna automation scan advies"
+  },
+  {
+    "id": "luna_safe_repair_laatste_succesvolle_entries",
+    "name": "Luna Safe Repair laatste succesvolle entries",
+    "icon": "mdi:memory",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_safe_repair_laatste_succesvolle_entries",
+    "original_name": "Luna Safe Repair laatste succesvolle entries"
+  },
+  {
+    "id": "luna_laatste_uitvoeringsstatus",
+    "name": "Luna laatste uitvoeringsstatus",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
+    "original_name": "Luna laatste uitvoeringsstatus"
+  },
+  {
+    "id": "luna_prediction_laatste_beoordeling",
+    "name": "Luna Prediction laatste beoordeling",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_prediction_laatste_beoordeling",
+    "original_name": "Luna Prediction laatste beoordeling"
+  },
+  {
+    "id": "luna_algemeen_geheugen_laatste",
+    "name": "Luna algemeen geheugen laatste",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_algemeen_geheugen_laatste",
+    "original_name": "Luna algemeen geheugen laatste"
+  },
+  {
+    "id": "luna_antwoord_validatie_status",
+    "name": "Luna antwoord validatie status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_validatie_status",
+    "original_name": "Luna antwoord validatie status"
+  },
+  {
+    "id": "luna_route_status",
+    "name": "Luna route status",
+    "icon": "mdi:routes",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_route_status",
+    "original_name": "Luna route status"
+  },
+  {
+    "id": "luna_dagcheck_status",
+    "name": "Luna dagcheck status",
+    "icon": "mdi:home-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_dagcheck_status",
+    "original_name": "Luna dagcheck status"
+  },
+  {
+    "id": "luna_proactief_voorstel",
+    "name": "Luna proactief voorstel",
+    "icon": "mdi:lightbulb-on-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_proactief_voorstel",
+    "original_name": "Luna proactief voorstel"
+  },
+  {
+    "id": "luna_energiecoach_status",
+    "name": "Luna energiecoach status",
+    "icon": "mdi:flash-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_energiecoach_status",
+    "original_name": "Luna energiecoach status"
+  },
+  {
+    "id": "luna_diagnose_status",
+    "name": "Luna diagnose status",
+    "icon": "mdi:stethoscope",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_diagnose_status",
+    "original_name": "Luna diagnose status"
+  },
+  {
+    "id": "luna_uitzondering_status",
+    "name": "Luna uitzondering status",
+    "icon": "mdi:shield-off-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_uitzondering_status",
+    "original_name": "Luna uitzondering status"
+  },
+  {
+    "id": "luna_ollama_queue_status",
+    "name": "Luna Ollama Queue Status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ollama_queue_status",
+    "original_name": "Luna Ollama Queue Status"
+  },
+  {
+    "id": "luna_ollama_laatste_meting",
+    "name": "Luna Ollama Laatste Meting",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ollama_laatste_meting",
+    "original_name": "Luna Ollama Laatste Meting"
+  },
+  {
+    "id": "luna_ollama_metrics_status",
+    "name": "Luna Ollama metrics status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ollama_metrics_status",
+    "original_name": "Luna Ollama metrics status"
+  },
+  {
+    "id": "luna_ollama_backend_status",
+    "name": "Luna Ollama backend status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ollama_backend_status",
+    "original_name": "Luna Ollama backend status"
+  },
+  {
+    "id": "luna_leerfase",
+    "name": "Luna leerfase",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_leerfase",
+    "original_name": "Luna leerfase"
+  },
+  {
+    "id": "luna_memory_dedup_status",
+    "name": "Luna memory dedup status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_dedup_status",
+    "original_name": "Luna memory dedup status"
+  },
+  {
+    "id": "luna_impliciete_feedback_status",
+    "name": "Luna impliciete feedback status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_impliciete_feedback_status",
+    "original_name": "Luna impliciete feedback status"
+  },
+  {
+    "id": "luna_afwijking_status",
+    "name": "Luna afwijking status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_afwijking_status",
+    "original_name": "Luna afwijking status"
+  },
+  {
+    "id": "luna_vooruitblik_status",
+    "name": "Luna vooruitblik status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_vooruitblik_status",
+    "original_name": "Luna vooruitblik status"
+  },
+  {
+    "id": "luna_comfortprofiel_status",
+    "name": "Luna comfortprofiel status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_comfortprofiel_status",
+    "original_name": "Luna comfortprofiel status"
+  },
+  {
+    "id": "luna_doelprofiel",
+    "name": "Luna doelprofiel",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_doelprofiel",
+    "original_name": "Luna doelprofiel"
+  },
+  {
+    "id": "luna_persoonlijke_assistent_status",
+    "name": "Luna persoonlijke assistent status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_persoonlijke_assistent_status",
+    "original_name": "Luna persoonlijke assistent status"
+  },
+  {
+    "id": "luna_kennisveroudering_status",
+    "name": "Luna kennisveroudering status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_kennisveroudering_status",
+    "original_name": "Luna kennisveroudering status"
+  },
+  {
+    "id": "luna_mega_data_quality",
+    "name": "Luna Mega data quality",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_data_quality",
+    "original_name": "Luna Mega data quality"
+  },
+  {
+    "id": "luna_mega_ai_efficiency",
+    "name": "Luna Mega AI efficiency",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_ai_efficiency",
+    "original_name": "Luna Mega AI efficiency"
+  },
+  {
+    "id": "luna_mega_technical_debt",
+    "name": "Luna Mega technical debt",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_technical_debt",
+    "original_name": "Luna Mega technical debt"
+  },
+  {
+    "id": "luna_mega_pipeline_status",
+    "name": "Luna Mega pipeline status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_pipeline_status",
+    "original_name": "Luna Mega pipeline status"
+  },
+  {
+    "id": "luna_mega_memory_quality",
+    "name": "Luna Mega memory quality",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_memory_quality",
+    "original_name": "Luna Mega memory quality"
+  },
+  {
+    "id": "luna_mega_prediction_quality",
+    "name": "Luna Mega prediction quality",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_prediction_quality",
+    "original_name": "Luna Mega prediction quality"
+  },
+  {
+    "id": "luna_mega_routine_quality",
+    "name": "Luna Mega routine quality",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_routine_quality",
+    "original_name": "Luna Mega routine quality"
+  },
+  {
+    "id": "luna_mega_safety_status",
+    "name": "Luna Mega safety status",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_mega_safety_status",
+    "original_name": "Luna Mega safety status"
+  },
+  {
+    "id": "luna_routine_candidate_previous",
+    "name": "Luna Routine candidate previous",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_routine_candidate_previous",
+    "original_name": "Luna Routine candidate previous"
+  },
+  {
+    "id": "luna_anomaly_previous",
+    "name": "Luna Anomaly previous",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_anomaly_previous",
+    "original_name": "Luna Anomaly previous"
+  },
+  {
+    "id": "luna_forecast_later_today",
+    "name": "Luna Forecast later today",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_forecast_later_today",
+    "original_name": "Luna Forecast later today"
+  },
+  {
+    "id": "luna_anomaly_evidence_level",
+    "name": "Luna Anomaly evidence level",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_anomaly_evidence_level",
+    "original_name": "Luna Anomaly evidence level"
+  }
+]

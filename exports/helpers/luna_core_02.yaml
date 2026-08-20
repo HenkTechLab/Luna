@@ -1,0 +1,801 @@
+[
+  {
+    "id": "luna_memory_last_record",
+    "name": "Luna Memory Last Record",
+    "icon": "mdi:database-clock",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_memory_last_record",
+    "original_name": "Luna Memory Last Record"
+  },
+  {
+    "id": "luna_decision_last_record",
+    "name": "Luna Decision Last Record",
+    "icon": "mdi:notebook-edit-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_decision_last_record",
+    "original_name": "Luna Decision Last Record"
+  },
+  {
+    "id": "luna_presence_source",
+    "name": "Luna Presence Source",
+    "icon": "mdi:home-account",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_presence_source",
+    "original_name": "Luna Presence Source"
+  },
+  {
+    "id": "luna_temperature_source",
+    "name": "Luna Temperature Source",
+    "icon": "mdi:thermometer",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_temperature_source",
+    "original_name": "Luna Temperature Source"
+  },
+  {
+    "id": "luna_energy_source",
+    "name": "Luna Energy Source",
+    "icon": "mdi:flash-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_energy_source",
+    "original_name": "Luna Energy Source"
+  },
+  {
+    "id": "luna_calendar_source",
+    "name": "Luna Calendar Source",
+    "icon": "mdi:calendar-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_calendar_source",
+    "original_name": "Luna Calendar Source"
+  },
+  {
+    "id": "luna_ai_backend_light",
+    "name": "Luna AI Backend Light",
+    "icon": "mdi:brain",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ai_backend_light",
+    "original_name": "Luna AI Backend Light"
+  },
+  {
+    "id": "luna_ai_backend_heavy",
+    "name": "Luna AI Backend Heavy",
+    "icon": "mdi:brain-circuit",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ai_backend_heavy",
+    "original_name": "Luna AI Backend Heavy"
+  },
+  {
+    "id": "luna_config_readiness",
+    "name": "Luna Config Readiness",
+    "icon": "mdi:check-decagram-outline",
+    "initial": "CHECKING",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_config_readiness",
+    "original_name": "Luna Config Readiness"
+  },
+  {
+    "id": "luna_storage_status",
+    "name": "Luna Storage Status",
+    "icon": "mdi:database-check-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "initial": "MEMORY · volatile prototype · persistent store not configured",
+    "entity_id": "input_text.luna_storage_status",
+    "original_name": "Luna Storage Status"
+  },
+  {
+    "id": "luna_evidence_status",
+    "name": "Luna Evidence Status",
+    "icon": "mdi:file-certificate-outline",
+    "max": 255,
+    "mode": "text",
+    "initial": "EVIDENCE · no external sources configured",
+    "min": 0,
+    "entity_id": "input_text.luna_evidence_status",
+    "original_name": "Luna Evidence Status"
+  },
+  {
+    "id": "luna_archive_queue",
+    "name": "Luna Archive Queue",
+    "icon": "mdi:archive-arrow-down-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_queue",
+    "original_name": "Luna Archive Queue"
+  },
+  {
+    "id": "luna_archive_previous_record",
+    "name": "Luna Archive Previous Record",
+    "icon": "mdi:archive-sync-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_record",
+    "original_name": "Luna Archive Previous Record"
+  },
+  {
+    "id": "luna_archive_previous_queue",
+    "name": "Luna Archive Previous Queue",
+    "icon": "mdi:archive-sync-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_queue",
+    "original_name": "Luna Archive Previous Queue"
+  },
+  {
+    "id": "luna_archive_version",
+    "name": "Luna Archive Version",
+    "icon": "mdi:tag-outline",
+    "max": 64,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_version",
+    "original_name": "Luna Archive Version"
+  },
+  {
+    "id": "luna_archive_retention",
+    "name": "Luna Archive Retention",
+    "icon": "mdi:archive-cog-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_retention",
+    "original_name": "Luna Archive Retention"
+  },
+  {
+    "id": "luna_archive_write_status",
+    "name": "Luna Archive Write Status",
+    "icon": "mdi:database-arrow-down-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_write_status",
+    "original_name": "Luna Archive Write Status"
+  },
+  {
+    "id": "luna_archive_read_status",
+    "name": "Luna Archive Read Status",
+    "icon": "mdi:database-eye-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_read_status",
+    "original_name": "Luna Archive Read Status"
+  },
+  {
+    "id": "luna_archive_schema",
+    "name": "Luna Archive Schema",
+    "icon": "mdi:database-settings-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_schema",
+    "original_name": "Luna Archive Schema"
+  },
+  {
+    "id": "luna_archive_queue_status",
+    "name": "Luna Archive Queue Status",
+    "icon": "mdi:tray-full",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_queue_status",
+    "original_name": "Luna Archive Queue Status"
+  },
+  {
+    "id": "luna_archive_pending_event",
+    "name": "Luna Archive Pending Event",
+    "icon": "mdi:tray-arrow-down",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_pending_event",
+    "original_name": "Luna Archive Pending Event"
+  },
+  {
+    "id": "luna_archive_pending_decision",
+    "name": "Luna Archive Pending Decision",
+    "icon": "mdi:tray-arrow-down",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_pending_decision",
+    "original_name": "Luna Archive Pending Decision"
+  },
+  {
+    "id": "luna_archive_pending_status",
+    "name": "Luna Archive Pending Status",
+    "icon": "mdi:tray-alert",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_pending_status",
+    "original_name": "Luna Archive Pending Status"
+  },
+  {
+    "id": "luna_archive_previous_record_key",
+    "name": "Luna Archive Previous Record Key",
+    "icon": "mdi:key-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_record_key",
+    "original_name": "Luna Archive Previous Record Key"
+  },
+  {
+    "id": "luna_archive_previous_decision_key",
+    "name": "Luna Archive Previous Decision Key",
+    "icon": "mdi:key-star-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_decision_key",
+    "original_name": "Luna Archive Previous Decision Key"
+  },
+  {
+    "id": "luna_archive_previous_event_key",
+    "name": "Luna Archive Previous Event Key",
+    "icon": "mdi:key-chain",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_event_key",
+    "original_name": "Luna Archive Previous Event Key"
+  },
+  {
+    "id": "luna_archive_readback_key",
+    "name": "Luna Archive Readback Key",
+    "icon": "mdi:key-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_readback_key",
+    "original_name": "Luna Archive Readback Key"
+  },
+  {
+    "id": "luna_archive_reconciliation",
+    "name": "Luna Archive Reconciliation",
+    "icon": "mdi:database-sync-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_reconciliation",
+    "original_name": "Luna Archive Reconciliation"
+  },
+  {
+    "id": "luna_archive_recovery_status",
+    "name": "Luna Archive Recovery Status",
+    "icon": "mdi:database-refresh-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_recovery_status",
+    "original_name": "Luna Archive Recovery Status"
+  },
+  {
+    "id": "luna_archive_source_status",
+    "name": "Luna Archive Source Status",
+    "icon": "mdi:source-branch-check",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_source_status",
+    "original_name": "Luna Archive Source Status"
+  },
+  {
+    "id": "luna_archive_status_detail",
+    "name": "Luna Archive Status Detail",
+    "icon": "mdi:database-eye-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_status_detail",
+    "original_name": "Luna Archive Status Detail"
+  },
+  {
+    "id": "luna_archive_status_compact",
+    "name": "Luna Archive Status Compact",
+    "icon": "mdi:database-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_status_compact",
+    "original_name": "Luna Archive Status Compact"
+  },
+  {
+    "id": "luna_archive_provenance",
+    "name": "Luna Archive Provenance",
+    "icon": "mdi:source-branch",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_provenance",
+    "original_name": "Luna Archive Provenance"
+  },
+  {
+    "id": "luna_archive_safety",
+    "name": "Luna Archive Safety",
+    "icon": "mdi:shield-lock-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_safety",
+    "original_name": "Luna Archive Safety"
+  },
+  {
+    "id": "luna_archive_ready",
+    "name": "Luna Archive Ready",
+    "icon": "mdi:database-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_ready",
+    "original_name": "Luna Archive Ready"
+  },
+  {
+    "id": "luna_archive_verification_detail",
+    "name": "Luna Archive Verification Detail",
+    "icon": "mdi:database-search-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_verification_detail",
+    "original_name": "Luna Archive Verification Detail"
+  },
+  {
+    "id": "luna_archive_startup_check",
+    "name": "Luna Archive Startup Check",
+    "icon": "mdi:database-refresh-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_startup_check",
+    "original_name": "Luna Archive Startup Check"
+  },
+  {
+    "id": "luna_archive_service_status",
+    "name": "Luna Archive Service Status",
+    "icon": "mdi:database-cog-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_service_status",
+    "original_name": "Luna Archive Service Status"
+  },
+  {
+    "id": "luna_archive_store_id",
+    "name": "Luna Archive Store ID",
+    "icon": "mdi:identifier",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_store_id",
+    "original_name": "Luna Archive Store ID"
+  },
+  {
+    "id": "luna_archive_recovery_point",
+    "name": "Luna Archive Recovery Point",
+    "icon": "mdi:restore",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_recovery_point",
+    "original_name": "Luna Archive Recovery Point"
+  },
+  {
+    "id": "luna_archive_recovery_key",
+    "name": "Luna Archive Recovery Key",
+    "icon": "mdi:key-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_recovery_key",
+    "original_name": "Luna Archive Recovery Key"
+  },
+  {
+    "id": "luna_archive_recovery_source",
+    "name": "Luna Archive Recovery Source",
+    "icon": "mdi:source-branch",
+    "max": 64,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_recovery_source",
+    "original_name": "Luna Archive Recovery Source"
+  },
+  {
+    "id": "luna_archive_recovery_result",
+    "name": "Luna Archive Recovery Result",
+    "icon": "mdi:restore-alert",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_recovery_result",
+    "original_name": "Luna Archive Recovery Result"
+  },
+  {
+    "id": "luna_archive_privacy",
+    "name": "Luna Archive Privacy",
+    "icon": "mdi:shield-account-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_privacy",
+    "original_name": "Luna Archive Privacy"
+  },
+  {
+    "id": "luna_archive_scope",
+    "name": "Luna Archive Scope",
+    "icon": "mdi:target",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_scope",
+    "original_name": "Luna Archive Scope"
+  },
+  {
+    "id": "luna_archive_warning",
+    "name": "Luna Archive Warning",
+    "icon": "mdi:alert-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_warning",
+    "original_name": "Luna Archive Warning"
+  },
+  {
+    "id": "luna_archive_storage_class",
+    "name": "Luna Archive Storage Class",
+    "icon": "mdi:database-outline",
+    "max": 64,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_storage_class",
+    "original_name": "Luna Archive Storage Class"
+  },
+  {
+    "id": "luna_archive_verification_status",
+    "name": "Luna Archive Verification Status",
+    "icon": "mdi:database-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_verification_status",
+    "original_name": "Luna Archive Verification Status"
+  },
+  {
+    "id": "luna_archive_state",
+    "name": "Luna Archive State",
+    "icon": "mdi:database-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_state",
+    "original_name": "Luna Archive State"
+  },
+  {
+    "id": "luna_archive_previous_record_payload",
+    "name": "Luna Archive Previous Record Payload",
+    "icon": "mdi:code-json",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_record_payload",
+    "original_name": "Luna Archive Previous Record Payload"
+  },
+  {
+    "id": "luna_archive_previous_decision_payload",
+    "name": "Luna Archive Previous Decision Payload",
+    "icon": "mdi:code-json",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_decision_payload",
+    "original_name": "Luna Archive Previous Decision Payload"
+  },
+  {
+    "id": "luna_archive_previous_event_payload",
+    "name": "Luna Archive Previous Event Payload",
+    "icon": "mdi:code-json",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_archive_previous_event_payload",
+    "original_name": "Luna Archive Previous Event Payload"
+  },
+  {
+    "id": "luna_beheerder_laatste_advies",
+    "name": "Luna beheerder laatste advies",
+    "icon": "mdi:robot-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_beheerder_laatste_advies",
+    "original_name": "Luna beheerder laatste advies"
+  },
+  {
+    "id": "luna_opdracht",
+    "name": "Luna opdracht",
+    "icon": "mdi:message-text",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_opdracht",
+    "original_name": "Luna opdracht"
+  },
+  {
+    "id": "luna_memory_verlichting",
+    "name": "Luna Memory verlichting",
+    "icon": "mdi:lightbulb-group-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_memory_verlichting",
+    "original_name": "Luna Memory verlichting"
+  },
+  {
+    "id": "luna_memory_zonwering",
+    "name": "Luna Memory zonwering",
+    "icon": "mdi:blinds-horizontal",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_memory_zonwering",
+    "original_name": "Luna Memory zonwering"
+  },
+  {
+    "id": "luna_memory_energie",
+    "name": "Luna Memory energie",
+    "icon": "mdi:lightning-bolt-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_memory_energie",
+    "original_name": "Luna Memory energie"
+  },
+  {
+    "id": "luna_laatste_sturing",
+    "name": "Luna laatste sturing",
+    "icon": "mdi:timeline-text-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_laatste_sturing",
+    "original_name": "Luna laatste sturing"
+  },
+  {
+    "id": "luna_autonomie_gereedheid",
+    "name": "Luna autonomie gereedheid",
+    "icon": "mdi:shield-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_autonomie_gereedheid",
+    "original_name": "Luna autonomie gereedheid"
+  },
+  {
+    "id": "luna_entity_relaties",
+    "name": "Luna entity relaties",
+    "icon": "mdi:graph-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_entity_relaties",
+    "original_name": "Luna entity relaties"
+  },
+  {
+    "id": "luna_knowledge_context",
+    "name": "Luna knowledge context",
+    "icon": "mdi:graph-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_knowledge_context",
+    "original_name": "Luna knowledge context"
+  },
+  {
+    "id": "luna_knowledge_laatste_relatie",
+    "name": "Luna knowledge laatste relatie",
+    "icon": "mdi:relation-many-to-many",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_knowledge_laatste_relatie",
+    "original_name": "Luna knowledge laatste relatie"
+  },
+  {
+    "id": "luna_coach_advies",
+    "name": "Luna coach advies",
+    "icon": "mdi:account-tie-voice",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_coach_advies",
+    "original_name": "Luna coach advies"
+  },
+  {
+    "id": "luna_onderhoud_status",
+    "name": "Luna onderhoud status",
+    "icon": "mdi:tools",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_onderhoud_status",
+    "original_name": "Luna onderhoud status"
+  },
+  {
+    "id": "luna_laatste_diagnose",
+    "name": "Luna laatste diagnose",
+    "icon": "mdi:stethoscope",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_laatste_diagnose",
+    "original_name": "Luna laatste diagnose"
+  },
+  {
+    "id": "luna_ai_os_status",
+    "name": "Luna AI OS status",
+    "icon": "mdi:brain",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_ai_os_status",
+    "original_name": "Luna AI OS status"
+  },
+  {
+    "id": "luna_timeline_laatste_gebeurtenis",
+    "name": "Luna Timeline laatste gebeurtenis",
+    "icon": "mdi:timeline-clock-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_timeline_laatste_gebeurtenis",
+    "original_name": "Luna Timeline laatste gebeurtenis"
+  },
+  {
+    "id": "luna_explain_laatste_uitleg",
+    "name": "Luna Explain laatste uitleg",
+    "icon": "mdi:comment-question-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_explain_laatste_uitleg",
+    "original_name": "Luna Explain laatste uitleg"
+  },
+  {
+    "id": "luna_explain_laatste_bewijs",
+    "name": "Luna Explain laatste bewijs",
+    "icon": "mdi:file-check-outline",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_explain_laatste_bewijs",
+    "original_name": "Luna Explain laatste bewijs"
+  },
+  {
+    "id": "luna_ollama_backend_light",
+    "name": "Luna Ollama backend light",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_ollama_backend_light",
+    "original_name": "Luna Ollama backend light"
+  },
+  {
+    "id": "luna_ollama_backend_heavy",
+    "name": "Luna Ollama backend heavy",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_ollama_backend_heavy",
+    "original_name": "Luna Ollama backend heavy"
+  },
+  {
+    "id": "luna_mega_status",
+    "name": "Luna Mega status",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_mega_status",
+    "original_name": "Luna Mega status"
+  },
+  {
+    "id": "luna_mega_module_status",
+    "name": "Luna Mega module status",
+    "max": 255,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_mega_module_status",
+    "original_name": "Luna Mega module status"
+  },
+  {
+    "id": "luna_laatste_antwoord",
+    "name": "Luna laatste antwoord",
+    "icon": "mdi:robot",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_antwoord",
+    "original_name": "Luna laatste antwoord"
+  },
+  {
+    "id": "luna_laatste_zelfherstel",
+    "name": "Luna laatste zelfherstel",
+    "icon": "mdi:history",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_zelfherstel",
+    "original_name": "Luna laatste zelfherstel"
+  },
+  {
+    "id": "luna_laatste_voorspelling",
+    "name": "Luna laatste voorspelling",
+    "icon": "mdi:crystal-ball",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_voorspelling",
+    "original_name": "Luna laatste voorspelling"
+  },
+  {
+    "id": "luna_laatste_vraag",
+    "name": "Luna laatste vraag",
+    "icon": "mdi:message-question-outline",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_laatste_vraag",
+    "original_name": "Luna laatste vraag"
+  },
+  {
+    "id": "luna_antwoord_deel_1",
+    "name": "Luna antwoord deel 1",
+    "icon": "mdi:robot",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_deel_1",
+    "original_name": "Luna antwoord deel 1"
+  },
+  {
+    "id": "luna_antwoord_deel_2",
+    "name": "Luna antwoord deel 2",
+    "icon": "mdi:robot",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_deel_2",
+    "original_name": "Luna antwoord deel 2"
+  },
+  {
+    "id": "luna_antwoord_deel_3",
+    "name": "Luna antwoord deel 3",
+    "icon": "mdi:robot",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_antwoord_deel_3",
+    "original_name": "Luna antwoord deel 3"
+  }
+]

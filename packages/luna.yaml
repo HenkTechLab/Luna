@@ -52,6 +52,7 @@ template:
   - binary_sensor:
       - name: Luna lokale AI beschikbaar
         unique_id: luna_lokale_ai_beschikbaar
+        default_entity_id: binary_sensor.luna_lokale_ai_beschikbaar
         icon: mdi:robot
         device_class: connectivity
         state: >-
@@ -66,6 +67,7 @@ template:
           {{ ns.ok }}
       - name: Luna veilig fail-closed
         unique_id: luna_veilig_fail_closed
+        default_entity_id: binary_sensor.luna_veilig_fail_closed
         icon: mdi:shield-lock
         device_class: safety
         state: >-

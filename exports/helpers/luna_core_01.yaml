@@ -1,0 +1,868 @@
+[
+  {
+    "id": "vraag_luna",
+    "name": "Vraag Luna",
+    "icon": "mdi:send",
+    "entity_id": "input_button.vraag_luna",
+    "original_name": "Vraag Luna"
+  },
+  {
+    "id": "wis_luna_antwoord",
+    "name": "Wis Luna antwoord",
+    "icon": "mdi:delete-outline",
+    "entity_id": "input_button.wis_luna_antwoord",
+    "original_name": "Wis Luna antwoord"
+  },
+  {
+    "id": "luna_voorspelling_nu",
+    "name": "Luna voorspelling nu",
+    "icon": "mdi:crystal-ball",
+    "entity_id": "input_button.luna_voorspelling_nu",
+    "original_name": "Luna voorspelling nu"
+  },
+  {
+    "id": "luna_herstel_nu",
+    "name": "Luna herstel nu",
+    "icon": "mdi:wrench-clock",
+    "entity_id": "input_button.luna_herstel_nu",
+    "original_name": "Luna herstel nu"
+  },
+  {
+    "id": "luna_planner_bevestigen",
+    "name": "Luna Planner Bevestigen",
+    "icon": "mdi:check-circle-outline",
+    "entity_id": "input_button.luna_planner_bevestigen",
+    "original_name": "Luna Planner Bevestigen"
+  },
+  {
+    "id": "luna_planner_annuleren",
+    "name": "Luna Planner Annuleren",
+    "icon": "mdi:close-circle-outline",
+    "entity_id": "input_button.luna_planner_annuleren",
+    "original_name": "Luna Planner Annuleren"
+  },
+  {
+    "id": "luna_beslissing_goed",
+    "name": "Luna beslissing goed",
+    "entity_id": "input_button.luna_beslissing_goed",
+    "original_name": "Luna beslissing goed"
+  },
+  {
+    "id": "luna_physical_control",
+    "name": "Luna Physical Control",
+    "icon": "mdi:shield-off",
+    "initial": false,
+    "entity_id": "input_boolean.luna_physical_control",
+    "original_name": "Luna Physical Control"
+  },
+  {
+    "id": "luna_safety_ok",
+    "name": "Luna Safety OK",
+    "icon": "mdi:shield-check-outline",
+    "initial": false,
+    "entity_id": "input_boolean.luna_safety_ok",
+    "original_name": "Luna Safety OK"
+  },
+  {
+    "id": "luna_veilig_zelfherstel",
+    "name": "Luna veilig zelfherstel",
+    "icon": "mdi:auto-fix",
+    "entity_id": "input_boolean.luna_veilig_zelfherstel",
+    "original_name": "Luna veilig zelfherstel"
+  },
+  {
+    "id": "luna_planner_uitvoering_ingeschakeld",
+    "name": "Luna Planner Uitvoering Ingeschakeld",
+    "icon": "mdi:robot-off-outline",
+    "entity_id": "input_boolean.luna_planner_uitvoering_ingeschakeld",
+    "original_name": "Luna Planner Uitvoering Ingeschakeld"
+  },
+  {
+    "id": "luna_interactieve_prioriteit",
+    "name": "Luna Interactieve Prioriteit",
+    "entity_id": "input_boolean.luna_interactieve_prioriteit",
+    "original_name": "Luna Interactieve Prioriteit"
+  },
+  {
+    "id": "luna_ollama_inference_actief",
+    "name": "Luna Ollama Inference Actief",
+    "entity_id": "input_boolean.luna_ollama_inference_actief",
+    "original_name": "Luna Ollama Inference Actief"
+  },
+  {
+    "id": "luna_actiemodus",
+    "name": "Luna Actiemodus",
+    "icon": "mdi:shield-lock",
+    "options": [
+      "Leren",
+      "Alleen lezen",
+      "Voorstellen",
+      "Bevestigen",
+      "Safe Repair"
+    ],
+    "initial": "Leren",
+    "entity_id": "input_select.luna_actiemodus",
+    "original_name": "Luna Actiemodus"
+  },
+  {
+    "id": "luna_language_taal",
+    "name": "Luna Language / Taal",
+    "icon": "mdi:translate",
+    "options": [
+      "Nederlands",
+      "English",
+      "Deutsch",
+      "Français",
+      "Español",
+      "Italiano",
+      "Português"
+    ],
+    "entity_id": "input_select.luna_language_taal",
+    "original_name": "Luna Language / Taal"
+  },
+  {
+    "id": "luna_ai_mode",
+    "name": "Luna AI Mode",
+    "icon": "mdi:robot-outline",
+    "options": [
+      "Uit",
+      "Home Assistant",
+      "Lokaal"
+    ],
+    "initial": "Uit",
+    "entity_id": "input_select.luna_ai_mode",
+    "original_name": "Luna AI Mode"
+  },
+  {
+    "id": "luna_planner_status",
+    "name": "Luna Planner Status",
+    "icon": "mdi:state-machine",
+    "options": [
+      "Geen voorstel",
+      "Voorstel klaar",
+      "Wacht op bevestiging",
+      "Bevestigd - niet uitgevoerd",
+      "Uitgevoerd",
+      "Geannuleerd"
+    ],
+    "entity_id": "input_select.luna_planner_status",
+    "original_name": "Luna Planner Status"
+  },
+  {
+    "id": "luna_installatieprofiel",
+    "name": "Luna installatieprofiel",
+    "icon": "mdi:package-variant-closed",
+    "options": [
+      "Automatisch",
+      "Basis zonder AI",
+      "Lokale AI"
+    ],
+    "entity_id": "input_select.luna_installatieprofiel",
+    "original_name": "Luna installatieprofiel"
+  },
+  {
+    "id": "luna_prediction_reliability",
+    "name": "Luna Prediction Reliability",
+    "icon": "mdi:percent",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "initial": 0,
+    "mode": "slider",
+    "entity_id": "input_number.luna_prediction_reliability",
+    "original_name": "Luna Prediction Reliability"
+  },
+  {
+    "id": "luna_prediction_coverage",
+    "name": "Luna Prediction Coverage",
+    "icon": "mdi:gauge",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "initial": 0,
+    "mode": "slider",
+    "entity_id": "input_number.luna_prediction_coverage",
+    "original_name": "Luna Prediction Coverage"
+  },
+  {
+    "id": "luna_routine_reliability",
+    "name": "Luna Routine Reliability",
+    "icon": "mdi:chart-line",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "initial": 0,
+    "mode": "slider",
+    "entity_id": "input_number.luna_routine_reliability",
+    "original_name": "Luna Routine Reliability"
+  },
+  {
+    "id": "luna_routine_evidence_days",
+    "name": "Luna Routine Evidence Days",
+    "icon": "mdi:calendar-check",
+    "min": 0,
+    "max": 365,
+    "step": 1,
+    "initial": 0,
+    "mode": "slider",
+    "entity_id": "input_number.luna_routine_evidence_days",
+    "original_name": "Luna Routine Evidence Days"
+  },
+  {
+    "id": "luna_ha_gezondheidsscore",
+    "name": "Luna HA gezondheidsscore",
+    "icon": "mdi:heart-pulse",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "slider",
+    "entity_id": "input_number.luna_ha_gezondheidsscore",
+    "original_name": "Luna HA gezondheidsscore"
+  },
+  {
+    "id": "luna_voorspelling_score",
+    "name": "Luna voorspelling score",
+    "icon": "mdi:crystal-ball",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "slider",
+    "entity_id": "input_number.luna_voorspelling_score",
+    "original_name": "Luna voorspelling score"
+  },
+  {
+    "id": "luna_memory_laatste_betrouwbaarheid",
+    "name": "Luna Memory laatste betrouwbaarheid",
+    "icon": "mdi:check-decagram",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "slider",
+    "entity_id": "input_number.luna_memory_laatste_betrouwbaarheid",
+    "original_name": "Luna Memory laatste betrouwbaarheid"
+  },
+  {
+    "id": "luna_analytics_gemiddelde_lux",
+    "name": "Luna Analytics gemiddelde lux",
+    "icon": "mdi:brightness-5",
+    "min": 0,
+    "max": 200000,
+    "step": 0.1,
+    "unit_of_measurement": "lx",
+    "mode": "box",
+    "entity_id": "input_number.luna_analytics_gemiddelde_lux",
+    "original_name": "Luna Analytics gemiddelde lux"
+  },
+  {
+    "id": "luna_analytics_gemiddelde_temperatuur",
+    "name": "Luna Analytics gemiddelde temperatuur",
+    "icon": "mdi:thermometer",
+    "min": -50,
+    "max": 80,
+    "step": 0.1,
+    "unit_of_measurement": "°C",
+    "mode": "box",
+    "entity_id": "input_number.luna_analytics_gemiddelde_temperatuur",
+    "original_name": "Luna Analytics gemiddelde temperatuur"
+  },
+  {
+    "id": "luna_analytics_gemiddelde_wind",
+    "name": "Luna Analytics gemiddelde wind",
+    "icon": "mdi:weather-windy",
+    "min": 0,
+    "max": 200,
+    "step": 0.1,
+    "unit_of_measurement": "km/h",
+    "mode": "box",
+    "entity_id": "input_number.luna_analytics_gemiddelde_wind",
+    "original_name": "Luna Analytics gemiddelde wind"
+  },
+  {
+    "id": "luna_analytics_succespercentage",
+    "name": "Luna Analytics succespercentage",
+    "icon": "mdi:percent",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_analytics_succespercentage",
+    "original_name": "Luna Analytics succespercentage"
+  },
+  {
+    "id": "luna_analytics_sensorscore",
+    "name": "Luna Analytics sensorscore",
+    "icon": "mdi:gauge",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_analytics_sensorscore",
+    "original_name": "Luna Analytics sensorscore"
+  },
+  {
+    "id": "luna_health_kritieke_storingen",
+    "name": "Luna Health kritieke storingen",
+    "icon": "mdi:alert",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "mode": "box",
+    "entity_id": "input_number.luna_health_kritieke_storingen",
+    "original_name": "Luna Health kritieke storingen"
+  },
+  {
+    "id": "luna_health_watchman_belangrijk",
+    "name": "Luna Health Watchman belangrijk",
+    "icon": "mdi:shield-alert",
+    "min": 0,
+    "max": 1000,
+    "step": 1,
+    "mode": "box",
+    "entity_id": "input_number.luna_health_watchman_belangrijk",
+    "original_name": "Luna Health Watchman belangrijk"
+  },
+  {
+    "id": "luna_health_back_up_leeftijd_uren",
+    "name": "Luna Health back-up leeftijd uren",
+    "icon": "mdi:backup-restore",
+    "min": 0,
+    "max": 1000,
+    "step": 0.1,
+    "unit_of_measurement": "h",
+    "mode": "box",
+    "entity_id": "input_number.luna_health_back_up_leeftijd_uren",
+    "original_name": "Luna Health back-up leeftijd uren"
+  },
+  {
+    "id": "luna_health_ram_percentage",
+    "name": "Luna Health RAM percentage",
+    "icon": "mdi:memory",
+    "min": 0,
+    "max": 100,
+    "step": 0.1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_health_ram_percentage",
+    "original_name": "Luna Health RAM percentage"
+  },
+  {
+    "id": "luna_health_app_problemen",
+    "name": "Luna Health app problemen",
+    "icon": "mdi:application-alert",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "mode": "box",
+    "entity_id": "input_number.luna_health_app_problemen",
+    "original_name": "Luna Health app problemen"
+  },
+  {
+    "id": "luna_prediction_betrouwbaarheid",
+    "name": "Luna Prediction betrouwbaarheid",
+    "icon": "mdi:percent",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_prediction_betrouwbaarheid",
+    "original_name": "Luna Prediction betrouwbaarheid"
+  },
+  {
+    "id": "luna_ai_os_score",
+    "name": "Luna AI OS score",
+    "icon": "mdi:gauge",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_ai_os_score",
+    "original_name": "Luna AI OS score"
+  },
+  {
+    "id": "luna_sensor_score_placeholder_room",
+    "name": "Luna sensor score placeholder_room",
+    "icon": "mdi:motion-sensor",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_sensor_score_placeholder_room",
+    "original_name": "Luna sensor score placeholder_room"
+  },
+  {
+    "id": "luna_sensor_score_beweging_placeholder_room",
+    "name": "Luna sensor score beweging placeholder_room",
+    "icon": "mdi:motion-sensor",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_sensor_score_beweging_placeholder_room",
+    "original_name": "Luna sensor score beweging placeholder_room"
+  },
+  {
+    "id": "luna_sensor_score_tv",
+    "name": "Luna sensor score tv",
+    "icon": "mdi:motion-sensor",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_sensor_score_tv",
+    "original_name": "Luna sensor score tv"
+  },
+  {
+    "id": "luna_sensor_score_placeholder_room",
+    "name": "Luna sensor score placeholder_room",
+    "icon": "mdi:motion-sensor",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_sensor_score_placeholder_room",
+    "original_name": "Luna sensor score placeholder_room"
+  },
+  {
+    "id": "luna_routine_betrouwbaarheid",
+    "name": "Luna routine betrouwbaarheid",
+    "icon": "mdi:percent-outline",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "slider",
+    "entity_id": "input_number.luna_routine_betrouwbaarheid",
+    "original_name": "Luna routine betrouwbaarheid"
+  },
+  {
+    "id": "luna_energie_afwijking_marge",
+    "name": "Luna energie afwijking marge",
+    "icon": "mdi:delta",
+    "min": 300,
+    "max": 5000,
+    "step": 100,
+    "unit_of_measurement": "W",
+    "mode": "slider",
+    "entity_id": "input_number.luna_energie_afwijking_marge",
+    "original_name": "Luna energie afwijking marge"
+  },
+  {
+    "id": "luna_energie_hoge_import",
+    "name": "Luna energie hoge import",
+    "icon": "mdi:transmission-tower-import",
+    "min": 500,
+    "max": 10000,
+    "step": 100,
+    "unit_of_measurement": "W",
+    "mode": "slider",
+    "entity_id": "input_number.luna_energie_hoge_import",
+    "original_name": "Luna energie hoge import"
+  },
+  {
+    "id": "luna_ollama_laatste_duur",
+    "name": "Luna Ollama Laatste Duur",
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_laatste_duur",
+    "original_name": "Luna Ollama Laatste Duur"
+  },
+  {
+    "id": "luna_ollama_piek_cpu",
+    "name": "Luna Ollama Piek CPU",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_piek_cpu",
+    "original_name": "Luna Ollama Piek CPU"
+  },
+  {
+    "id": "luna_ollama_min_vrij_ram",
+    "name": "Luna Ollama Min Vrij RAM",
+    "min": 0,
+    "max": 16000,
+    "step": 1,
+    "unit_of_measurement": "MB",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_min_vrij_ram",
+    "original_name": "Luna Ollama Min Vrij RAM"
+  },
+  {
+    "id": "luna_ollama_laatste_wachttijd",
+    "name": "Luna Ollama laatste wachttijd",
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_laatste_wachttijd",
+    "original_name": "Luna Ollama laatste wachttijd"
+  },
+  {
+    "id": "luna_ollama_totaal_duur",
+    "name": "Luna Ollama totaal duur",
+    "min": 0,
+    "max": 1000000,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_totaal_duur",
+    "original_name": "Luna Ollama totaal duur"
+  },
+  {
+    "id": "luna_ollama_totaal_wachttijd",
+    "name": "Luna Ollama totaal wachttijd",
+    "min": 0,
+    "max": 1000000,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_totaal_wachttijd",
+    "original_name": "Luna Ollama totaal wachttijd"
+  },
+  {
+    "id": "luna_routine_bewijsvoorbeelden",
+    "name": "Luna routine bewijsvoorbeelden",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "mode": "box",
+    "entity_id": "input_number.luna_routine_bewijsvoorbeelden",
+    "original_name": "Luna routine bewijsvoorbeelden"
+  },
+  {
+    "id": "luna_routine_bewijsdagen",
+    "name": "Luna routine bewijsdagen",
+    "min": 0,
+    "max": 30,
+    "step": 1,
+    "mode": "box",
+    "entity_id": "input_number.luna_routine_bewijsdagen",
+    "original_name": "Luna routine bewijsdagen"
+  },
+  {
+    "id": "luna_ollama_4b_totaal_duur",
+    "name": "Luna Ollama 4B totaal duur",
+    "min": 0,
+    "max": 1000000,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_4b_totaal_duur",
+    "original_name": "Luna Ollama 4B totaal duur"
+  },
+  {
+    "id": "luna_ollama_8b_totaal_duur",
+    "name": "Luna Ollama 8B totaal duur",
+    "min": 0,
+    "max": 1000000,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ollama_8b_totaal_duur",
+    "original_name": "Luna Ollama 8B totaal duur"
+  },
+  {
+    "id": "luna_ai_cache_ratio",
+    "name": "Luna AI cache ratio",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_ai_cache_ratio",
+    "original_name": "Luna AI cache ratio"
+  },
+  {
+    "id": "luna_ai_4b_share",
+    "name": "Luna AI 4B share",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_ai_4b_share",
+    "original_name": "Luna AI 4B share"
+  },
+  {
+    "id": "luna_ai_average_runtime",
+    "name": "Luna AI average runtime",
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ai_average_runtime",
+    "original_name": "Luna AI average runtime"
+  },
+  {
+    "id": "luna_ai_average_wait",
+    "name": "Luna AI average wait",
+    "min": 0,
+    "max": 3600,
+    "step": 1,
+    "unit_of_measurement": "s",
+    "mode": "box",
+    "entity_id": "input_number.luna_ai_average_wait",
+    "original_name": "Luna AI average wait"
+  },
+  {
+    "id": "luna_routine_stability",
+    "name": "Luna Routine stability",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit_of_measurement": "%",
+    "mode": "box",
+    "entity_id": "input_number.luna_routine_stability",
+    "original_name": "Luna Routine stability"
+  },
+  {
+    "id": "geschatte_openai_kosten_deze_maand",
+    "name": "Geschatte OpenAI-kosten deze maand",
+    "icon": "mdi:currency-eur",
+    "min": 0,
+    "max": 100,
+    "step": 0.001,
+    "unit_of_measurement": "EUR",
+    "mode": "box",
+    "entity_id": "input_number.geschatte_openai_kosten_deze_maand",
+    "original_name": "Geschatte OpenAI-kosten deze maand"
+  },
+  {
+    "id": "luna_core_status",
+    "name": "Luna Core Status",
+    "icon": "mdi:brain",
+    "initial": "SAFE · learning only",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_core_status",
+    "original_name": "Luna Core Status"
+  },
+  {
+    "id": "luna_selfcheck_status",
+    "name": "Luna Selfcheck Status",
+    "icon": "mdi:check-decagram",
+    "initial": "WAITING",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_selfcheck_status",
+    "original_name": "Luna Selfcheck Status"
+  },
+  {
+    "id": "luna_verifier_status",
+    "name": "Luna Verifier Status",
+    "icon": "mdi:shield-check",
+    "initial": "BLOCK · fail-closed",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_verifier_status",
+    "original_name": "Luna Verifier Status"
+  },
+  {
+    "id": "luna_memory_status",
+    "name": "Luna Memory Status",
+    "icon": "mdi:database",
+    "initial": "EMPTY · ready to learn",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_memory_status",
+    "original_name": "Luna Memory Status"
+  },
+  {
+    "id": "luna_prediction_status",
+    "name": "Luna Prediction Status",
+    "icon": "mdi:crystal-ball",
+    "initial": "LEARNING · no evidence",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_prediction_status",
+    "original_name": "Luna Prediction Status"
+  },
+  {
+    "id": "luna_decision_journal_status",
+    "name": "Luna Decision Journal Status",
+    "icon": "mdi:notebook-check",
+    "initial": "EMPTY · ready",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_decision_journal_status",
+    "original_name": "Luna Decision Journal Status"
+  },
+  {
+    "id": "luna_event_input",
+    "name": "Luna Event Input",
+    "icon": "mdi:timeline-plus",
+    "initial": "READY",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_event_input",
+    "original_name": "Luna Event Input"
+  },
+  {
+    "id": "luna_timeline_last_event",
+    "name": "Luna Timeline Last Event",
+    "icon": "mdi:timeline-clock",
+    "initial": "EMPTY",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_timeline_last_event",
+    "original_name": "Luna Timeline Last Event"
+  },
+  {
+    "id": "luna_timeline_previous_event",
+    "name": "Luna Timeline Previous Event",
+    "icon": "mdi:timeline-text",
+    "initial": "EMPTY",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_timeline_previous_event",
+    "original_name": "Luna Timeline Previous Event"
+  },
+  {
+    "id": "luna_trace_status",
+    "name": "Luna Trace Status",
+    "icon": "mdi:source-branch",
+    "initial": "NO TRACE",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_trace_status",
+    "original_name": "Luna Trace Status"
+  },
+  {
+    "id": "luna_explain_status",
+    "name": "Luna Explain Status",
+    "icon": "mdi:comment-question",
+    "initial": "NO EXPLANATION",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_explain_status",
+    "original_name": "Luna Explain Status"
+  },
+  {
+    "id": "luna_forecast_10m",
+    "name": "Luna Forecast 10m",
+    "icon": "mdi:clock-fast",
+    "initial": "WAITING FOR DATA",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_forecast_10m",
+    "original_name": "Luna Forecast 10m"
+  },
+  {
+    "id": "luna_forecast_1h",
+    "name": "Luna Forecast 1h",
+    "icon": "mdi:clock-outline",
+    "initial": "WAITING FOR DATA",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_forecast_1h",
+    "original_name": "Luna Forecast 1h"
+  },
+  {
+    "id": "luna_forecast_later",
+    "name": "Luna Forecast Later",
+    "icon": "mdi:weather-partly-cloudy",
+    "initial": "WAITING FOR DATA",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_forecast_later",
+    "original_name": "Luna Forecast Later"
+  },
+  {
+    "id": "luna_anomaly_status",
+    "name": "Luna Anomaly Status",
+    "icon": "mdi:alert-decagram-outline",
+    "initial": "NO ANOMALY",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_anomaly_status",
+    "original_name": "Luna Anomaly Status"
+  },
+  {
+    "id": "luna_comfort_status",
+    "name": "Luna Comfort Status",
+    "icon": "mdi:sofa-outline",
+    "initial": "LEARNING · no personal data",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_comfort_status",
+    "original_name": "Luna Comfort Status"
+  },
+  {
+    "id": "luna_personal_assistant_status",
+    "name": "Luna Personal Assistant Status",
+    "icon": "mdi:account-voice",
+    "initial": "READY · read-only",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_personal_assistant_status",
+    "original_name": "Luna Personal Assistant Status"
+  },
+  {
+    "id": "luna_health_status",
+    "name": "Luna Health Status",
+    "icon": "mdi:heart-pulse",
+    "initial": "WAITING FOR SELFCHECK",
+    "max": 100,
+    "mode": "text",
+    "min": 0,
+    "entity_id": "input_text.luna_health_status",
+    "original_name": "Luna Health Status"
+  },
+  {
+    "id": "luna_config_status",
+    "name": "Luna Config Status",
+    "icon": "mdi:tune-variant",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_config_status",
+    "original_name": "Luna Config Status"
+  },
+  {
+    "id": "luna_ai_router_status",
+    "name": "Luna AI Router Status",
+    "icon": "mdi:router-wireless",
+    "min": 0,
+    "max": 255,
+    "mode": "text",
+    "entity_id": "input_text.luna_ai_router_status",
+    "original_name": "Luna AI Router Status"
+  }
+]
