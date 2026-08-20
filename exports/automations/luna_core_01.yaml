@@ -1,0 +1,848 @@
+[
+  {
+    "id": "1787174192186",
+    "alias": "Luna AI Router Core",
+    "description": "Generieke optionele AI-routerstatus voor Luna. Luna blijft volledig functioneren wanneer AI uit of niet geconfigureerd is. Deze automation roept geen AI aan en gebruikt AI nooit als autorisatiebron.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_select.luna_ai_mode"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_ai_backend_light"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_ai_backend_heavy"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_ai_router_status"
+        },
+        "data": {
+          "value": "{% set mode=states('input_select.luna_ai_mode') %}{% set light=states('input_text.luna_ai_backend_light') %}{% set heavy=states('input_text.luna_ai_backend_heavy') %}{% set empty=['','unknown','unavailable','none'] %}{% if mode == 'Uit' %}OFF · core active · no AI{% elif light in empty %}BLOCKED · no light backend · core active without AI{% elif heavy in empty %}READY · single backend · advisory only{% else %}READY · light/heavy routing · advisory only{% endif %}"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787207031920",
+    "alias": "Luna Config Readiness Core",
+    "description": "Generieke configuratiegereedheidscontrole voor Luna. Valideert alleen of optionele bronkeuzes en AI-keuzes logisch zijn; bestuurt geen fysieke apparaten.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_presence_source"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_temperature_source"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_energy_source"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_calendar_source"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_select.luna_ai_mode"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_ai_backend_light"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_ai_backend_heavy"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "unset": [
+            "",
+            "unknown",
+            "unavailable",
+            "none"
+          ],
+          "presence": "{{ states('input_text.luna_presence_source') }}",
+          "temperature": "{{ states('input_text.luna_temperature_source') }}",
+          "energy": "{{ states('input_text.luna_energy_source') }}",
+          "calendar": "{{ states('input_text.luna_calendar_source') }}",
+          "ai_mode": "{{ states('input_select.luna_ai_mode') }}",
+          "light": "{{ states('input_text.luna_ai_backend_light') }}",
+          "heavy": "{{ states('input_text.luna_ai_backend_heavy') }}",
+          "base_optional_ok": "{{ true }}",
+          "ai_ok": "{{ ai_mode == 'Uit' or light not in unset }}",
+          "configured_count": "{{ [presence,temperature,energy,calendar] | reject('in', unset) | list | count }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_config_readiness"
+        },
+        "data": {
+          "value": "{{ ('READY' if ai_ok else 'BLOCKED') ~ ' · optional_sources=' ~ configured_count ~ '/4 · ai=' ~ ('off-ok' if ai_mode == 'Uit' else ('configured' if ai_ok else 'missing-backend')) }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_config_status"
+        },
+        "data": {
+          "value": "{{ ('SAFE · generic core · physical control off · config=' ~ ('ready' if ai_ok else 'attention'))[:100] }}"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787224487217",
+    "alias": "Luna - Deterministische verifier",
+    "description": "Verifier v1.0. Lokale fail-closed bewijspoort vóór AI-autonomie. Controleert validatiefouten, kritieke Health, bewezen Prediction-beoordelingen, Prediction-score, centrale gereedheid, actiemodus en Safe Repair-schakelaar. Geen AI en geen apparaatsturing.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/15"
+      },
+      {
+        "trigger": "state",
+        "entity_id": [
+          "counter.luna_validatie_fouten",
+          "input_number.luna_health_kritieke_storingen",
+          "counter.luna_prediction_goede_beslissingen_totaal",
+          "counter.luna_prediction_slechte_beslissingen_totaal",
+          "input_number.luna_prediction_betrouwbaarheid",
+          "input_text.luna_autonomie_gereedheid",
+          "input_select.luna_actiemodus",
+          "input_boolean.luna_veilig_zelfherstel"
+        ]
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "validatie": "{{ states('counter.luna_validatie_fouten')|int(99) }}",
+          "kritiek": "{{ states('input_number.luna_health_kritieke_storingen')|int(99) }}",
+          "goed": "{{ states('counter.luna_prediction_goede_beslissingen_totaal')|int(0) }}",
+          "slecht": "{{ states('counter.luna_prediction_slechte_beslissingen_totaal')|int(0) }}",
+          "bewezen": "{{ goed+slecht }}",
+          "prediction": "{{ states('input_number.luna_prediction_betrouwbaarheid')|float(0) }}",
+          "gereed": "{{ states('input_text.luna_autonomie_gereedheid').startswith('GEREED') }}",
+          "modus": "{{ states('input_select.luna_actiemodus') }}",
+          "zelfherstel": "{{ is_state('input_boolean.luna_veilig_zelfherstel','on') }}",
+          "beheer_ok": "{{ validatie==0 and kritiek==0 and bewezen>=10 and prediction>=70 and gereed and modus=='Safe Repair' }}",
+          "safe_ok": "{{ validatie==0 and modus=='Safe Repair' and zelfherstel }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_verifier_status"
+        },
+        "data": {
+          "value": "{{ ('BEHEER=' ~ ('OK' if beheer_ok else 'BLOK') ~ ' · SAFE_REPAIR=' ~ ('OK' if safe_ok else 'BLOK') ~ ' · val=' ~ validatie ~ ' · kritiek=' ~ kritiek ~ ' · bewijs=' ~ bewezen ~ '/10 · P=' ~ prediction|round(0) ~ '% · modus=' ~ modus)[:255] }}"
+        }
+      },
+      {
+        "if": [
+          {
+            "condition": "template",
+            "value_template": "{{ not beheer_ok and gereed }}"
+          }
+        ],
+        "then": [
+          {
+            "action": "todo.add_item",
+            "target": {
+              "entity_id": "todo.luna_timeline"
+            },
+            "data": {
+              "item": "{{ now().strftime('%Y-%m-%d %H:%M:%S') }} · VERIFIER · FAIL-CLOSED",
+              "description": "{{ ('Centrale gereedheid zei GEREED maar lokale verifier blokkeert BEHEER. ' ~ states('input_text.luna_verifier_status'))[:500] }}"
+            },
+            "continue_on_error": true
+          }
+        ]
+      }
+    ],
+    "mode": "restart",
+    "max_exceeded": "silent"
+  },
+  {
+    "id": "1787214455369",
+    "alias": "Luna Evidence Core",
+    "description": "Generieke fail-closed bewijslaag voor Luna. Rapporteert alleen configuratiestatus van optionele bronhelpers en maakt geen causaliteitsclaims of fysieke acties.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": [
+          "input_text.luna_presence_source",
+          "input_text.luna_temperature_source",
+          "input_text.luna_energy_source",
+          "input_text.luna_calendar_source"
+        ]
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "variables": {
+          "empty": [
+            "",
+            "unknown",
+            "unavailable",
+            "none"
+          ],
+          "presence": "{{ states('input_text.luna_presence_source') }}",
+          "temperature": "{{ states('input_text.luna_temperature_source') }}",
+          "energy": "{{ states('input_text.luna_energy_source') }}",
+          "calendar": "{{ states('input_text.luna_calendar_source') }}",
+          "configured": "{{ [presence, temperature, energy, calendar] | reject('in', empty) | list | count }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_evidence_status"
+        },
+        "data": {
+          "value": "{{ ('EVIDENCE · configured=' ~ configured ~ '/4 · presence=' ~ ('yes' if presence not in empty else 'no') ~ ' · temperature=' ~ ('yes' if temperature not in empty else 'no') ~ ' · energy=' ~ ('yes' if energy not in empty else 'no') ~ ' · calendar=' ~ ('yes' if calendar not in empty else 'no'))[:255] }}"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787167861937",
+    "alias": "Luna Health Core",
+    "description": "Generieke fail-closed Luna healthcheck. Controleert alleen de Luna-kern en doet geen herstel of apparaatbesturing.",
+    "triggers": [
+      {
+        "trigger": "time_pattern",
+        "minutes": "/15"
+      },
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_safety_ok"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_physical_control"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_health_status"
+        },
+        "data": {
+          "value": "{{ ('SAFE' if is_state('input_boolean.luna_safety_ok','on') and is_state('input_boolean.luna_physical_control','off') else 'ATTENTION') ~ ' · safety=' ~ states('input_boolean.luna_safety_ok') ~ ' · mode=' ~ states('input_select.luna_actiemodus') }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_selfcheck_status"
+        },
+        "data": {
+          "value": "{{ ('OK · ' ~ now().strftime('%Y-%m-%d %H:%M')) if is_state('input_boolean.luna_safety_ok','on') and is_state('input_boolean.luna_physical_control','off') else 'BLOCKED · safety not ready' }}"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787244363011",
+    "alias": "Luna installatieprofiel Core",
+    "description": "Bepaalt automatisch of Luna de basisfunctie of lokale AI gebruikt. Fysieke sturing en externe AI worden niet ingeschakeld.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start",
+        "id": "startup"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/10",
+        "id": "periodic_check"
+      },
+      {
+        "trigger": "state",
+        "entity_id": [
+          "input_select.luna_installatieprofiel",
+          "input_text.luna_ai_backend_light",
+          "input_text.luna_ai_backend_heavy",
+          "binary_sensor.luna_lokale_ai_beschikbaar"
+        ],
+        "id": "capability_change"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "state",
+                "entity_id": "input_select.luna_installatieprofiel",
+                "state": "Basis zonder AI"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_platformstatus"
+                },
+                "data": {
+                  "value": "BASIS · AI uitgeschakeld"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "state",
+                "entity_id": "binary_sensor.luna_lokale_ai_beschikbaar",
+                "state": "on"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_platformstatus"
+                },
+                "data": {
+                  "value": "AI · lokale backend bereikbaar"
+                }
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "condition": "state",
+                "entity_id": "input_select.luna_installatieprofiel",
+                "state": "Lokale AI"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_platformstatus"
+                },
+                "data": {
+                  "value": "AI GEKOZEN · backend niet bereikbaar"
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_platformstatus"
+            },
+            "data": {
+              "value": "AUTOMATISCH · basis zonder AI"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "restart",
+    "initial_state": true
+  },
+  {
+    "id": "1787219545035",
+    "alias": "Luna Persistent Memory Retention",
+    "description": "Begrenst de publieke Luna persistente geheugenlijst fail-closed tot maximaal 200 records. Verwijdert uitsluitend de oudste Luna-memoryrecords en stuurt geen fysieke apparaten aan.",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "03:15:00",
+        "id": "daily"
+      },
+      {
+        "trigger": "numeric_state",
+        "entity_id": "todo.luna_persistent_memory",
+        "above": 200,
+        "id": "limit"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "todo.get_items",
+        "target": {
+          "entity_id": "todo.luna_persistent_memory"
+        },
+        "data": {
+          "status": "needs_action"
+        },
+        "response_variable": "memory_response"
+      },
+      {
+        "variables": {
+          "items": "{{ memory_response['todo.luna_persistent_memory']['items'] | default([], true) }}",
+          "remove_count": "{{ [0, (items | count) - 200] | max }}"
+        }
+      },
+      {
+        "repeat": {
+          "for_each": "{{ items[:remove_count | int(0)] }}",
+          "sequence": [
+            {
+              "action": "todo.remove_item",
+              "target": {
+                "entity_id": "todo.luna_persistent_memory"
+              },
+              "data": {
+                "item": "{{ repeat.item.uid }}"
+              },
+              "continue_on_error": true
+            }
+          ]
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_storage_status"
+        },
+        "data": {
+          "value": "{{ ('READY · persistent memory · retained=' ~ ([items | count, 200] | min) ~ ' · removed=' ~ remove_count)[:255] }}"
+        }
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent"
+  },
+  {
+    "id": "1787173918984",
+    "alias": "Luna Physical Control Guard",
+    "description": "Fail-closed veiligheidsanker voor de publieke Luna-prototypeomgeving. Elke poging om fysieke besturing aan te zetten wordt onmiddellijk teruggezet naar uit. Deze automation bestuurt uitsluitend Luna-helpers.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_physical_control",
+        "to": "on"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_boolean.turn_off",
+        "target": {
+          "entity_id": "input_boolean.luna_physical_control"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_verifier_status"
+        },
+        "data": {
+          "value": "GEBLOKKEERD · physical control denied"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_installatie_status"
+        },
+        "data": {
+          "value": "Luna · fail-closed · fysieke besturing standaard uit"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787174071856",
+    "alias": "Luna Safety State Core",
+    "description": "Taalonafhankelijke deterministische veiligheidsstatus voor Luna. Safety OK wordt alleen actief als Luna in leermodus staat, fysieke besturing uit is en de kernbewaking actief is. Stuurt geen fysieke apparaten aan.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_select.luna_actiemodus"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_physical_control"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "automation.Luna_veiligheidsbewaking"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "automation.luna_physical_control_guard"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "automation.luna_runtime_core"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/5"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "state",
+                "entity_id": "input_select.luna_actiemodus",
+                "state": "Leren"
+              },
+              {
+                "condition": "state",
+                "entity_id": "input_boolean.luna_physical_control",
+                "state": "off"
+              },
+              {
+                "condition": "state",
+                "entity_id": "automation.Luna_veiligheidsbewaking",
+                "state": "on"
+              },
+              {
+                "condition": "state",
+                "entity_id": "automation.luna_physical_control_guard",
+                "state": "on"
+              },
+              {
+                "condition": "state",
+                "entity_id": "automation.luna_runtime_core",
+                "state": "on"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_boolean.turn_on",
+                "target": {
+                  "entity_id": "input_boolean.luna_safety_ok"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_config_status"
+                },
+                "data": {
+                  "value": "SAFE · generic core · physical control off"
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "action": "input_boolean.turn_off",
+            "target": {
+              "entity_id": "input_boolean.luna_safety_ok"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_config_status"
+            },
+            "data": {
+              "value": "BLOCKED · safety prerequisite missing"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787214461601",
+    "alias": "Luna Storage Core",
+    "description": "Rapporteert de opslagstatus van de Luna prototypekern. Memory en Decision Journal gebruiken momenteel Home Assistant helpers; persistente langetermijnopslag is nog niet gekoppeld. Geen fysieke apparaatsturing.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": [
+          "counter.luna_memory_records",
+          "counter.luna_decision_records",
+          "input_text.luna_memory_last_record",
+          "input_text.luna_decision_last_record"
+        ]
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_storage_status"
+        },
+        "data": {
+          "value": "{{ ('MEMORY · HA helper store · memory=' ~ states('counter.luna_memory_records') ~ ' · decisions=' ~ states('counter.luna_decision_records') ~ ' · persistent archive=not configured')[:255] }}"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787156060039",
+    "alias": "Luna - Veiligheidsbewaking",
+    "description": "Dwingt Luna terug naar Leren wanneer de actiemodus verandert. Stuurt uitsluitend Luna-helpers aan.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_select.luna_actiemodus"
+      }
+    ],
+    "conditions": [
+      {
+        "condition": "state",
+        "entity_id": "input_select.luna_actiemodus",
+        "state": "Voorstellen"
+      }
+    ],
+    "actions": [
+      {
+        "delay": {
+          "seconds": 1
+        }
+      },
+      {
+        "action": "input_select.select_option",
+        "target": {
+          "entity_id": "input_select.luna_actiemodus"
+        },
+        "data": {
+          "option": "Leren"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_installatie_status"
+        },
+        "data": {
+          "value": "Luna · fail-closed actief · actiemodus teruggezet naar Leren"
+        }
+      }
+    ],
+    "mode": "restart"
+  },
+  {
+    "id": "1787167854867",
+    "alias": "Luna Timeline Core",
+    "description": "Generieke Luna timeline. Registreert uitsluitend Luna interne gebeurtenissen en stuurt geen apparaten aan.",
+    "triggers": [
+      {
+        "trigger": "state",
+        "entity_id": "input_text.luna_event_input"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_timeline_previous_event"
+        },
+        "data": {
+          "value": "{{ states('input_text.luna_timeline_last_event')[:100] }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_timeline_last_event"
+        },
+        "data": {
+          "value": "{{ trigger.to_state.state[:100] }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_trace_status"
+        },
+        "data": {
+          "value": "{{ ('event=' ~ trigger.to_state.state ~ ' · source=Luna internal · causal proof=not claimed')[:100] }}"
+        }
+      },
+      {
+        "action": "input_text.set_value",
+        "target": {
+          "entity_id": "input_text.luna_explain_status"
+        },
+        "data": {
+          "value": "{{ ('Recorded internal Luna event: ' ~ trigger.to_state.state)[:100] }}"
+        }
+      }
+    ],
+    "mode": "queued",
+    "max": 10
+  },
+  {
+    "id": "1787173507169",
+    "alias": "Luna Verifier Core",
+    "description": "Deterministische fail-closed verifier voor Luna. Controleert uitsluitend de Luna veiligheidsbasis en schrijft alleen Luna-statushelpers; geen fysieke apparaatsturing.",
+    "triggers": [
+      {
+        "trigger": "homeassistant",
+        "event": "start"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_select.luna_actiemodus"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_safety_ok"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "input_boolean.luna_physical_control"
+      },
+      {
+        "trigger": "state",
+        "entity_id": "automation.Luna_veiligheidsbewaking"
+      },
+      {
+        "trigger": "time_pattern",
+        "minutes": "/15"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "choose": [
+          {
+            "conditions": [
+              {
+                "condition": "state",
+                "entity_id": "input_boolean.luna_safety_ok",
+                "state": "on"
+              },
+              {
+                "condition": "state",
+                "entity_id": "input_boolean.luna_physical_control",
+                "state": "off"
+              }
+            ],
+            "sequence": [
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_verifier_status"
+                },
+                "data": {
+                  "value": "OK · fail-closed · leren"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_selfcheck_status"
+                },
+                "data": {
+                  "value": "OK · verifier geslaagd"
+                }
+              },
+              {
+                "action": "input_text.set_value",
+                "target": {
+                  "entity_id": "input_text.luna_installatie_status"
+                },
+                "data": {
+                  "value": "Luna · verifier OK · alleen leren · geen fysieke sturing"
+                }
+              }
+            ]
+          }
+        ],
+        "default": [
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_verifier_status"
+            },
+            "data": {
+              "value": "GEBLOKKEERD · fail-closed"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_selfcheck_status"
+            },
+            "data": {
+              "value": "BLOK · veiligheidsvoorwaarde ontbreekt"
+            }
+          },
+          {
+            "action": "input_text.set_value",
+            "target": {
+              "entity_id": "input_text.luna_installatie_status"
+            },
+            "data": {
+              "value": "Luna · fail-closed · verifier blokkeert"
+            }
+          }
+        ]
+      }
+    ],
+    "mode": "restart"
+  }
+]
