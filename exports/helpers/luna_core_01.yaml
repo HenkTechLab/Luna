@@ -389,7 +389,7 @@
     "original_name": "Luna AI OS score"
   },
   {
-    "id": "luna_sensor_score_huiskamer",
+    "id": "luna_sensor_score_placeholder_room",
     "name": "Luna sensor score placeholder_room",
     "icon": "mdi:motion-sensor",
     "min": 0,
@@ -397,11 +397,11 @@
     "step": 1,
     "unit_of_measurement": "%",
     "mode": "box",
-    "entity_id": "input_number.luna_sensor_score_huiskamer",
+    "entity_id": "input_number.luna_sensor_score_placeholder_room",
     "original_name": "Luna sensor score placeholder_room"
   },
   {
-    "id": "luna_sensor_score_beweging_huiskamer",
+    "id": "luna_sensor_score_beweging_placeholder_room",
     "name": "Luna sensor score beweging placeholder_room",
     "icon": "mdi:motion-sensor",
     "min": 0,
@@ -409,7 +409,7 @@
     "step": 1,
     "unit_of_measurement": "%",
     "mode": "box",
-    "entity_id": "input_number.luna_sensor_score_beweging_huiskamer",
+    "entity_id": "input_number.luna_sensor_score_beweging_placeholder_room",
     "original_name": "Luna sensor score beweging placeholder_room"
   },
   {
@@ -425,7 +425,7 @@
     "original_name": "Luna sensor score tv"
   },
   {
-    "id": "luna_sensor_score_keuken",
+    "id": "luna_sensor_score_placeholder_room",
     "name": "Luna sensor score placeholder_room",
     "icon": "mdi:motion-sensor",
     "min": 0,
@@ -433,7 +433,7 @@
     "step": 1,
     "unit_of_measurement": "%",
     "mode": "box",
-    "entity_id": "input_number.luna_sensor_score_keuken",
+    "entity_id": "input_number.luna_sensor_score_placeholder_room",
     "original_name": "Luna sensor score placeholder_room"
   },
   {
