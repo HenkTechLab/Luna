@@ -1,0 +1,99 @@
+# Luna taalmodule: Español
+automation:
+  - id: luna_language_es_module
+    alias: Luna taalmodule Español
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id:
+          - input_select.luna_language_taal
+          - input_text.luna_platformstatus
+          - input_text.luna_prediction_status
+          - input_text.luna_health_status
+          - input_text.luna_planner_status
+          - input_text.luna_memory_status
+    conditions:
+      - condition: state
+        entity_id: input_select.luna_language_taal
+        state: Español
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_language_status}
+        data: {value: Luna-taal: Español}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_platformstatus}
+        data:
+          value: >-
+            {% set translations = {
+              "AUTOMATISCH · basis zonder AI": "AUTOMÁTICO · modo básico sin IA"
+              "BASIS · AI uitgeschakeld": "BÁSICO · IA desactivada"
+              "AI GEKOZEN · backend niet bereikbaar": "IA SELECCIONADA · backend no disponible"
+              "AI · lokale backend bereikbaar": "IA · backend local disponible"
+              "Geen voorspelling · onvoldoende klantgegevens": "Sin predicción · datos del cliente insuficientes"
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · sin conexiones de dispositivos · fail-closed activo"
+              "Voorstelstand · geen fysieke uitvoering": "Modo propuesta · sin ejecución física"
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria del cliente vacía · almacenamiento local · sin datos privados importados"
+            } %}
+            {{ translations.get(states('input_text.luna_platformstatus'), states('input_text.luna_platformstatus')) }}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_prediction_status}
+        data:
+          value: >-
+            {% set translations = {
+              "AUTOMATISCH · basis zonder AI": "AUTOMÁTICO · modo básico sin IA"
+              "BASIS · AI uitgeschakeld": "BÁSICO · IA desactivada"
+              "AI GEKOZEN · backend niet bereikbaar": "IA SELECCIONADA · backend no disponible"
+              "AI · lokale backend bereikbaar": "IA · backend local disponible"
+              "Geen voorspelling · onvoldoende klantgegevens": "Sin predicción · datos del cliente insuficientes"
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · sin conexiones de dispositivos · fail-closed activo"
+              "Voorstelstand · geen fysieke uitvoering": "Modo propuesta · sin ejecución física"
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria del cliente vacía · almacenamiento local · sin datos privados importados"
+            } %}
+            {{ translations.get(states('input_text.luna_prediction_status'), states('input_text.luna_prediction_status')) }}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_health_status}
+        data:
+          value: >-
+            {% set translations = {
+              "AUTOMATISCH · basis zonder AI": "AUTOMÁTICO · modo básico sin IA"
+              "BASIS · AI uitgeschakeld": "BÁSICO · IA desactivada"
+              "AI GEKOZEN · backend niet bereikbaar": "IA SELECCIONADA · backend no disponible"
+              "AI · lokale backend bereikbaar": "IA · backend local disponible"
+              "Geen voorspelling · onvoldoende klantgegevens": "Sin predicción · datos del cliente insuficientes"
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · sin conexiones de dispositivos · fail-closed activo"
+              "Voorstelstand · geen fysieke uitvoering": "Modo propuesta · sin ejecución física"
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria del cliente vacía · almacenamiento local · sin datos privados importados"
+            } %}
+            {{ translations.get(states('input_text.luna_health_status'), states('input_text.luna_health_status')) }}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_planner_status}
+        data:
+          value: >-
+            {% set translations = {
+              "AUTOMATISCH · basis zonder AI": "AUTOMÁTICO · modo básico sin IA"
+              "BASIS · AI uitgeschakeld": "BÁSICO · IA desactivada"
+              "AI GEKOZEN · backend niet bereikbaar": "IA SELECCIONADA · backend no disponible"
+              "AI · lokale backend bereikbaar": "IA · backend local disponible"
+              "Geen voorspelling · onvoldoende klantgegevens": "Sin predicción · datos del cliente insuficientes"
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · sin conexiones de dispositivos · fail-closed activo"
+              "Voorstelstand · geen fysieke uitvoering": "Modo propuesta · sin ejecución física"
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria del cliente vacía · almacenamiento local · sin datos privados importados"
+            } %}
+            {{ translations.get(states('input_text.luna_planner_status'), states('input_text.luna_planner_status')) }}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_memory_status}
+        data:
+          value: >-
+            {% set translations = {
+              "AUTOMATISCH · basis zonder AI": "AUTOMÁTICO · modo básico sin IA"
+              "BASIS · AI uitgeschakeld": "BÁSICO · IA desactivada"
+              "AI GEKOZEN · backend niet bereikbaar": "IA SELECCIONADA · backend no disponible"
+              "AI · lokale backend bereikbaar": "IA · backend local disponible"
+              "Geen voorspelling · onvoldoende klantgegevens": "Sin predicción · datos del cliente insuficientes"
+              "OK · geen apparaatkoppelingen · fail-closed actief": "OK · sin conexiones de dispositivos · fail-closed activo"
+              "Voorstelstand · geen fysieke uitvoering": "Modo propuesta · sin ejecución física"
+              "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria del cliente vacía · almacenamiento local · sin datos privados importados"
+            } %}
+            {{ translations.get(states('input_text.luna_memory_status'), states('input_text.luna_memory_status')) }}
