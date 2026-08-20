@@ -1,47 +1,46 @@
 # Luna - guía de instalación para Home Assistant
 
-## Instalación segura
+## Instalación con un solo comando
 
-Luna utiliza de forma predeterminada un diseño fail-closed. El control físico, la ejecución del planificador, la autorrecuperación y la inferencia de IA local permanecen desactivados hasta que el usuario los configure expresamente.
-
-## Requisitos
-
-- Instalación funcional de Home Assistant
-- Acceso a `/config`
-- Acceso a `configuration.yaml`
-- Copia de seguridad reciente de Home Assistant
-
-## Instalación
-
-Copie el repositorio al sistema Home Assistant o ejecute:
+Abra la **App Terminal & SSH** de Home Assistant y ejecute:
 
 ```sh
-sh install_luna.sh es
+curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- es
 ```
 
-El instalador copia Luna a `/config/luna`, crea una copia de seguridad de los archivos existentes relevantes y nunca sobrescribe a ciegas `automations.yaml` o `scripts.yaml`.
+No es necesario clonar previamente el repositorio. El instalador descarga Luna, crea una copia de seguridad e instala los archivos en `/config/luna`.
 
-Si el instalador indica que hace falta configuración manual, añada los paquetes de Luna bajo la sección existente `homeassistant:` -> `packages:`. No cree una segunda sección `homeassistant:`.
+## Qué se instala
 
-## Automatizaciones, helpers, scripts y Luna Test
+- paquetes Luna y los siete módulos de idioma
+- documentación
+- exportaciones/referencias saneadas
+- dashboard Luna basado en el dashboard de Luna Test
 
-`/config/luna/exports` contiene exportaciones de origen/referencia saneadas para automatizaciones, helpers y scripts, incluido material `luna_test_*`. Estos archivos **no se activan automáticamente** y no se fusionan a ciegas con una instalación existente de Home Assistant.
+`automations.yaml` y `scripts.yaml` existentes no se sobrescriben a ciegas. `luna_test_*` permanece como material de prueba/referencia desactivado.
 
-La capa segura instalable está en `/config/luna/packages`.
+## Registro de paquetes
+
+Si los paquetes Luna todavía no están registrados, el instalador muestra el bloque exacto que debe añadirse bajo la sección existente `homeassistant:` -> `packages:`. No cree una segunda sección `homeassistant:`.
+
+## Dashboard
+
+El instalador coloca el dashboard en:
+
+```text
+/config/luna/dashboard/luna-dashboard.yaml
+```
+
+Por seguridad no se modifican los archivos internos `.storage`. Si el dashboard todavía no está registrado, el instalador muestra el bloque `lovelace:` necesario. Después del registro, validación y reinicio, **Luna** aparece en la barra lateral.
 
 ## Verificación
 
 1. Valide la configuración de Home Assistant.
-2. No reinicie mientras exista un error de configuración.
-3. Reinicie Home Assistant después de una validación correcta.
-4. Abra Herramientas para desarrolladores -> Estados y busque `luna`.
-5. Compruebe `input_select.luna_language_taal`.
-6. Seleccione el idioma deseado.
+2. No reinicie si existe un error.
+3. Reinicie después de una validación correcta.
+4. Abra el dashboard Luna.
+5. Compruebe `input_select.luna_language_taal` y seleccione el idioma.
 
-## IA local
+## Seguridad
 
-La IA local es opcional. Compruebe primero Luna sin IA. Después configure el backend local y seleccione el modo local mediante `input_select.luna_ai_mode`.
-
-## Importante
-
-Primero instale y compruebe Luna. Solo después configure dispositivos, ejecución del planificador, autorrecuperación o IA local.
+El control físico, la ejecución del planificador, la autorrecuperación y la IA local permanecen fail-closed hasta que el usuario los configure expresamente. La IA local es opcional.
