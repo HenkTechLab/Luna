@@ -1459,7 +1459,7 @@
                 "action": "logbook.log",
                 "data": {
                   "name": "Luna fail-closed",
-                  "message": "Geblokkeerde productieactie: notify.mobile_app_placeholder_phone · target=\"geen target\"",
+                  "message": "Geblokkeerde productieactie: notify.luna_placeholder · target=\"geen target\"",
                   "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
                   "domain": "Luna"
                 },
@@ -1758,7 +1758,7 @@
                 "action": "logbook.log",
                 "data": {
                   "name": "Luna fail-closed",
-                  "message": "Geblokkeerde productieactie: notify.mobile_app_placeholder_phone · target=\"geen target\"",
+                  "message": "Geblokkeerde productieactie: notify.luna_placeholder · target=\"geen target\"",
                   "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
                   "domain": "Luna"
                 },
@@ -2136,7 +2136,7 @@
                 "action": "logbook.log",
                 "data": {
                   "name": "Luna fail-closed",
-                  "message": "Geblokkeerde productieactie: notify.mobile_app_placeholder_phone · target=\"geen target\"",
+                  "message": "Geblokkeerde productieactie: notify.luna_placeholder · target=\"geen target\"",
                   "entity_id": "input_text.luna_laatste_uitvoeringsstatus",
                   "domain": "Luna"
                 },
