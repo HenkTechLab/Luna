@@ -1,0 +1,323 @@
+title: Luna
+views:
+  - title: Luna
+    path: luna
+    icon: mdi:robot-excited
+    type: sections
+    max_columns: 4
+    header:
+      layout: responsive
+      badges_position: top
+      card:
+        type: custom:mushroom-title-card
+        title: Luna Command Center
+        subtitle: Premium interface met Mushroom en card-mod
+    badges:
+      - type: entity
+        entity: input_boolean.luna_safety_ok
+        show_name: true
+        show_state: true
+        color: green
+      - type: entity
+        entity: input_select.luna_ai_mode
+        show_name: true
+        show_state: true
+        color: purple
+      - type: entity
+        entity: input_select.luna_actiemodus
+        show_name: true
+        show_state: true
+        color: blue
+    sections:
+      - type: grid
+        column_span: 2
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Luna
+            secondary: >-
+              {{ states('input_text.luna_health_status') }} · {{ states('input_text.luna_selfcheck_status') }}
+            icon: mdi:robot-excited
+            icon_color: purple
+            multiline_secondary: true
+            fill_container: true
+            layout: horizontal
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  border: 1px solid rgba(140, 100, 255, 0.35);
+                  border-radius: 24px;
+                  background: linear-gradient(135deg, rgba(95,55,190,0.30), rgba(20,25,45,0.92));
+                  box-shadow: 0 14px 42px rgba(70,40,160,0.20);
+                  padding: 12px;
+                }
+            grid_options:
+              columns: full
+              rows: 3
+          - type: custom:mushroom-select-card
+            entity: input_select.luna_language_taal
+            name: Taal
+            icon: mdi:translate
+            fill_container: true
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: custom:mushroom-select-card
+            entity: input_select.luna_actiemodus
+            name: Actiemodus
+            icon: mdi:shield-lock
+            fill_container: true
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: custom:mushroom-select-card
+            entity: input_select.luna_ai_mode
+            name: AI-modus
+            icon: mdi:brain
+            fill_container: true
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.luna_physical_control
+            name: Fysieke bediening
+            icon: mdi:power
+            tap_action:
+              action: toggle
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 20px;
+                  background: rgba(255,255,255,0.04);
+                }
+            grid_options:
+              columns: 6
+              rows: 2
+
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Kernstatus
+            subtitle: Gezondheid, configuratie en verificatie
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_installatie_status
+            primary: Installatie
+            secondary: "{{ states('input_text.luna_installatie_status') }}"
+            icon: mdi:package-variant-closed-check
+            icon_color: green
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_config_status
+            primary: Configuratie
+            secondary: "{{ states('input_text.luna_config_status') }}"
+            icon: mdi:cog-check
+            icon_color: blue
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_health_status
+            primary: Gezondheid
+            secondary: "{{ states('input_text.luna_health_status') }}"
+            icon: mdi:heart-pulse
+            icon_color: red
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_selfcheck_status
+            primary: Zelfcontrole
+            secondary: "{{ states('input_text.luna_selfcheck_status') }}"
+            icon: mdi:check-decagram
+            icon_color: green
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_verifier_status
+            primary: Verificatie
+            secondary: "{{ states('input_text.luna_verifier_status') }}"
+            icon: mdi:shield-search
+            icon_color: amber
+            layout: horizontal
+
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Intelligentie
+            subtitle: Geheugen, voorspelling en routines
+          - type: custom:mushroom-template-card
+            primary: Geheugen
+            secondary: >-
+              {{ states('input_text.luna_memory_status') }} · {{ states('counter.luna_memory_records') }} records
+            icon: mdi:database
+            icon_color: cyan
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            primary: Voorspelling
+            secondary: >-
+              {{ states('input_text.luna_prediction_status') }} · {{ states('input_number.luna_prediction_reliability') }}%
+            icon: mdi:crystal-ball
+            icon_color: purple
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            primary: Routine
+            secondary: >-
+              {{ states('input_text.luna_routine_status') }} · {{ states('input_number.luna_routine_reliability') }}%
+            icon: mdi:repeat
+            icon_color: blue
+            layout: horizontal
+          - type: custom:mushroom-template-card
+            primary: Beslissingen
+            secondary: >-
+              {{ states('input_text.luna_decision_journal_status') }} · {{ states('counter.luna_decision_records') }} records
+            icon: mdi:scale-balance
+            icon_color: amber
+            layout: horizontal
+
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Woning
+            subtitle: Comfort, afwijkingen en vooruitblik
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_comfort_status
+            primary: Comfort
+            secondary: "{{ states('input_text.luna_comfort_status') }}"
+            icon: mdi:sofa
+            icon_color: green
+          - type: custom:mushroom-template-card
+            entity: input_text.luna_anomaly_status
+            primary: Afwijkingen
+            secondary: "{{ states('input_text.luna_anomaly_status') }}"
+            icon: mdi:alert-circle-outline
+            icon_color: orange
+          - type: custom:mushroom-template-card
+            primary: +10 minuten
+            secondary: "{{ states('input_text.luna_forecast_10m') }}"
+            icon: mdi:clock-fast
+            icon_color: cyan
+          - type: custom:mushroom-template-card
+            primary: +1 uur
+            secondary: "{{ states('input_text.luna_forecast_1h') }}"
+            icon: mdi:clock-outline
+            icon_color: blue
+          - type: custom:mushroom-template-card
+            primary: Later
+            secondary: "{{ states('input_text.luna_forecast_later') }}"
+            icon: mdi:calendar-clock
+            icon_color: purple
+
+      - type: grid
+        column_span: 2
+        cards:
+          - type: custom:mushroom-title-card
+            title: Tijdlijn
+            subtitle: Recente gebeurtenissen en context
+          - type: custom:mushroom-template-card
+            primary: Laatste gebeurtenis
+            secondary: "{{ states('input_text.luna_timeline_last_event') }}"
+            icon: mdi:history
+            icon_color: cyan
+            multiline_secondary: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 20px;
+                  background: linear-gradient(120deg, rgba(0,150,200,0.12), rgba(255,255,255,0.02));
+                }
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: custom:mushroom-template-card
+            primary: Vorige gebeurtenis
+            secondary: "{{ states('input_text.luna_timeline_previous_event') }}"
+            icon: mdi:history-toggle
+            icon_color: blue
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: custom:mushroom-template-card
+            primary: Laatste geheugenrecord
+            secondary: "{{ states('input_text.luna_memory_last_record') }}"
+            icon: mdi:database-clock
+            icon_color: purple
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: custom:mushroom-template-card
+            primary: Laatste beslissing
+            secondary: "{{ states('input_text.luna_decision_last_record') }}"
+            icon: mdi:scale-balance
+            icon_color: amber
+            multiline_secondary: true
+            grid_options:
+              columns: 12
+              rows: 2
+
+  - title: Setup
+    path: setup
+    icon: mdi:tune-variant
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Bronnen
+            subtitle: Koppel generieke Home Assistant-bronnen
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_presence_source
+            name: Aanwezigheidsbron
+            icon: mdi:account-eye
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_temperature_source
+            name: Temperatuurbron
+            icon: mdi:thermometer
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_energy_source
+            name: Energiebron
+            icon: mdi:lightning-bolt
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_calendar_source
+            name: Kalenderbron
+            icon: mdi:calendar
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: AI backends
+            subtitle: Lokale modellen en routerstatus
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_ai_backend_light
+            name: Licht model
+            icon: mdi:feather
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_ai_backend_heavy
+            name: Zwaar model
+            icon: mdi:weight
+          - type: custom:mushroom-entity-card
+            entity: input_text.luna_ai_router_status
+            name: Routerstatus
+            icon: mdi:router-wireless
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Veiligheid
+            subtitle: Fail-closed als uitgangspunt
+          - type: custom:mushroom-entity-card
+            entity: input_boolean.luna_safety_ok
+            name: Veiligheid OK
+            icon: mdi:shield-check
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            primary: Belangrijk
+            secondary: Fysieke bediening en lokale AI pas inschakelen nadat alle gekoppelde entiteiten bewust zijn gecontroleerd.
+            icon: mdi:shield-lock
+            icon_color: red
+            multiline_secondary: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 20px;
+                  border: 1px solid rgba(255,80,80,0.25);
+                  background: rgba(120,20,20,0.12);
+                }
