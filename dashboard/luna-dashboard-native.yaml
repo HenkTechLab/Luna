@@ -1,0 +1,341 @@
+title: Luna
+views:
+  - title: Luna
+    path: luna
+    icon: mdi:robot-excited
+    type: sections
+    max_columns: 4
+    header:
+      layout: responsive
+      badges_position: top
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Luna Command Center
+          Rustig, modern en volledig opgebouwd uit standaard Home Assistant-kaarten.
+    badges:
+      - type: entity
+        entity: input_boolean.luna_safety_ok
+        show_name: true
+        show_state: true
+        color: green
+      - type: entity
+        entity: input_select.luna_ai_mode
+        show_name: true
+        show_state: true
+        color: purple
+      - type: entity
+        entity: input_select.luna_actiemodus
+        show_name: true
+        show_state: true
+        color: blue
+    sections:
+      - type: grid
+        background:
+          color: primary
+          opacity: 8
+        cards:
+          - type: heading
+            heading: Directe bediening
+            heading_style: title
+            icon: mdi:flash
+          - type: tile
+            entity: input_select.luna_language_taal
+            name: Taal
+            icon: mdi:translate
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_select.luna_actiemodus
+            name: Actiemodus
+            icon: mdi:shield-lock
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_select.luna_ai_mode
+            name: AI-modus
+            icon: mdi:brain
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_boolean.luna_physical_control
+            name: Fysieke bediening
+            icon: mdi:power
+            features:
+              - type: toggle
+            grid_options:
+              columns: 6
+              rows: 2
+
+      - type: grid
+        background:
+          color: green
+          opacity: 7
+        cards:
+          - type: heading
+            heading: Kernstatus
+            heading_style: title
+            icon: mdi:shield-check
+          - type: tile
+            entity: input_text.luna_installatie_status
+            name: Installatie
+            icon: mdi:package-variant-closed-check
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_config_status
+            name: Configuratie
+            icon: mdi:cog-check
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_health_status
+            name: Gezondheid
+            icon: mdi:heart-pulse
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_selfcheck_status
+            name: Zelfcontrole
+            icon: mdi:check-decagram
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_trace_status
+            name: Trace
+            icon: mdi:timeline-check
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_verifier_status
+            name: Verificatie
+            icon: mdi:shield-search
+            grid_options:
+              columns: 6
+              rows: 2
+
+      - type: grid
+        background:
+          color: purple
+          opacity: 7
+        cards:
+          - type: heading
+            heading: Intelligentie
+            heading_style: title
+            icon: mdi:brain
+          - type: tile
+            entity: input_text.luna_memory_status
+            name: Geheugen
+            icon: mdi:database
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: counter.luna_memory_records
+            name: Geheugenrecords
+            icon: mdi:counter
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_prediction_status
+            name: Voorspelling
+            icon: mdi:crystal-ball
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_number.luna_prediction_reliability
+            name: Betrouwbaarheid voorspelling
+            icon: mdi:percent-circle
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 100
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_routine_status
+            name: Routine
+            icon: mdi:repeat
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_number.luna_routine_reliability
+            name: Betrouwbaarheid routine
+            icon: mdi:gauge
+            features:
+              - type: bar-gauge
+                min: 0
+                max: 100
+            grid_options:
+              columns: 6
+              rows: 2
+
+      - type: grid
+        background:
+          color: orange
+          opacity: 7
+        cards:
+          - type: heading
+            heading: Woning & vooruitblik
+            heading_style: title
+            icon: mdi:home-lightning-bolt
+          - type: tile
+            entity: input_text.luna_comfort_status
+            name: Comfort
+            icon: mdi:sofa
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_anomaly_status
+            name: Afwijkingen
+            icon: mdi:alert-circle-outline
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: input_text.luna_forecast_10m
+            name: +10 minuten
+            icon: mdi:clock-fast
+            grid_options:
+              columns: 4
+              rows: 2
+          - type: tile
+            entity: input_text.luna_forecast_1h
+            name: +1 uur
+            icon: mdi:clock-outline
+            grid_options:
+              columns: 4
+              rows: 2
+          - type: tile
+            entity: input_text.luna_forecast_later
+            name: Later
+            icon: mdi:calendar-clock
+            grid_options:
+              columns: 4
+              rows: 2
+
+      - type: grid
+        column_span: 2
+        background:
+          color: blue
+          opacity: 5
+        cards:
+          - type: heading
+            heading: Tijdlijn & beslissingen
+            heading_style: title
+            icon: mdi:timeline-text
+          - type: tile
+            entity: input_text.luna_timeline_last_event
+            name: Laatste gebeurtenis
+            icon: mdi:history
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: input_text.luna_timeline_previous_event
+            name: Vorige gebeurtenis
+            icon: mdi:history-toggle
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: input_text.luna_memory_last_record
+            name: Laatste geheugenrecord
+            icon: mdi:database-clock
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: input_text.luna_decision_last_record
+            name: Laatste beslissing
+            icon: mdi:scale-balance
+            grid_options:
+              columns: 12
+              rows: 2
+
+  - title: Setup
+    path: setup
+    icon: mdi:tune-variant
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Bronnen
+            icon: mdi:source-branch
+          - type: tile
+            entity: input_text.luna_presence_source
+            name: Aanwezigheidsbron
+            icon: mdi:account-eye
+          - type: tile
+            entity: input_text.luna_temperature_source
+            name: Temperatuurbron
+            icon: mdi:thermometer
+          - type: tile
+            entity: input_text.luna_energy_source
+            name: Energiebron
+            icon: mdi:lightning-bolt
+          - type: tile
+            entity: input_text.luna_calendar_source
+            name: Kalenderbron
+            icon: mdi:calendar
+      - type: grid
+        cards:
+          - type: heading
+            heading: AI backends
+            icon: mdi:brain-circuit
+          - type: tile
+            entity: input_text.luna_ai_backend_light
+            name: Licht model
+            icon: mdi:feather
+          - type: tile
+            entity: input_text.luna_ai_backend_heavy
+            name: Zwaar model
+            icon: mdi:weight
+          - type: tile
+            entity: input_text.luna_ai_router_status
+            name: Routerstatus
+            icon: mdi:router-wireless
+      - type: grid
+        cards:
+          - type: heading
+            heading: Veiligheid
+            icon: mdi:shield-lock
+          - type: tile
+            entity: input_boolean.luna_safety_ok
+            name: Veiligheid OK
+            icon: mdi:shield-check
+            features:
+              - type: toggle
+          - type: markdown
+            content: |
+              **Fysieke bediening** blijft uit totdat alle gebruikte entiteiten bewust zijn gecontroleerd.
+
+              **Lokale AI** adviseert alleen en is nooit een autorisatiebron.
