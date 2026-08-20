@@ -1,0 +1,218 @@
+# Luna uitbreidingsmodules voor klantinstallaties
+# Generiek en apparaatloos: gebruikt alleen lokale Luna-helpers.
+
+input_number:
+  luna_prediction_score:
+    name: Luna voorspelling score
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+  luna_routine_reliability:
+    name: Luna routine betrouwbaarheid
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+  luna_health_score:
+    name: Luna gezondheidsscore
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+  luna_evidence_score:
+    name: Luna bewijssterkte
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+
+counter:
+  luna_memory_records:
+    name: Luna geheugenrecords
+    minimum: 0
+    restore: true
+  luna_events_today:
+    name: Luna gebeurtenissen vandaag
+    minimum: 0
+    restore: true
+
+input_datetime:
+  luna_last_selfcheck:
+    name: Luna laatste zelfcontrole
+    has_date: true
+    has_time: true
+  luna_last_prediction:
+    name: Luna laatste voorspelling
+    has_date: true
+    has_time: true
+
+input_text:
+  luna_timeline_status: {name: Luna timeline status, max: 255}
+  luna_prediction_status: {name: Luna voorspelling status, max: 255}
+  luna_routine_status: {name: Luna routine status, max: 255}
+  luna_planner_status: {name: Luna planner status, max: 255}
+  luna_health_status: {name: Luna gezondheid status, max: 255}
+  luna_selfcheck_status: {name: Luna zelfcontrole status, max: 255}
+  luna_learning_status: {name: Luna leren status, max: 255}
+  luna_proactive_proposal: {name: Luna proactief voorstel, max: 255}
+
+input_button:
+  luna_selfcheck_now: {name: Luna zelfcontrole nu, icon: mdi:heart-pulse}
+  luna_prediction_now: {name: Luna voorspelling nu, icon: mdi:crystal-ball}
+  luna_planner_confirm: {name: Luna planner bevestigen, icon: mdi:check-circle}
+  luna_planner_cancel: {name: Luna planner annuleren, icon: mdi:cancel}
+
+template:
+  - binary_sensor:
+      - name: Luna kern gereed
+        unique_id: luna_kern_gereed
+        icon: mdi:check-decagram
+        device_class: running
+        state: >-
+          {{ is_state('binary_sensor.luna_veilig_fail_closed', 'on') and
+             states('input_text.luna_platformstatus') not in ['unknown', 'unavailable', ''] }}
+      - name: Luna leren actief
+        unique_id: luna_leren_actief
+        icon: mdi:school
+        state: "{{ is_state('input_select.luna_actiemodus', 'Leren') }}"
+
+script:
+  luna_selfcheck:
+    alias: Luna zelfcontrole
+    mode: restart
+    sequence:
+      - action: input_number.set_value
+        target: {entity_id: input_number.luna_health_score}
+        data: {value: 100}
+      - action: input_number.set_value
+        target: {entity_id: input_number.luna_evidence_score}
+        data: {value: 100}
+      - action: input_datetime.set_datetime
+        target: {entity_id: input_datetime.luna_last_selfcheck}
+        data: {datetime: "{{ now().isoformat() }}"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_selfcheck_status}
+        data: {value: OK · kernhelpers, taal, veiligheid en router gecontroleerd}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_health_status}
+        data: {value: OK · geen apparaatkoppelingen · fail-closed actief}
+
+  luna_prediction:
+    alias: Luna voorspelling
+    mode: restart
+    sequence:
+      - action: input_number.set_value
+        target: {entity_id: input_number.luna_prediction_score}
+        data: {value: 0}
+      - action: input_datetime.set_datetime
+        target: {entity_id: input_datetime.luna_last_prediction}
+        data: {datetime: "{{ now().isoformat() }}"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_prediction_status}
+        data: {value: Geen voorspelling · onvoldoende klantgegevens}
+
+  luna_planner_proposal:
+    alias: Luna planner voorstel
+    mode: restart
+    sequence:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_planner_status}
+        data: {value: Voorstelstand · geen fysieke uitvoering}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_proactive_proposal}
+        data: {value: Luna kan een voorstel maken zodra klantdata en lokale AI beschikbaar zijn.}
+
+automation:
+  - id: luna_selfcheck_module
+    alias: Luna zelfcontrole module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: time_pattern
+        hours: "/6"
+      - trigger: state
+        entity_id: input_button.luna_selfcheck_now
+    actions:
+      - action: script.luna_selfcheck
+
+  - id: luna_prediction_module
+    alias: Luna voorspelling module
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: input_button.luna_prediction_now
+      - trigger: time
+        at: "06:00:00"
+    actions:
+      - action: script.luna_prediction
+
+  - id: luna_planner_module
+    alias: Luna planner module
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: input_button.luna_planner_confirm
+        id: confirm
+      - trigger: state
+        entity_id: input_button.luna_planner_cancel
+        id: cancel
+    actions:
+      - choose:
+          - conditions: [{condition: trigger, id: confirm}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_planner_status}
+                data: {value: Bevestigd · uitvoering blijft geblokkeerd in klantbasis}
+          - conditions: [{condition: trigger, id: cancel}]
+            sequence:
+              - action: input_text.set_value
+                target: {entity_id: input_text.luna_planner_status}
+                data: {value: Geannuleerd}
+
+  - id: luna_learning_module
+    alias: Luna leren module
+    mode: restart
+    triggers:
+      - trigger: homeassistant
+        event: start
+      - trigger: state
+        entity_id: input_select.luna_actiemodus
+    actions:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_learning_status}
+        data:
+          value: >-
+            {% if is_state('input_select.luna_actiemodus', 'Leren') %}
+              Leren actief · alleen registreren
+            {% elif is_state('input_select.luna_actiemodus', 'Voorstel') %}
+              Voorstelstand · geen automatische uitvoering
+            {% else %}
+              Actief gekozen · fysieke beveiliging blijft leidend
+            {% endif %}
+
+  - id: luna_memory_module
+    alias: Luna geheugen module
+    mode: restart
+    triggers:
+      - trigger: state
+        entity_id: input_text.luna_last_event
+    actions:
+      - action: counter.increment
+        target: {entity_id: counter.luna_memory_records}
+      - action: counter.increment
+        target: {entity_id: counter.luna_events_today}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_timeline_status}
+        data: {value: Lokale gebeurtenis geregistreerd · geen privé-import}
+
+  - id: luna_daily_reset_module
+    alias: Luna dagelijkse teller reset
+    mode: single
+    triggers:
+      - trigger: time
+        at: "00:00:00"
+    actions:
+      - action: counter.reset
+        target: {entity_id: counter.luna_events_today}
