@@ -1066,7 +1066,7 @@
         {
           "action": "input_number.set_value",
           "target": {
-            "entity_id": "input_number.luna_sensor_score_beweging_huiskamer"
+            "entity_id": "input_number.luna_sensor_score_beweging_placeholder_room"
           },
           "data": {
             "value": 100
@@ -1075,7 +1075,7 @@
         {
           "action": "input_number.set_value",
           "target": {
-            "entity_id": "input_number.luna_sensor_score_huiskamer"
+            "entity_id": "input_number.luna_sensor_score_placeholder_room"
           },
           "data": {
             "value": 81
@@ -1084,7 +1084,7 @@
         {
           "action": "input_number.set_value",
           "target": {
-            "entity_id": "input_number.luna_sensor_score_keuken"
+            "entity_id": "input_number.luna_sensor_score_placeholder_room"
           },
           "data": {
             "value": 54
@@ -1168,7 +1168,7 @@
             "entity_id": "input_text.luna_analytics_laatste_instabiele_sensor"
           },
           "data": {
-            "value": "20-08 17:34:10 · binary_sensor.huiskamer_aanwezigheid · off→on binnen 2.4 s · sensorscore 79.0%"
+            "value": "20-08 17:34:10 · binary_sensor.placeholder_room_aanwezigheid · off→on binnen 2.4 s · sensorscore 79.0%"
           }
         },
         {
@@ -1285,7 +1285,7 @@
             "entity_id": "input_text.luna_automation_conflict_advies"
           },
           "data": {
-            "value": "Geen bekend dubbel zonweringsconflict actief. Bedoelde keten: AI-beslisser → input_boolean.zonne_scherm → helper-driver → cover.zonwering_tuin; handknop blijft handmatige override."
+            "value": "Geen bekend dubbel zonweringsconflict actief. Bedoelde keten: AI-beslisser → input_boolean.zonne_scherm → helper-driver → cover.zonwering_placeholder_room; handknop blijft handmatige override."
           }
         },
         {
@@ -1330,7 +1330,7 @@
             "entity_id": "input_text.luna_batterij_negeren"
           },
           "data": {
-            "value": "sensor.ipad_battery_level,sensor.schakelaar_eetkamer_battery,sensor.placeholder_phone,sensor.schakelaar_keuken_battery,sensor.ipad1_battery_level"
+            "value": "sensor.ipad_battery_level,sensor.schakelaar_eetkamer_battery,sensor.placeholder_phone,sensor.schakelaar_placeholder_room_battery,sensor.ipad1_battery_level"
           }
         },
         {
@@ -1474,7 +1474,7 @@
             "entity_id": "input_text.luna_coach_advies"
           },
           "data": {
-            "value": "Coach: sensorstabiliteit verdient aandacht (84%); laatste instabiele sensor: 20-08 17:34:10 · binary_sensor.huiskamer_aanwezigheid · off→on binnen 2.4 s · sensorscore 79.0%."
+            "value": "Coach: sensorstabiliteit verdient aandacht (84%); laatste instabiele sensor: 20-08 17:34:10 · binary_sensor.placeholder_room_aanwezigheid · off→on binnen 2.4 s · sensorscore 79.0%."
           }
         },
         {
@@ -1555,7 +1555,7 @@
             "entity_id": "input_text.luna_entity_relaties"
           },
           "data": {
-            "value": "placeholder_cover: input_boolean.zonne_scherm → cover.zonwering_tuin → lux/regen/wind → zonwering-automations; klimaat: climate.infraroodpaneel_huiskamer → temperatuur/Health; verlichting: light.placeholder_deviceklok → Memory/Timeline; energie: sensor.p1_meter_3c39e7231e5e"
+            "value": "placeholder_cover: input_boolean.zonne_scherm → cover.zonwering_placeholder_room → lux/regen/wind → zonwering-automations; klimaat: climate.infraroodpaneel_placeholder_room → temperatuur/Health; verlichting: light.placeholder_deviceklok → Memory/Timeline; energie: sensor.p1_meter_3c39e7231e5e"
           }
         },
         {
@@ -1636,7 +1636,7 @@
             "entity_id": "input_text.luna_globale_negeerlijst"
           },
           "data": {
-            "value": "climate.infraroodpaneel_huiskamer,cover.rolluik_slaapkamer_eline,cover.rolluik_achterdeur,cover.zonwering_tuin,cover.rolluik_keuken,binary_sensor.deurbel_knop_new_contact"
+            "value": "climate.infraroodpaneel_placeholder_room,cover.rolluik_placeholder_room_eline,cover.rolluik_achterdeur,cover.zonwering_placeholder_room,cover.rolluik_placeholder_room,binary_sensor.deurbel_knop_new_contact"
           }
         },
         {
@@ -1672,7 +1672,7 @@
             "entity_id": "input_text.luna_health_negeerlijst"
           },
           "data": {
-            "value": "climate.infraroodpaneel_huiskamer,cover.rolluik_slaapkamer_eline,cover.rolluik_achterdeur,cover.zonwering_tuin,cover.rolluik_keuken,binary_sensor.deurbel_knop_new_contact"
+            "value": "climate.infraroodpaneel_placeholder_room,cover.rolluik_placeholder_room_eline,cover.rolluik_achterdeur,cover.zonwering_placeholder_room,cover.rolluik_placeholder_room,binary_sensor.deurbel_knop_new_contact"
           }
         },
         {
@@ -1726,7 +1726,7 @@
             "entity_id": "input_text.luna_knowledge_context"
           },
           "data": {
-            "value": "Licht: 20-08 17:36:47 | Grote tafel (light.grote_tafel) | on→off | automatisch | lux=667.135803222656lx | binnen=24.0°C | wind=16.6 | regen=on | Zonwering: 20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.4"
+            "value": "Licht: 20-08 17:36:47 | Grote tafel (light.grote_tafel) | on→off | automatisch | lux=667.135803222656lx | binnen=24.0°C | wind=16.6 | regen=on | Zonwering: 20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_placeholder_room) | unknown→opening | automatisch | lux=6024.4"
           }
         },
         {
@@ -1735,7 +1735,7 @@
             "entity_id": "input_text.luna_knowledge_laatste_relatie"
           },
           "data": {
-            "value": "placeholder_cover: input_boolean.zonne_scherm → cover.zonwering_tuin → lux/regen/wind → zonwering-automations; klimaat: climate.infraroodpaneel_huiskamer → temperatuur/Health; verlichting: light.placeholder_deviceklok → Memory/Timeline; energie: sensor.p1_meter_3c39e7231e5e"
+            "value": "placeholder_cover: input_boolean.zonne_scherm → cover.zonwering_placeholder_room → lux/regen/wind → zonwering-automations; klimaat: climate.infraroodpaneel_placeholder_room → temperatuur/Health; verlichting: light.placeholder_deviceklok → Memory/Timeline; energie: sensor.p1_meter_3c39e7231e5e"
           }
         },
         {
@@ -1924,7 +1924,7 @@
             "entity_id": "input_text.luna_memory_aanwezigheid"
           },
           "data": {
-            "value": "20-08 17:43:15 | Bewegings melder placeholder_room Bezetting (binary_sensor.bewegings_melder_huiskamer_occupancy) | on→off | lokale statusbron | lux=1349.21252441406lx | binnen=24.0°C | wind=16.6 | regen=on"
+            "value": "20-08 17:43:15 | Bewegings melder placeholder_room Bezetting (binary_sensor.bewegings_melder_placeholder_room_occupancy) | on→off | lokale statusbron | lux=1349.21252441406lx | binnen=24.0°C | wind=16.6 | regen=on"
           }
         },
         {
@@ -1942,7 +1942,7 @@
             "entity_id": "input_text.luna_memory_beveiliging"
           },
           "data": {
-            "value": "20-08 17:31:11 | Achterdeur placeholder_room Deur (binary_sensor.achterdeur_tuin_contact) | on→off | lokale statusbron | lux=1467.04223632812lx | binnen=24.0°C | wind=16.6 | regen=on"
+            "value": "20-08 17:31:11 | Achterdeur placeholder_room Deur (binary_sensor.achterdeur_placeholder_room_contact) | on→off | lokale statusbron | lux=1467.04223632812lx | binnen=24.0°C | wind=16.6 | regen=on"
           }
         },
         {
@@ -2050,7 +2050,7 @@
             "entity_id": "input_text.luna_memory_zonwering"
           },
           "data": {
-            "value": "20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.48291015625lx | binnen=24.2°C | wind=19.1 | regen=off"
+            "value": "20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_placeholder_room) | unknown→opening | automatisch | lux=6024.48291015625lx | binnen=24.2°C | wind=19.1 | regen=off"
           }
         },
         {
@@ -2158,7 +2158,7 @@
             "entity_id": "input_text.luna_planner_toegestane_acties"
           },
           "data": {
-            "value": "light:on_off,climate:airco; rolluik_achterdeur:alleen input_boolean.rolluik_tuin; placeholder_cover:alleen input_boolean.zonne_scherm; rolluik_eline:alleen input_boolean.rolluik_eline; nooit direct cover bedienen"
+            "value": "light:on_off,climate:airco; rolluik_achterdeur:alleen input_boolean.rolluik_placeholder_room; placeholder_cover:alleen input_boolean.zonne_scherm; rolluik_eline:alleen input_boolean.rolluik_eline; nooit direct cover bedienen"
           }
         },
         {
