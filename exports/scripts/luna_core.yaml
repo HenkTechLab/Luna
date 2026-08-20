@@ -1,0 +1,516 @@
+[
+  {
+    "success": true,
+    "script_id": "luna_ollama_background_queue",
+    "config": {
+      "alias": "Luna Ollama achtergrondwachtrij",
+      "description": "Luna Ollama achtergrondwachtrij v2.1. Seriële autonome queue met interactieve voorrang en veilige pass-through van cacheability, freshness en taakcategorie naar de centrale router.\n\nLuna: fail-closed; zonder geconfigureerde lokale AI-backend wordt geen AI-taak uitgevoerd.",
+      "mode": "queued",
+      "max": 20,
+      "fields": {
+        "task_name": {
+          "name": "Taaknaam",
+          "required": true,
+          "selector": {
+            "text": {}
+          }
+        },
+        "instructions": {
+          "name": "Instructies",
+          "required": true,
+          "selector": {
+            "text": {
+              "multiline": true
+            }
+          }
+        },
+        "structure": {
+          "name": "Structuur",
+          "required": true,
+          "selector": {
+            "object": {}
+          }
+        },
+        "complexity": {
+          "name": "Complexiteit",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "light",
+                "heavy"
+              ]
+            }
+          }
+        },
+        "cacheable": {
+          "name": "Cache toegestaan",
+          "required": false,
+          "selector": {
+            "boolean": {}
+          }
+        },
+        "freshness": {
+          "name": "Versheid",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "live",
+                "short",
+                "normal",
+                "stable"
+              ]
+            }
+          }
+        },
+        "task_category": {
+          "name": "Taakcategorie",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "status",
+                "diagnose",
+                "routine",
+                "comfort",
+                "energie",
+                "beheer",
+                "persoonlijk",
+                "algemeen"
+              ]
+            }
+          }
+        }
+      },
+      "sequence": [
+        {
+          "if": [
+            {
+              "condition": "state",
+              "entity_id": "input_boolean.luna_interactieve_prioriteit",
+              "state": "on"
+            }
+          ],
+          "then": [
+            {
+              "action": "input_text.set_value",
+              "target": {
+                "entity_id": "input_text.luna_ollama_queue_status"
+              },
+              "data": {
+                "value": "{{ ('ACHTERGROND WACHT · ' ~ task_name ~ ' · interactieve vraag heeft voorrang')[:255] }}"
+              },
+              "continue_on_error": true
+            }
+          ]
+        },
+        {
+          "repeat": {
+            "while": [
+              {
+                "condition": "state",
+                "entity_id": "input_boolean.luna_interactieve_prioriteit",
+                "state": "on"
+              }
+            ],
+            "sequence": [
+              {
+                "wait_for_trigger": [
+                  {
+                    "trigger": "state",
+                    "entity_id": "input_boolean.luna_interactieve_prioriteit",
+                    "to": "off"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "action": "script.luna_ollama_router",
+          "data": {
+            "task_name": "{{ task_name }}",
+            "instructions": "{{ instructions }}",
+            "structure": "{{ structure }}",
+            "complexity": "{{ complexity | default('heavy', true) }}",
+            "priority": "background",
+            "cacheable": "{{ cacheable | default(true) }}",
+            "freshness": "{{ freshness | default('normal', true) }}",
+            "task_category": "{{ task_category | default('algemeen', true) }}"
+          },
+          "response_variable": "background_ollama_response"
+        },
+        {
+          "stop": "Achtergrondtaak gereed",
+          "response_variable": "background_ollama_response"
+        }
+      ]
+    }
+  },
+  {
+    "success": true,
+    "script_id": "luna_ollama_router",
+    "config": {
+      "alias": "Luna Ollama router",
+      "description": "Luna Ollama router v2.0. Exacte lokale cache met expliciete freshness/cacheability, taakcategorie-TTL, verlopen-cache-opruiming en eerlijke hit/miss-metrics. Backend blijft hardware-onafhankelijk.\n\nLuna: fail-closed; zonder geconfigureerde lokale AI-backend wordt geen AI-taak uitgevoerd.",
+      "mode": "queued",
+      "max": 30,
+      "fields": {
+        "task_name": {
+          "name": "Taaknaam",
+          "required": true,
+          "selector": {
+            "text": {}
+          }
+        },
+        "instructions": {
+          "name": "Instructies",
+          "required": true,
+          "selector": {
+            "text": {
+              "multiline": true
+            }
+          }
+        },
+        "structure": {
+          "name": "Structuur",
+          "required": true,
+          "selector": {
+            "object": {}
+          }
+        },
+        "complexity": {
+          "name": "Complexiteit",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "light",
+                "heavy"
+              ]
+            }
+          }
+        },
+        "priority": {
+          "name": "Prioriteit",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "background",
+                "normal",
+                "interactive"
+              ]
+            }
+          }
+        },
+        "cache_ttl_seconds": {
+          "name": "Cacheduur",
+          "required": false,
+          "selector": {
+            "number": {
+              "min": 0,
+              "max": 3600,
+              "step": 1
+            }
+          }
+        },
+        "cacheable": {
+          "name": "Cache toegestaan",
+          "required": false,
+          "selector": {
+            "boolean": {}
+          }
+        },
+        "freshness": {
+          "name": "Versheid",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "live",
+                "short",
+                "normal",
+                "stable"
+              ]
+            }
+          }
+        },
+        "task_category": {
+          "name": "Taakcategorie",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "status",
+                "diagnose",
+                "routine",
+                "comfort",
+                "energie",
+                "beheer",
+                "persoonlijk",
+                "algemeen"
+              ]
+            }
+          }
+        }
+      },
+      "sequence": [
+        {
+          "variables": {
+            "selected_complexity": "{{ complexity | default('heavy', true) }}",
+            "selected_priority": "{{ priority | default('background', true) }}",
+            "model_label": "{{ 'Qwen3 4B' if (complexity | default('heavy', true)) == 'light' else 'Qwen3 8B' }}",
+            "cache_ttl": "{% if not (cacheable | default(true)) or (freshness | default('normal',true)) == 'live' %}0{% elif cache_ttl_seconds is defined and cache_ttl_seconds is not none %}{{ [0,[cache_ttl_seconds|int(0),3600]|min]|max }}{% elif (freshness | default('normal',true)) == 'short' %}30{% elif (freshness | default('normal',true)) == 'stable' %}900{% elif (task_category | default('algemeen',true)) == 'diagnose' %}120{% elif (task_category | default('algemeen',true)) in ['routine','comfort'] %}600{% elif (priority | default('background',true)) == 'background' %}600{% else %}60{% endif %}",
+            "cache_key": "{{ sha256((task_name|string) ~ '|' ~ (complexity|default('heavy',true)|string) ~ '|' ~ (task_category|default('algemeen',true)|string) ~ '|' ~ (instructions|string) ~ '|' ~ (structure|to_json)) }}",
+            "selected_cacheable": "{{ cacheable | default(true) }}",
+            "selected_freshness": "{{ freshness | default('normal', true) }}",
+            "selected_category": "{{ task_category | default('algemeen', true) }}"
+          }
+        },
+        {
+          "action": "todo.get_items",
+          "target": {
+            "entity_id": "todo.luna_ollama_cache"
+          },
+          "data": {
+            "status": "needs_action"
+          },
+          "response_variable": "cache_response",
+          "continue_on_error": true
+        },
+        {
+          "variables": {
+            "cache_items": "{% if cache_response is defined %}{{ cache_response.get('todo.luna_ollama_cache',{}).get('items',[]) }}{% else %}{{ [] }}{% endif %}",
+            "cache_hit_json": "{% set ns=namespace(hit={}) %}{% for i in cache_items %}{% if i.summary == ('CACHE · ' ~ cache_key) %}{% set obj=(i.description|default('',true))|from_json({}) %}{% if obj.get('expires',0)|float(0) > as_timestamp(now()) and obj.get('data') is mapping %}{% set ns.hit=obj %}{% endif %}{% endif %}{% endfor %}{{ ns.hit|to_json }}"
+          }
+        },
+        {
+          "repeat": {
+            "for_each": "{{ cache_items }}",
+            "sequence": [
+              {
+                "if": [
+                  {
+                    "condition": "template",
+                    "value_template": "{% set obj=(repeat.item.description|default('',true))|from_json({}) %}{{ obj.get('expires',0)|float(0) > 0 and obj.get('expires',0)|float(0) <= as_timestamp(now()) }}"
+                  }
+                ],
+                "then": [
+                  {
+                    "action": "todo.remove_item",
+                    "target": {
+                      "entity_id": "todo.luna_ollama_cache"
+                    },
+                    "data": {
+                      "item": "{{ repeat.item.uid }}"
+                    },
+                    "continue_on_error": true
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": [
+            {
+              "condition": "template",
+              "value_template": "{{ cache_ttl|int(0) > 0 and (cache_hit_json|from_json({})).get('data') is mapping }}"
+            }
+          ],
+          "then": [
+            {
+              "variables": {
+                "cache_obj": "{{ cache_hit_json|from_json({}) }}",
+                "router_response": "{{ {'conversation_id':'cache:' ~ cache_key, 'data': (cache_hit_json|from_json({})).get('data',{})} }}"
+              }
+            },
+            {
+              "action": "counter.increment",
+              "target": {
+                "entity_id": "counter.luna_ollama_cache_hits"
+              },
+              "continue_on_error": true
+            },
+            {
+              "action": "input_text.set_value",
+              "target": {
+                "entity_id": "input_text.luna_ollama_queue_status"
+              },
+              "data": {
+                "value": "{{ ('CACHE · ' ~ model_label ~ ' · ' ~ task_name)[:255] }}"
+              },
+              "continue_on_error": true
+            },
+            {
+              "stop": "Exact recent Ollama-resultaat uit lokale cache",
+              "response_variable": "router_response"
+            }
+          ]
+        },
+        {
+          "if": [
+            {
+              "condition": "template",
+              "value_template": "{{ cache_ttl|int(0) > 0 }}"
+            }
+          ],
+          "then": [
+            {
+              "action": "counter.increment",
+              "target": {
+                "entity_id": "counter.luna_ollama_cache_misses"
+              },
+              "continue_on_error": true
+            }
+          ]
+        },
+        {
+          "action": "script.luna_ollama_queue",
+          "data": {
+            "task_name": "{{ task_name }}",
+            "instructions": "{{ instructions }}",
+            "structure": "{{ structure }}",
+            "complexity": "{{ complexity | default('heavy', true) }}",
+            "priority": "{{ priority | default('background', true) }}"
+          },
+          "response_variable": "router_response"
+        },
+        {
+          "if": [
+            {
+              "condition": "template",
+              "value_template": "{{ router_response is not defined or router_response.data is not defined }}"
+            }
+          ],
+          "then": [
+            {
+              "stop": "Ollama-router kreeg geen geldig AI-resultaat",
+              "error": true
+            }
+          ]
+        },
+        {
+          "if": [
+            {
+              "condition": "template",
+              "value_template": "{{ cache_ttl|int(0) > 0 }}"
+            }
+          ],
+          "then": [
+            {
+              "repeat": {
+                "for_each": "{{ cache_items | selectattr('summary','eq','CACHE · ' ~ cache_key) | list }}",
+                "sequence": [
+                  {
+                    "action": "todo.remove_item",
+                    "target": {
+                      "entity_id": "todo.luna_ollama_cache"
+                    },
+                    "data": {
+                      "item": "{{ repeat.item.uid }}"
+                    },
+                    "continue_on_error": true
+                  }
+                ]
+              }
+            },
+            {
+              "if": [
+                {
+                  "condition": "template",
+                  "value_template": "{{ cache_items|count >= 30 }}"
+                }
+              ],
+              "then": [
+                {
+                  "repeat": {
+                    "for_each": "{{ cache_items[:10] }}",
+                    "sequence": [
+                      {
+                        "action": "todo.remove_item",
+                        "target": {
+                          "entity_id": "todo.luna_ollama_cache"
+                        },
+                        "data": {
+                          "item": "{{ repeat.item.uid }}"
+                        },
+                        "continue_on_error": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "action": "todo.add_item",
+              "target": {
+                "entity_id": "todo.luna_ollama_cache"
+              },
+              "data": {
+                "item": "{{ ('CACHE · ' ~ cache_key)[:255] }}",
+                "description": "{{ {'expires': (as_timestamp(now()) + cache_ttl|int(0)), 'created': now().isoformat(), 'task': task_name, 'model': model_label, 'category': selected_category, 'freshness': selected_freshness, 'data': router_response.data} | to_json }}"
+              },
+              "continue_on_error": true
+            }
+          ]
+        },
+        {
+          "stop": "Ollama-router gereed",
+          "response_variable": "router_response"
+        }
+      ]
+    }
+  },
+  {
+    "success": true,
+    "script_id": "luna_sandbox_guard",
+    "config": {
+      "alias": "Luna Sandbox Guard",
+      "description": "Veiligheidsanker voor Luna. Stuurt geen fysieke apparaten aan en bevat geen installatie-specifieke netwerkgegevens.",
+      "mode": "single",
+      "sequence": [
+        {
+          "variables": {
+            "sandbox": {
+              "environment": "Luna",
+              "physical_control": false,
+              "fail_closed": true
+            }
+          }
+        },
+        {
+          "stop": "Luna sandbox actief",
+          "response_variable": "sandbox"
+        }
+      ]
+    }
+  },
+  {
+    "success": true,
+    "script_id": "Luna_selfcheck",
+    "config": {
+      "alias": "Luna Selfcheck",
+      "description": "Controleert uitsluitend de Luna veiligheidsbasis en stuurt geen fysieke apparaten aan.",
+      "mode": "single",
+      "sequence": [
+        {
+          "variables": {
+            "result": {
+              "environment": "Luna",
+              "actiemodus": "{{ states('input_select.luna_actiemodus') }}",
+              "sandbox_script": "{{ states('script.luna_sandbox_guard') }}",
+              "safe": "{{ states('input_select.luna_actiemodus') in ['Leren','Voorstellen'] }}"
+            }
+          }
+        },
+        {
+          "stop": "Luna selfcheck gereed",
+          "response_variable": "result"
+        }
+      ]
+    }
+  }
+]
