@@ -743,7 +743,7 @@
   {
     "id": "1787235430921",
     "alias": "Luna Conflict Watch - zonwering",
-    "description": "Observerende controle op mogelijke automationconflicten rond placeholder_cover en tuinzonwering. Negeert bewust uitgeschakelde oude sturingen en beschouwt handbediening + helper-driver + AI-beslisser als de bedoelde keten. Wijzigt niets.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
+    "description": "Observerende controle op mogelijke automationconflicten rond placeholder_cover en placeholder_roomzonwering. Negeert bewust uitgeschakelde oude sturingen en beschouwt handbediening + helper-driver + AI-beslisser als de bedoelde keten. Wijzigt niets.\n\nLuna migratie: fail-closed. Productieacties en echte meldkanalen zijn vervangen door interne logboekregistratie; ontbrekende productie-entiteiten gebruiken veilige shadow-helpers.",
     "triggers": [
       {
         "trigger": "time_pattern",
