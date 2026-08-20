@@ -97,3 +97,59 @@ automation:
               "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Memoria cliente vuota · archiviazione locale · nessun dato privato importato",
             } %}
             {{ translations.get(states('input_text.luna_memory_status'), states('input_text.luna_memory_status')) }}
+
+      # Vertaalde basisstatussen voor alle Luna-modules:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_installation_status}
+        data: {value: "PRONTO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_safety_status}
+        data: {value: "SICURO · fail-closed"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_memory_status}
+        data: {value: "VUOTO · pronto ad apprendere"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_timeline_status}
+        data: {value: "VUOTO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_prediction_status}
+        data: {value: "IN ATTESA DEI DATI"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_routine_status}
+        data: {value: "SHADOW · nessun modello"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_planner_status}
+        data: {value: "NESSUNA PROPOSTA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_health_status}
+        data: {value: "IN ATTESA DEL SELFCHECK"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_selfcheck_status}
+        data: {value: "IN ATTESA DEL CONTROLLO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_learning_status}
+        data: {value: "APPRENDIMENTO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_analytics_status}
+        data: {value: "IN ATTESA DEI DATI"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_evidence_status}
+        data: {value: "NESSUNA PROVA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_decision_status}
+        data: {value: "NESSUNA DECISIONE"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_voice_status}
+        data: {value: "DISATTIVATO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_maintenance_status}
+        data: {value: "NON NECESSARIO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_config_status}
+        data: {value: "CONFIGURAZIONE NECESSARIA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_metrics_status}
+        data: {value: "DISATTIVATO"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_queue_status}
+        data: {value: "VUOTO"}

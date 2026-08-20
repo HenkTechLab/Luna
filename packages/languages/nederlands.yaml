@@ -97,3 +97,59 @@ automation:
               "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens": "Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens",
             } %}
             {{ translations.get(states('input_text.luna_memory_status'), states('input_text.luna_memory_status')) }}
+
+      # Vertaalde basisstatussen voor alle Luna-modules:
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_installation_status}
+        data: {value: "KLAAR"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_safety_status}
+        data: {value: "VEILIG · fail-closed"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_memory_status}
+        data: {value: "LEEG · klaar om te leren"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_timeline_status}
+        data: {value: "LEEG"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_prediction_status}
+        data: {value: "WACHT OP DATA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_routine_status}
+        data: {value: "SHADOW · geen patroon"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_planner_status}
+        data: {value: "GEEN VOORSTEL"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_health_status}
+        data: {value: "WACHT OP SELFCHECK"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_selfcheck_status}
+        data: {value: "WACHT OP CONTROLE"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_learning_status}
+        data: {value: "LEREN"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_analytics_status}
+        data: {value: "WACHT OP DATA"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_evidence_status}
+        data: {value: "GEEN BEWIJS"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_decision_status}
+        data: {value: "GEEN BESLISSING"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_voice_status}
+        data: {value: "UIT"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_maintenance_status}
+        data: {value: "NIET NODIG"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_config_status}
+        data: {value: "CONFIGURATIE NODIG"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_metrics_status}
+        data: {value: "UIT"}
+      - action: input_text.set_value
+        target: {entity_id: input_text.luna_ai_queue_status}
+        data: {value: "LEEG"}
