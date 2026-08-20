@@ -1429,7 +1429,7 @@
             "entity_id": "input_text.luna_builder_v3_plan"
           },
           "data": {
-            "value": "PLAN · V3 coordinatietest · trigger=sensor.p1_meter_3c39e7231e5e_active_power boven=0 onder=- · voorwaarde=geen · acties=input_boolean.turn_on → input_boolean.luna_builder_test_target"
+            "value": "PLAN · V3 coordinatietest · trigger=sensor.p1_meter_3c39e7231e5e_active_power placeholder_room=0 onder=- · voorwaarde=geen · acties=input_boolean.turn_on → input_boolean.luna_builder_test_target"
           }
         },
         {
@@ -1447,7 +1447,7 @@
             "entity_id": "input_text.luna_builder_v3_uitleg"
           },
           "data": {
-            "value": "ACTIEF · Builder v2.1 · veilige runtime · plan=PLAN · V3 coordinatietest · trigger=sensor.p1_meter_3c39e7231e5e_active_power boven=0 onder=- · voorwaarde=geen · acties=input_boolean.turn_on → input_boolean.luna_builder_test_target · validatie=OK · prechec"
+            "value": "ACTIEF · Builder v2.1 · veilige runtime · plan=PLAN · V3 coordinatietest · trigger=sensor.p1_meter_3c39e7231e5e_active_power placeholder_room=0 onder=- · voorwaarde=geen · acties=input_boolean.turn_on → input_boolean.luna_builder_test_target · validatie=OK · prechec"
           }
         },
         {
@@ -1627,7 +1627,7 @@
             "entity_id": "input_text.luna_geheugen_placeholder_cover"
           },
           "data": {
-            "value": "05-08 20:24 te laat dicht; lux 694.414367675781; binnen 24.8C; buiten unknownC; zonhoogte 7.1; weer cloudy"
+            "value": "05-08 20:24 te laat dicht; lux 694.414367675781; binnen 24.8C; placeholder_room unknownC; zonhoogte 7.1; weer cloudy"
           }
         },
         {
@@ -1726,7 +1726,7 @@
             "entity_id": "input_text.luna_knowledge_context"
           },
           "data": {
-            "value": "Licht: 20-08 17:36:47 | Grote tafel (light.grote_tafel) | on→off | automatisch | lux=667.135803222656lx | binnen=24.0°C | wind=16.6 | regen=on | Zonwering: 20-08 15:03:05 | Rolluik keuken (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.4"
+            "value": "Licht: 20-08 17:36:47 | Grote tafel (light.grote_tafel) | on→off | automatisch | lux=667.135803222656lx | binnen=24.0°C | wind=16.6 | regen=on | Zonwering: 20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.4"
           }
         },
         {
@@ -1924,7 +1924,7 @@
             "entity_id": "input_text.luna_memory_aanwezigheid"
           },
           "data": {
-            "value": "20-08 17:43:15 | Bewegings melder huiskamer Bezetting (binary_sensor.bewegings_melder_huiskamer_occupancy) | on→off | lokale statusbron | lux=1349.21252441406lx | binnen=24.0°C | wind=16.6 | regen=on"
+            "value": "20-08 17:43:15 | Bewegings melder placeholder_room Bezetting (binary_sensor.bewegings_melder_huiskamer_occupancy) | on→off | lokale statusbron | lux=1349.21252441406lx | binnen=24.0°C | wind=16.6 | regen=on"
           }
         },
         {
@@ -1942,7 +1942,7 @@
             "entity_id": "input_text.luna_memory_beveiliging"
           },
           "data": {
-            "value": "20-08 17:31:11 | Achterdeur tuin Deur (binary_sensor.achterdeur_tuin_contact) | on→off | lokale statusbron | lux=1467.04223632812lx | binnen=24.0°C | wind=16.6 | regen=on"
+            "value": "20-08 17:31:11 | Achterdeur placeholder_room Deur (binary_sensor.achterdeur_tuin_contact) | on→off | lokale statusbron | lux=1467.04223632812lx | binnen=24.0°C | wind=16.6 | regen=on"
           }
         },
         {
@@ -1969,7 +1969,7 @@
             "entity_id": "input_text.luna_memory_klimaat"
           },
           "data": {
-            "value": "18-08 03:22:15 | Huiskamer (climate.1ed5243f) | unavailable→off | lokale statusbron | lux=0.0lx | binnen=24.2°C | wind=4.7 | regen=on"
+            "value": "18-08 03:22:15 | placeholder_room (climate.1ed5243f) | unavailable→off | lokale statusbron | lux=0.0lx | binnen=24.2°C | wind=4.7 | regen=on"
           }
         },
         {
@@ -2050,7 +2050,7 @@
             "entity_id": "input_text.luna_memory_zonwering"
           },
           "data": {
-            "value": "20-08 15:03:05 | Rolluik keuken (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.48291015625lx | binnen=24.2°C | wind=19.1 | regen=off"
+            "value": "20-08 15:03:05 | Rolluik placeholder_room (cover.rolluik_keuken) | unknown→opening | automatisch | lux=6024.48291015625lx | binnen=24.2°C | wind=19.1 | regen=off"
           }
         },
         {
