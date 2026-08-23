@@ -1,0 +1,24 @@
+{
+  "title": "Luna",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Luna",
+        "description": "Choose the dashboard variant. After setup, Home Assistant explains which Luna files must be registered once in configuration.yaml.",
+        "data": {
+          "dashboard_variant": "Dashboard variant"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Luna is already configured."
+    }
+  },
+  "issues": {
+    "finish_configuration": {
+      "title": "Finish the Luna configuration",
+      "description": "Register the Luna packages and dashboard as described in INSTALLATIE.md. Selected dashboard file: `{dashboard_file}`.{dependency_note} Then validate the configuration and restart Home Assistant."
+    }
+  }
+}
+

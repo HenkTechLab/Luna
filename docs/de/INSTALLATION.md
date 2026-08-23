@@ -1,42 +1,12 @@
-# Luna - Installationsanleitung für Home Assistant
+# Luna mit HACS installieren
 
-## Ein Befehl
+HACS ist der unterstützte Installations- und Aktualisierungsweg. Das Repository muss öffentlich sein, da HACS keine privaten Repositories unterstützt.
 
-Öffnen Sie die **Terminal & SSH App** in Home Assistant.
+1. Füge in HACS `HenkTechLab/Luna` als benutzerdefiniertes Repository vom Typ **Integration** hinzu.
+2. Lade Luna herunter und starte Home Assistant neu.
+3. Öffne **Einstellungen → Geräte & Dienste → Integration hinzufügen**, füge **Luna** hinzu und wähle Native oder Custom.
+4. Registriere die Pakete und das gewählte Dashboard in `configuration.yaml` mit den Blöcken aus der [Hauptanleitung](../../INSTALLATIE.md).
+5. Prüfe die Home-Assistant-Konfiguration und starte nur bei einer gültigen Konfiguration neu.
 
-Native Dashboard ohne zusätzliche Frontend-Abhängigkeiten:
+Custom benötigt Mushroom und card-mod über HACS. Updates erfolgen vollständig über HACS; Shell, curl und ein separates Installationsskript werden nicht verwendet.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- de native
-```
-
-Custom Dashboard mit Mushroom und card-mod:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- de custom
-```
-
-Für die Custom-Variante müssen **Mushroom** und **card-mod** über HACS verfügbar sein.
-
-## Installer
-
-Der Installer lädt Luna herunter, erstellt ein Backup und installiert Pakete, Sprachen, Dokumentation, Exporte und beide Dashboard-Dateien unter `/config/luna`. Vorhandene `automations.yaml` und `scripts.yaml` werden nicht überschrieben.
-
-Falls noch Einträge in `configuration.yaml` fehlen, zeigt der Installer den exakten Block. Interne `.storage`-Dateien werden nicht verändert.
-
-## Dashboards
-
-- `luna-dashboard-native.yaml` - moderne Standardkarten von Home Assistant.
-- `luna-dashboard-custom.yaml` - umfangreichere Oberfläche mit Mushroom und card-mod.
-
-## Kontrolle
-
-1. Home-Assistant-Konfiguration prüfen.
-2. Bei einem Konfigurationsfehler nicht neu starten.
-3. Nach erfolgreicher Prüfung neu starten.
-4. Luna in der Seitenleiste öffnen.
-5. `input_select.luna_language_taal` prüfen und die gewünschte Sprache wählen.
-
-## Sicherheit
-
-Physische Steuerung, Plannerausführung, Selbstwiederherstellung und lokale KI bleiben fail-closed, bis der Benutzer sie bewusst konfiguriert.

@@ -1,67 +1,54 @@
 # Luna
 
-Veilige, configureerbare Home Assistant-laag voor status, leren, planning en optionele lokale AI. Luna start zonder fysieke bediening, zelfherstel, planneruitvoering en AI-inference.
+Luna is een veilige, lokale en fail-closed Home Assistant-laag voor status, leren, planning en optionele lokale AI. De primaire installatie- en updateroute is **HACS**.
 
-## Snelle installatie
+## Installatie via HACS
 
-Open de Home Assistant Terminal & SSH App en kies een dashboardvariant.
+> Voor HACS moet deze GitHub-repository openbaar zijn. Een privé-repository kan niet als HACS custom repository worden gebruikt.
 
-Volledig standaard Home Assistant:
+1. Installeer HACS en herstart Home Assistant.
+2. Open HACS, kies **Custom repositories** en voeg `HenkTechLab/Luna` toe als type **Integration**.
+3. Open Luna in HACS, kies **Download** en herstart Home Assistant.
+4. Ga naar **Instellingen → Apparaten & diensten → Integratie toevoegen**, zoek **Luna** en kies een dashboardvariant.
+5. Registreer eenmalig de Luna-pakketten en het gekozen dashboard volgens [INSTALLATIE.md](INSTALLATIE.md).
+6. Controleer de Home Assistant-configuratie en herstart pas als die geldig is.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl native
-```
+HACS installeert en actualiseert alle uitvoerbare Luna-bestanden onder `custom_components/luna/`. De oude shell- en curl-installatieroute wordt niet meer gebruikt.
 
-Luxere variant met Mushroom en card-mod:
+## Dashboardvarianten
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl custom
-```
+- **Native:** `luna-dashboard-native.yaml`, uitsluitend standaard Home Assistant-kaarten.
+- **Custom:** `luna-dashboard-custom.yaml`, met Mushroom en card-mod. Installeer beide aanvullingen afzonderlijk via HACS.
 
-De custom variant vereist dat **Mushroom** en **card-mod** via HACS beschikbaar zijn.
+Beide varianten blijven onderdeel van dezelfde Luna-installatie. De gekozen variant bepaalt alleen welk dashboardbestand je in Home Assistant registreert.
 
 ## Taalmodules
 
-Luna bevat zeven taalmodules: Nederlands, English, Deutsch, Français, Español, Italiano en Português. Kies de taal met `input_select.luna_language_taal`. Status-, fout-, planner-, geheugen-, AI- en zelfcontrolemeldingen worden per module vertaald.
+Luna bevat Nederlands, English, Deutsch, Français, Español, Italiano en Português. Kies de taal na installatie met `input_select.luna_language_taal`.
 
-## Veiligheidsinstellingen
+## Veiligheid
 
 De standaardwaarden zijn fail-closed:
 
-- fysieke bediening: uit;
-- zelfherstel: uit;
-- planneruitvoering: uit;
-- lokale AI-inference: uit;
-- ontbrekende apparaten, diensten of AI: geen actie.
+- fysieke bediening staat uit;
+- zelfherstel staat uit;
+- planneruitvoering staat uit;
+- lokale AI-inference staat uit;
+- ontbrekende apparaten, diensten of AI veroorzaken geen actie.
 
-Activeer fysieke of plannerfuncties pas nadat de eigen entiteiten als placeholders zijn ingevuld en afzonderlijk zijn gecontroleerd. Meldtargets zijn niet inbegrepen.
+Koppel eigen entiteiten en activeer optionele functies pas nadat de basisinstallatie is gecontroleerd.
 
-## AI zonder en met lokale AI
+## Updates
 
-Zonder AI werkt Luna als veilige status-, leer- en controlelaag. Voor lokale AI kan een lokaal backend, bijvoorbeeld Ollama, worden geconfigureerd via de AI-backendvelden. Zet daarna `input_select.luna_ai_mode` op `Lokaal`. De backend-URL en modelnaam blijven placeholders totdat de gebruiker deze zelf configureert.
+Werk Luna bij vanuit HACS en herstart Home Assistant. Omdat packages en dashboards binnen de integration-map staan, worden ze samen met de Python-integratie bijgewerkt. Controleer na een update altijd eerst de Home Assistant-configuratie.
 
-## Exports
+## Bronbestanden
 
-De map `exports/` bevat geschoonde bronlogica voor automatiseringen, helpers en scripts. De veilige installeerbare gebruikerslaag staat onder `packages/`.
+- `packages/` en `dashboard/` zijn de leesbare bronbestanden.
+- `custom_components/luna/resources/` bevat de identieke, door HACS beheerde kopieën die Home Assistant gebruikt.
+- `exports/` bevat aanvullende geschoonde bronlogica en wordt niet automatisch geactiveerd.
 
-## Dashboards
+## Documentatie
 
-Er zijn twee keuzes:
+Zie [INSTALLATIE.md](INSTALLATIE.md) voor de volledige Nederlandstalige installatie- en testprocedure. Andere talen staan onder [docs/](docs/README.md).
 
-- `dashboard/luna-dashboard-native.yaml` — uitsluitend standaard Home Assistant-kaarten;
-- `dashboard/luna-dashboard-custom.yaml` — premium interface met Mushroom en card-mod.
-
-De installer registreert de gekozen variant en overschrijft bestaande `automations.yaml` en `scripts.yaml` niet.
-
-## Privacy
-
-Er zijn geen gesprekken, persoonlijke geheugenrecords, gebruikers-ID's, echte namen, locaties, IP/MAC-adressen, wachtwoorden, tokens, telefoons of persoonlijke meldkanalen opgenomen. Geheugenvelden zijn leeg en tellerinitialen zijn nul. Fysieke, telefoon-, netwerk- en systeembindingen zijn vervangen door placeholders.
-
-## Controle
-
-Controleer vóór gebruik:
-
-1. De Home Assistant-configuratie is geldig.
-2. Placeholder-entiteiten veroorzaken fail-closed gedrag zolang ze niet zijn gekoppeld.
-3. Eigen entiteiten worden pas geconfigureerd nadat de veilige basiscontrole is geslaagd.
-4. Optionele functies worden één voor één geactiveerd.

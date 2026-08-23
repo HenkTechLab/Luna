@@ -1,0 +1,24 @@
+{
+  "title": "Luna",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Luna instellen",
+        "description": "Kies de dashboardvariant. Na het aanmaken toont Home Assistant welke Luna-bestanden je eenmalig in configuration.yaml registreert.",
+        "data": {
+          "dashboard_variant": "Dashboardvariant"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Luna is al geconfigureerd."
+    }
+  },
+  "issues": {
+    "finish_configuration": {
+      "title": "Voltooi de Luna-configuratie",
+      "description": "Registreer de Luna-pakketten en het dashboard zoals beschreven in INSTALLATIE.md. Gekozen dashboardbestand: `{dashboard_file}`.{dependency_note} Controleer daarna de configuratie en herstart Home Assistant."
+    }
+  }
+}
+

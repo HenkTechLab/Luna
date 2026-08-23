@@ -1,42 +1,12 @@
-# Luna - guida di installazione per Home Assistant
+# Installare Luna con HACS
 
-## Un solo comando
+HACS è il metodo supportato per installare e aggiornare Luna. Il repository deve essere pubblico, perché HACS non supporta repository privati.
 
-Aprire l'**App Terminal & SSH** in Home Assistant.
+1. In HACS aggiungi `HenkTechLab/Luna` come repository personalizzato di tipo **Integration**.
+2. Scarica Luna e riavvia Home Assistant.
+3. Apri **Impostazioni → Dispositivi e servizi → Aggiungi integrazione**, aggiungi **Luna** e scegli Native o Custom.
+4. Registra i package e la dashboard scelta in `configuration.yaml` usando i blocchi della [guida principale](../../INSTALLATIE.md).
+5. Convalida la configurazione di Home Assistant prima di riavviare.
 
-Dashboard nativo senza dipendenze frontend aggiuntive:
+Custom richiede Mushroom e card-mod tramite HACS. Gli aggiornamenti avvengono interamente con HACS, senza shell, curl o installer separato.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it native
-```
-
-Dashboard custom con Mushroom e card-mod:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- it custom
-```
-
-La variante custom richiede **Mushroom** e **card-mod** tramite HACS.
-
-## Installer
-
-L'installer scarica Luna, crea un backup e installa package, lingue, documentazione, esportazioni ed entrambi i dashboard in `/config/luna`. I file `automations.yaml` e `scripts.yaml` esistenti non vengono sovrascritti.
-
-Se `configuration.yaml` richiede ancora la registrazione, l'installer mostra il blocco esatto. I file interni `.storage` non vengono modificati.
-
-## Dashboard
-
-- `luna-dashboard-native.yaml` - moderne schede standard di Home Assistant.
-- `luna-dashboard-custom.yaml` - interfaccia più ricca con Mushroom e card-mod.
-
-## Verifica
-
-1. Validare la configurazione di Home Assistant.
-2. Non riavviare se esiste un errore di configurazione.
-3. Riavviare dopo una validazione riuscita.
-4. Aprire Luna dalla barra laterale.
-5. Verificare `input_select.luna_language_taal` e selezionare la lingua.
-
-## Sicurezza
-
-Controllo fisico, esecuzione del planner, autoripristino e AI locale rimangono fail-closed finché l'utente non li configura intenzionalmente.

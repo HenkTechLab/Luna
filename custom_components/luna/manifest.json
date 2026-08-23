@@ -1,0 +1,13 @@
+{
+  "domain": "luna",
+  "name": "Luna",
+  "codeowners": ["@HenkTechLab"],
+  "config_flow": true,
+  "documentation": "https://github.com/HenkTechLab/Luna#installatie-via-hacs",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/HenkTechLab/Luna/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "1.0.0"
+}

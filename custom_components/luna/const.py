@@ -1,0 +1,9 @@
+"""Constants for Luna."""
+
+DOMAIN = "luna"
+
+CONF_DASHBOARD_VARIANT = "dashboard_variant"
+DASHBOARD_NATIVE = "native"
+DASHBOARD_CUSTOM = "custom"
+DEFAULT_DASHBOARD_VARIANT = DASHBOARD_NATIVE
+

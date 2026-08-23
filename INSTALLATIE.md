@@ -1,76 +1,104 @@
-# Luna - installatiehandleiding voor Home Assistant
+# Luna installeren via HACS
 
-## Installeren met één commando
+HACS is de enige ondersteunde installatieroute. Er is geen Terminal & SSH App, curl-opdracht of los installatiescript nodig.
 
-Open de **Terminal & SSH App** in Home Assistant en kies een dashboardvariant.
+## Voorwaarden
 
-### Optie 1 - Native
+- Een actuele Home Assistant-installatie.
+- HACS is geïnstalleerd.
+- De GitHub-repository `HenkTechLab/Luna` is openbaar; HACS ondersteunt geen privé-repositories.
 
-Alleen standaard Home Assistant-kaarten, zonder extra frontend-afhankelijkheden:
+Voor de custom dashboardvariant zijn daarnaast **Mushroom** en **card-mod** nodig. De native variant heeft geen frontend-afhankelijkheden.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl native
+## 1. Downloaden met HACS
+
+1. Open **HACS**.
+2. Open het menu en kies **Custom repositories**.
+3. Vul `HenkTechLab/Luna` in en kies categorie **Integration**.
+4. Open Luna, kies **Download** en herstart Home Assistant.
+5. Ga naar **Instellingen → Apparaten & diensten → Integratie toevoegen**.
+6. Zoek **Luna**, voeg de integratie toe en kies **Native** of **Custom**.
+
+Home Assistant maakt één Luna-configuratie aan. Een tweede Luna-configuratie wordt bewust geblokkeerd.
+
+## 2. Packages eenmalig registreren
+
+Voeg de volgende regels toe onder de bestaande `homeassistant:` → `packages:` sectie in `configuration.yaml`. Maak geen tweede `homeassistant:` sectie.
+
+```yaml
+homeassistant:
+  packages:
+    luna: !include custom_components/luna/resources/packages/luna.yaml
+    luna_modules: !include custom_components/luna/resources/packages/luna_modules.yaml
+    luna_advanced_modules: !include custom_components/luna/resources/packages/luna_advanced_modules.yaml
+    luna_nederlands: !include custom_components/luna/resources/packages/languages/nederlands.yaml
+    luna_english: !include custom_components/luna/resources/packages/languages/english.yaml
+    luna_deutsch: !include custom_components/luna/resources/packages/languages/deutsch.yaml
+    luna_francais: !include custom_components/luna/resources/packages/languages/francais.yaml
+    luna_espanol: !include custom_components/luna/resources/packages/languages/espanol.yaml
+    luna_italiano: !include custom_components/luna/resources/packages/languages/italiano.yaml
+    luna_portugues: !include custom_components/luna/resources/packages/languages/portugues.yaml
 ```
 
-### Optie 2 - Custom
+Heeft je configuratie al packages, voeg dan alleen de tien `luna...` regels toe met dezelfde inspringing als de bestaande package-items.
 
-Luxere interface met Mushroom en card-mod:
+## 3. Dashboard eenmalig registreren
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/HenkTechLab/Luna/main/install_luna.sh | sh -s -- nl custom
+Voeg één dashboard toe onder de bestaande `lovelace:` → `dashboards:` sectie. Maak geen tweede `lovelace:` sectie.
+
+### Native
+
+```yaml
+lovelace:
+  dashboards:
+    luna-dashboard:
+      mode: yaml
+      title: Luna
+      icon: mdi:moon-waning-crescent
+      show_in_sidebar: true
+      filename: custom_components/luna/resources/dashboard/luna-dashboard-native.yaml
 ```
 
-Voor de custom variant moeten **Mushroom** en **card-mod** via HACS beschikbaar zijn.
+### Custom
 
-## Wat de installer doet
+Installeer eerst Mushroom en card-mod via HACS en gebruik daarna:
 
-1. Controleert of `/config` beschikbaar is.
-2. Downloadt Luna.
-3. Maakt een back-up van relevante bestaande configuratie.
-4. Installeert de Luna-packages onder `/config/luna/packages`.
-5. Kopieert documentatie en geschoonde exports.
-6. Installeert beide dashboardbestanden onder `/config/luna/dashboard/`.
-7. Selecteert de gekozen dashboardvariant voor registratie.
-8. Toont exact welke regels eventueel nog in `configuration.yaml` moeten worden toegevoegd.
-9. Overschrijft bestaande `automations.yaml` en `scripts.yaml` niet.
-10. Herstart Home Assistant niet automatisch.
-
-## Packages registreren
-
-Wanneer de Luna-packages nog niet geregistreerd zijn, toont de installer het exacte blok dat onder de bestaande `homeassistant:` -> `packages:` sectie moet worden toegevoegd. Maak nooit een tweede `homeassistant:` sectie.
-
-## Dashboard
-
-De twee dashboardbestanden zijn:
-
-```text
-/config/luna/dashboard/luna-dashboard-native.yaml
-/config/luna/dashboard/luna-dashboard-custom.yaml
+```yaml
+lovelace:
+  dashboards:
+    luna-dashboard:
+      mode: yaml
+      title: Luna
+      icon: mdi:moon-waning-crescent
+      show_in_sidebar: true
+      filename: custom_components/luna/resources/dashboard/luna-dashboard-custom.yaml
 ```
 
-De native variant gebruikt moderne sections, headings, tiles, badges en section backgrounds.
+## 4. Controleren en starten
 
-De custom variant gebruikt Mushroom en card-mod voor extra styling, gradients, compacte statuskaarten en een meer uitgesproken command-center uiterlijk.
+1. Open **Ontwikkelaarstools → YAML** en voer de configuratiecontrole uit.
+2. Los alle gemelde fouten op; herstart niet met een ongeldige configuratie.
+3. Herstart Home Assistant.
+4. Open **Luna** in de zijbalk.
+5. Controleer dat `input_select.luna_language_taal` bestaat en kies de gewenste taal.
+6. Controleer dat `binary_sensor.luna_veilig_fail_closed` aan staat.
+7. Laat fysieke bediening, planneruitvoering, zelfherstel en lokale AI uit totdat eigen entiteiten bewust zijn gekoppeld en getest.
 
-De installer wijzigt geen interne Home Assistant `.storage` bestanden. Als dashboardregistratie nog nodig is, toont hij het juiste `lovelace:` blok.
+## Updates
 
-## Automatiseringen, helpers en scripts
+1. Installeer de Luna-update in HACS.
+2. Controleer de Home Assistant-configuratie.
+3. Herstart Home Assistant.
+4. Controleer beide Luna-statussensoren en het dashboard.
 
-De map `/config/luna/exports` bevat geschoonde bronlogica voor automatiseringen, helpers en scripts. Deze wordt niet blind samengevoegd met bestaande configuratiebestanden. De veilige installeerbare Luna-laag staat onder `/config/luna/packages`.
+De include-paden blijven gelijk. HACS vervangt de integration-resources, zodat losse downloads of kopieeracties niet nodig zijn.
 
-## Na installatie
+## Verwijderen
 
-1. Lees de uitvoer van de installer.
-2. Voeg alleen ontbrekende package- en dashboardregistratie toe.
-3. Controleer de Home Assistant-configuratie.
-4. Herstart niet wanneer Home Assistant een configuratiefout meldt.
-5. Herstart na een geldige configuratiecontrole.
-6. Open **Luna** in de zijbalk.
-7. Controleer `input_select.luna_language_taal`.
-8. Kies de gewenste taal.
+1. Verwijder eerst de Luna-integratie via **Instellingen → Apparaten & diensten**.
+2. Verwijder de Luna package- en dashboardregels uit `configuration.yaml`.
+3. Controleer de configuratie en herstart Home Assistant.
+4. Verwijder Luna daarna via HACS.
 
-## Veiligheid
+Deze volgorde voorkomt include-fouten nadat HACS de Luna-bestanden heeft verwijderd.
 
-Luna blijft standaard fail-closed. Fysieke bediening, planneruitvoering, zelfherstel en lokale AI worden pas gebruikt nadat de gebruiker deze bewust configureert en controleert.
-
-**Belangrijkste regel: eerst installeren en controleren; daarna pas apparaten, planneruitvoering, zelfherstel of lokale AI activeren.**
