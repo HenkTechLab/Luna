@@ -4,10 +4,26 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION = ROOT / "custom_components" / "luna"
+
+PACKAGE_MAPPING_DOMAINS = {
+    "counter",
+    "input_boolean",
+    "input_button",
+    "input_datetime",
+    "input_number",
+    "input_select",
+    "input_text",
+    "script",
+}
+DASHBOARD_ENTITY_PATTERN = re.compile(
+    r"\b((?:binary_sensor|counter|input_boolean|input_button|input_datetime|"
+    r"input_number|input_select|input_text|script)\.luna_[a-z0-9_]+)\b"
+)
 
 RESOURCE_PAIRS = {
     ROOT / "dashboard" / "luna-dashboard-native.yaml": INTEGRATION
@@ -36,6 +52,50 @@ for language_file in (ROOT / "packages" / "languages").glob("*.yaml"):
     RESOURCE_PAIRS[language_file] = (
         INTEGRATION / "resources" / "packages" / "languages" / language_file.name
     )
+
+
+def collect_package_entities() -> set[str]:
+    """Collect dashboard-addressable Luna entities declared by the packages."""
+    entities: set[str] = set()
+
+    for package_file in (ROOT / "packages").glob("*.yaml"):
+        top_level_domain: str | None = None
+        template_domain: str | None = None
+
+        for line in package_file.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            indent = len(line) - len(line.lstrip())
+
+            if indent == 0:
+                match = re.fullmatch(r"([a-z_]+):", stripped)
+                top_level_domain = match.group(1) if match else None
+                template_domain = None
+                continue
+
+            if top_level_domain in PACKAGE_MAPPING_DOMAINS and indent == 2:
+                match = re.match(r"(luna_[a-z0-9_]+):", stripped)
+                if match:
+                    entities.add(f"{top_level_domain}.{match.group(1)}")
+                continue
+
+            if top_level_domain != "template":
+                continue
+
+            match = re.fullmatch(r"- (binary_sensor|sensor):", stripped)
+            if match:
+                template_domain = match.group(1)
+                continue
+
+            match = re.fullmatch(r"default_entity_id:\s*([a-z_]+\.luna_[a-z0-9_]+)", stripped)
+            if match:
+                entities.add(match.group(1))
+                continue
+
+            match = re.fullmatch(r"unique_id:\s*(luna_[a-z0-9_]+)", stripped)
+            if match and template_domain:
+                entities.add(f"{template_domain}.{match.group(1)}")
+
+    return entities
 
 
 def validate() -> None:
@@ -86,6 +146,20 @@ def validate() -> None:
         if source.read_bytes() != managed.read_bytes():
             raise ValueError(
                 f"Managed resource differs from source: {managed.relative_to(ROOT)}"
+            )
+
+    package_entities = collect_package_entities()
+    for dashboard_file in (ROOT / "dashboard").glob("*.yaml"):
+        dashboard_entities = set(
+            DASHBOARD_ENTITY_PATTERN.findall(
+                dashboard_file.read_text(encoding="utf-8")
+            )
+        )
+        missing_entities = sorted(dashboard_entities - package_entities)
+        if missing_entities:
+            raise ValueError(
+                f"Dashboard {dashboard_file.name} references undeclared Luna entities: "
+                f"{', '.join(missing_entities)}"
             )
 
     documentation = "\n".join(
