@@ -4,16 +4,8 @@ automation:
     alias: Luna taalmodule Português
     mode: restart
     triggers:
-      - trigger: homeassistant
-        event: start
       - trigger: state
-        entity_id:
-          - input_select.luna_language_taal
-          - input_text.luna_platformstatus
-          - input_text.luna_prediction_status
-          - input_text.luna_health_status
-          - input_text.luna_planner_status
-          - input_text.luna_memory_status
+        entity_id: input_select.luna_language_taal
     conditions:
       - condition: state
         entity_id: input_select.luna_language_taal
