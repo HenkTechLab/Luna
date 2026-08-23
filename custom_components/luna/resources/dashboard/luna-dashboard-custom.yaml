@@ -283,6 +283,39 @@ views:
       - type: grid
         cards:
           - type: custom:mushroom-title-card
+            title: Gekoppelde bronnen
+            subtitle: Instellingen → Apparaten en diensten → Luna → Configureren
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.luna_aanwezigheid
+            name: Aanwezigheid
+            icon: mdi:home-account
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_temperatuur
+            name: Temperatuur
+            icon: mdi:thermometer
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_energie
+            name: Energie
+            icon: mdi:lightning-bolt
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_vermogen
+            name: Vermogen
+            icon: mdi:flash
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_agenda
+            name: Agenda
+            icon: mdi:calendar
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_gekoppelde_bronnen
+            name: Aantal bronnen
+            icon: mdi:database-eye
+          - type: custom:mushroom-entity-card
+            entity: sensor.luna_gekoppelde_apparaten
+            name: Aantal apparaten
+            icon: mdi:devices
+      - type: grid
+        cards:
+          - type: custom:mushroom-title-card
             title: AI backends
             subtitle: Lokale modellen en routerstatus
           - type: custom:mushroom-entity-card

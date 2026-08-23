@@ -42,6 +42,12 @@ Koppel eigen entiteiten en activeer optionele functies pas nadat de basisinstall
 
 Werk Luna bij vanuit HACS en herstart Home Assistant. Omdat packages en dashboards binnen de integration-map staan, worden ze samen met de Python-integratie bijgewerkt. Controleer na een update altijd eerst de Home Assistant-configuratie.
 
+## Sensoren en apparaten koppelen
+
+Open na de installatie **Instellingen → Apparaten en diensten → Luna → Configureren**. Kies daar aanwezigheid, temperatuur, energie, vermogen, agenda en eventuele extra sensoren of apparaten. Luna maakt vaste eigen bronentiteiten aan en registreert veranderingen van gekozen sensoren lokaal in de tijdlijn.
+
+Het selecteren van apparaten geeft Luna nog geen toestemming om ze te bedienen. Fysieke bediening blijft fail-closed en uit totdat de gebruiker deze afzonderlijk activeert.
+
 ## Bronbestanden
 
 - `packages/` en `dashboard/` zijn de leesbare bronbestanden.

@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Set up Luna",
-        "description": "Choose the dashboard variant. After setup, Home Assistant explains which Luna files must be registered once in configuration.yaml.",
+        "description": "Choose the dashboard variant. After installation, use Configure to connect this home's sensors and devices.",
         "data": {
           "dashboard_variant": "Dashboard variant"
         }
@@ -14,6 +14,59 @@
       "already_configured": "Luna is already configured."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Connect Luna sources",
+        "description": "Select the entities Luna may observe. Linked devices are only stored; physical control remains disabled until you enable it separately.",
+        "data": {
+          "presence_entity": "Presence",
+          "temperature_entity": "Temperature",
+          "energy_entity": "Energy use",
+          "power_entity": "Current power",
+          "calendar_entity": "Calendar",
+          "observation_entities": "Additional sensors",
+          "control_entities": "Optional devices"
+        },
+        "data_description": {
+          "presence_entity": "A person, tracker, presence sensor, or input boolean.",
+          "temperature_entity": "The primary indoor temperature sensor.",
+          "energy_entity": "A total energy sensor, for example in kWh.",
+          "power_entity": "A current power sensor, for example in W.",
+          "calendar_entity": "A Home Assistant calendar Luna may observe.",
+          "observation_entities": "Additional sensors whose changes may be recorded on Luna's local timeline.",
+          "control_entities": "Devices that may be used later. Selecting them does not enable control."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "presence": {
+        "name": "Presence"
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "energy": {
+        "name": "Energy"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "calendar": {
+        "name": "Calendar"
+      },
+      "linked_sources": {
+        "name": "Linked sources"
+      },
+      "linked_controls": {
+        "name": "Linked devices"
+      }
+    }
+  },
   "issues": {
     "finish_configuration": {
       "title": "Finish the Luna configuration",
@@ -21,4 +74,3 @@
     }
   }
 }
-

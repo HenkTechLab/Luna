@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Luna instellen",
-        "description": "Kies de dashboardvariant. Na het aanmaken toont Home Assistant welke Luna-bestanden je eenmalig in configuration.yaml registreert.",
+        "description": "Kies de dashboardvariant. Na installatie kun je via Configureren de sensoren en apparaten van deze woning koppelen.",
         "data": {
           "dashboard_variant": "Dashboardvariant"
         }
@@ -14,6 +14,59 @@
       "already_configured": "Luna is al geconfigureerd."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Luna-bronnen koppelen",
+        "description": "Kies de entiteiten die Luna mag observeren. Gekoppelde apparaten worden alleen opgeslagen; fysieke bediening blijft uit totdat je die afzonderlijk activeert.",
+        "data": {
+          "presence_entity": "Aanwezigheid",
+          "temperature_entity": "Temperatuur",
+          "energy_entity": "Energieverbruik",
+          "power_entity": "Actueel vermogen",
+          "calendar_entity": "Agenda",
+          "observation_entities": "Extra sensoren",
+          "control_entities": "Optionele apparaten"
+        },
+        "data_description": {
+          "presence_entity": "Een persoon, tracker, aanwezigheidssensor of invoerschakelaar.",
+          "temperature_entity": "De belangrijkste binnentemperatuursensor.",
+          "energy_entity": "Een totale energiesensor, bijvoorbeeld in kWh.",
+          "power_entity": "Een actuele vermogenssensor, bijvoorbeeld in W.",
+          "calendar_entity": "Een Home Assistant-agenda die Luna mag observeren.",
+          "observation_entities": "Aanvullende sensoren die veranderingen aan Luna's lokale tijdlijn mogen doorgeven.",
+          "control_entities": "Apparaten die later gebruikt kunnen worden. Selecteren schakelt bediening nog niet in."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "presence": {
+        "name": "Aanwezigheid"
+      }
+    },
+    "sensor": {
+      "temperature": {
+        "name": "Temperatuur"
+      },
+      "energy": {
+        "name": "Energie"
+      },
+      "power": {
+        "name": "Vermogen"
+      },
+      "calendar": {
+        "name": "Agenda"
+      },
+      "linked_sources": {
+        "name": "Gekoppelde bronnen"
+      },
+      "linked_controls": {
+        "name": "Gekoppelde apparaten"
+      }
+    }
+  },
   "issues": {
     "finish_configuration": {
       "title": "Voltooi de Luna-configuratie",
@@ -21,4 +74,3 @@
     }
   }
 }
-

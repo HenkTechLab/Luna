@@ -24,6 +24,15 @@ DASHBOARD_ENTITY_PATTERN = re.compile(
     r"\b((?:binary_sensor|counter|input_boolean|input_button|input_datetime|"
     r"input_number|input_select|input_text|script)\.luna_[a-z0-9_]+)\b"
 )
+INTEGRATION_PROVIDED_ENTITIES = {
+    "binary_sensor.luna_aanwezigheid",
+    "sensor.luna_agenda",
+    "sensor.luna_energie",
+    "sensor.luna_gekoppelde_apparaten",
+    "sensor.luna_gekoppelde_bronnen",
+    "sensor.luna_temperatuur",
+    "sensor.luna_vermogen",
+}
 UNQUOTED_INLINE_COMMA_PATTERN = re.compile(
     r"data:\s*\{value:[ \t]*(?![\"'{])\S[^}\n]*,"
 )
@@ -110,6 +119,9 @@ def validate() -> None:
         INTEGRATION / "manifest.json",
         INTEGRATION / "__init__.py",
         INTEGRATION / "config_flow.py",
+        INTEGRATION / "entity.py",
+        INTEGRATION / "binary_sensor.py",
+        INTEGRATION / "sensor.py",
         INTEGRATION / "strings.json",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
@@ -159,7 +171,7 @@ def validate() -> None:
                 f"{package_file.relative_to(ROOT)}"
             )
 
-    package_entities = collect_package_entities()
+    package_entities = collect_package_entities() | INTEGRATION_PROVIDED_ENTITIES
     for dashboard_file in (ROOT / "dashboard").glob("*.yaml"):
         dashboard_entities = set(
             DASHBOARD_ENTITY_PATTERN.findall(

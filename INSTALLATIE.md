@@ -83,6 +83,9 @@ lovelace:
 5. Controleer dat `input_select.luna_language_taal` bestaat en kies de gewenste taal.
 6. Controleer dat `binary_sensor.luna_veilig_fail_closed` aan staat.
 7. Laat fysieke bediening, planneruitvoering, zelfherstel en lokale AI uit totdat eigen entiteiten bewust zijn gekoppeld en getest.
+8. Open **Instellingen → Apparaten en diensten → Luna → Configureren** en selecteer de sensoren en optionele apparaten van deze woning.
+
+Na het opslaan verschijnen de gekozen waarden via vaste Luna-entiteiten op het Setup-tabblad. Extra sensoren mogen alleen lokale gebeurtenissen aan de Luna-tijdlijn doorgeven; geselecteerde apparaten worden niet automatisch bediend.
 
 ## Updates
 
