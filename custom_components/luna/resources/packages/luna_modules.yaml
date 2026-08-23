@@ -93,7 +93,7 @@ script:
         data: {datetime: "{{ now().isoformat() }}"}
       - action: input_text.set_value
         target: {entity_id: input_text.luna_selfcheck_status}
-        data: {value: OK · kernhelpers, taal, veiligheid en router gecontroleerd}
+        data: {value: "OK · kernhelpers, taal, veiligheid en router gecontroleerd"}
       - action: input_text.set_value
         target: {entity_id: input_text.luna_health_status}
         data: {value: OK · geen apparaatkoppelingen · fail-closed actief}

@@ -16,7 +16,7 @@ views:
           Rustig, modern en volledig opgebouwd uit standaard Home Assistant-kaarten.
     badges:
       - type: entity
-        entity: input_boolean.luna_safety_ok
+        entity: binary_sensor.luna_veilig_fail_closed
         show_name: true
         show_state: true
         color: green
@@ -93,14 +93,14 @@ views:
             heading_style: title
             icon: mdi:shield-check
           - type: tile
-            entity: input_text.luna_installatie_status
+            entity: input_text.luna_installation_status
             name: Installatie
             icon: mdi:package-variant-closed-check
             grid_options:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_text.luna_config_status
+            entity: binary_sensor.luna_configuratie_gereed
             name: Configuratie
             icon: mdi:cog-check
             grid_options:
@@ -121,14 +121,14 @@ views:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_text.luna_trace_status
-            name: Trace
+            entity: input_text.luna_timeline_status
+            name: Tijdlijn
             icon: mdi:timeline-check
             grid_options:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_text.luna_verifier_status
+            entity: input_text.luna_evidence_status
             name: Verificatie
             icon: mdi:shield-search
             grid_options:
@@ -166,7 +166,7 @@ views:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_number.luna_prediction_reliability
+            entity: input_number.luna_prediction_score
             name: Betrouwbaarheid voorspelling
             icon: mdi:percent-circle
             features:
@@ -201,41 +201,41 @@ views:
           opacity: 7
         cards:
           - type: heading
-            heading: Woning & vooruitblik
+            heading: Planning & inzicht
             heading_style: title
             icon: mdi:home-lightning-bolt
           - type: tile
-            entity: input_text.luna_comfort_status
-            name: Comfort
-            icon: mdi:sofa
+            entity: input_text.luna_platformstatus
+            name: Platform
+            icon: mdi:state-machine
             grid_options:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_text.luna_anomaly_status
-            name: Afwijkingen
-            icon: mdi:alert-circle-outline
+            entity: input_text.luna_analytics_status
+            name: Analytics
+            icon: mdi:chart-line
             grid_options:
               columns: 6
               rows: 2
           - type: tile
-            entity: input_text.luna_forecast_10m
-            name: +10 minuten
-            icon: mdi:clock-fast
+            entity: input_text.luna_planner_status
+            name: Planner
+            icon: mdi:calendar-check
             grid_options:
               columns: 4
               rows: 2
           - type: tile
-            entity: input_text.luna_forecast_1h
-            name: +1 uur
-            icon: mdi:clock-outline
+            entity: input_text.luna_proactive_proposal
+            name: Voorstel
+            icon: mdi:lightbulb-on-outline
             grid_options:
               columns: 4
               rows: 2
           - type: tile
-            entity: input_text.luna_forecast_later
-            name: Later
-            icon: mdi:calendar-clock
+            entity: input_text.luna_maintenance_status
+            name: Onderhoud
+            icon: mdi:wrench-check
             grid_options:
               columns: 4
               rows: 2
@@ -251,29 +251,29 @@ views:
             heading_style: title
             icon: mdi:timeline-text
           - type: tile
-            entity: input_text.luna_timeline_last_event
+            entity: input_text.luna_last_event
             name: Laatste gebeurtenis
             icon: mdi:history
             grid_options:
               columns: 12
               rows: 2
           - type: tile
-            entity: input_text.luna_timeline_previous_event
-            name: Vorige gebeurtenis
-            icon: mdi:history-toggle
+            entity: input_text.luna_timeline_status
+            name: Tijdlijnstatus
+            icon: mdi:timeline-text
             grid_options:
               columns: 12
               rows: 2
           - type: tile
-            entity: input_text.luna_memory_last_record
-            name: Laatste geheugenrecord
-            icon: mdi:database-clock
+            entity: input_text.luna_learning_status
+            name: Leerstatus
+            icon: mdi:school
             grid_options:
               columns: 12
               rows: 2
           - type: tile
-            entity: input_text.luna_decision_last_record
-            name: Laatste beslissing
+            entity: input_text.luna_decision_status
+            name: Beslisstatus
             icon: mdi:scale-balance
             grid_options:
               columns: 12
@@ -288,24 +288,24 @@ views:
       - type: grid
         cards:
           - type: heading
-            heading: Bronnen
-            icon: mdi:source-branch
+            heading: Installatie
+            icon: mdi:tune-variant
           - type: tile
-            entity: input_text.luna_presence_source
-            name: Aanwezigheidsbron
-            icon: mdi:account-eye
+            entity: input_select.luna_installatieprofiel
+            name: Installatieprofiel
+            icon: mdi:package-variant-closed
           - type: tile
-            entity: input_text.luna_temperature_source
-            name: Temperatuurbron
-            icon: mdi:thermometer
+            entity: input_text.luna_platformstatus
+            name: Platformstatus
+            icon: mdi:state-machine
           - type: tile
-            entity: input_text.luna_energy_source
-            name: Energiebron
-            icon: mdi:lightning-bolt
+            entity: input_text.luna_language_status
+            name: Taalstatus
+            icon: mdi:translate
           - type: tile
-            entity: input_text.luna_calendar_source
-            name: Kalenderbron
-            icon: mdi:calendar
+            entity: input_text.luna_safety_status
+            name: Veiligheidsstatus
+            icon: mdi:shield-check
       - type: grid
         cards:
           - type: heading
@@ -320,20 +320,18 @@ views:
             name: Zwaar model
             icon: mdi:weight
           - type: tile
-            entity: input_text.luna_ai_router_status
-            name: Routerstatus
-            icon: mdi:router-wireless
+            entity: input_text.luna_ai_queue_status
+            name: Wachtrijstatus
+            icon: mdi:format-list-bulleted
       - type: grid
         cards:
           - type: heading
             heading: Veiligheid
             icon: mdi:shield-lock
           - type: tile
-            entity: input_boolean.luna_safety_ok
-            name: Veiligheid OK
+            entity: binary_sensor.luna_veilig_fail_closed
+            name: Fail-closed actief
             icon: mdi:shield-check
-            features:
-              - type: toggle
           - type: markdown
             content: |
               **Fysieke bediening** blijft uit totdat alle gebruikte entiteiten bewust zijn gecontroleerd.

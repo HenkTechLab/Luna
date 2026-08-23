@@ -310,87 +310,15 @@ views:
               action: more-info
           - type: custom:mushroom-template-card
             primary: Belangrijk
-            secondary:◊m|Ê⁄$z{-ÆÈ‹j◊ùs:
-              columns: 12
-              rows: 2
-          - type: tile
-            entity: input_text.luna_timeline_status
-            name: Tijdlijnstatus
-            icon: mdi:timeline-text
-            grid_options:
-              columns: 12
-              rows: 2
-          - type: tile
-            entity: input_text.luna_learning_status
-            name: Leerstatus
-            icon: mdi:school
-            grid_options:
-              columns: 12
-              rows: 2
-          - type: tile
-            entity: input_text.luna_decision_status
-            name: Beslisstatus
-            icon: mdi:scale-balance
-            grid_options:
-              columns: 12
-              rows: 2
-
-  - title: Setup
-    path: setup
-    icon: mdi:tune-variant
-    type: sections
-    max_columns: 3
-    sections:
-      - type: grid
-        cards:
-          - type: heading
-            heading: Installatie
-            icon: mdi:tune-variant
-          - type: tile
-            entity: input_select.luna_installatieprofiel
-            name: Installatieprofiel
-            icon: mdi:package-variant-closed
-          - type: tile
-            entity: input_text.luna_platformstatus
-            name: Platformstatus
-            icon: mdi:state-machine
-          - type: tile
-            entity: input_text.luna_language_status
-            name: Taalstatus
-            icon: mdi:translate
-          - type: tile
-            entity: input_text.luna_safety_status
-            name: Veiligheidsstatus
-            icon: mdi:shield-check
-      - type: grid
-        cards:
-          - type: heading
-            heading: AI backends
-            icon: mdi:brain-circuit
-          - type: tile
-            entity: input_text.luna_ai_backend_light
-            name: Licht model
-            icon: mdi:feather
-          - type: tile
-            entity: input_text.luna_ai_backend_heavy
-            name: Zwaar model
-            icon: mdi:weight
-          - type: tile
-            entity: input_text.luna_ai_queue_status
-            name: Wachtrijstatus
-            icon: mdi:format-list-bulleted
-      - type: grid
-        cards:
-          - type: heading
-            heading: Veiligheid
+            secondary: Fysieke bediening en lokale AI pas inschakelen nadat alle gekoppelde entiteiten bewust zijn gecontroleerd.
             icon: mdi:shield-lock
-          - type: tile
-            entity: binary_sensor.luna_veilig_fail_closed
-            name: Fail-closed actief
-            icon: mdi:shield-check
-          - type: markdown
-            content: |
-              **Fysieke bediening** blijft uit totdat alle gebruikte entiteiten bewust zijn gecontroleerd.
-
-              **Lokale AI** adviseert alleen en is nooit een autorisatiebron.
+            icon_color: red
+            multiline_secondary: true
+            card_mod:
+              style: |
+                ha-card {
+                  border-radius: 20px;
+                  border: 1px solid rgba(255,80,80,0.25);
+                  background: rgba(120,20,20,0.12);
+                }
 

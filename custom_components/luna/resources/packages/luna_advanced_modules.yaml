@@ -56,6 +56,7 @@ template:
              is_state('binary_sensor.luna_veilig_fail_closed', 'on') }}
       - name: Luna configuratie gereed
         unique_id: luna_configuratie_gereed
+        default_entity_id: binary_sensor.luna_configuratie_gereed
         icon: mdi:check-network
         state: >-
           {{ states('input_text.luna_platformstatus') not in ['unknown','unavailable',''] and

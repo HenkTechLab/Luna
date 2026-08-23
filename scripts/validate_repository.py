@@ -24,6 +24,9 @@ DASHBOARD_ENTITY_PATTERN = re.compile(
     r"\b((?:binary_sensor|counter|input_boolean|input_button|input_datetime|"
     r"input_number|input_select|input_text|script)\.luna_[a-z0-9_]+)\b"
 )
+UNQUOTED_INLINE_COMMA_PATTERN = re.compile(
+    r"data:\s*\{value:[ \t]*(?![\"'{])\S[^}\n]*,"
+)
 
 RESOURCE_PAIRS = {
     ROOT / "dashboard" / "luna-dashboard-native.yaml": INTEGRATION
@@ -146,6 +149,14 @@ def validate() -> None:
         if source.read_bytes() != managed.read_bytes():
             raise ValueError(
                 f"Managed resource differs from source: {managed.relative_to(ROOT)}"
+            )
+
+    for package_file in (ROOT / "packages").rglob("*.yaml"):
+        package_text = package_file.read_text(encoding="utf-8")
+        if UNQUOTED_INLINE_COMMA_PATTERN.search(package_text):
+            raise ValueError(
+                "Unquoted comma in inline service data: "
+                f"{package_file.relative_to(ROOT)}"
             )
 
     package_entities = collect_package_entities()
