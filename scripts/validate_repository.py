@@ -22,7 +22,7 @@ PACKAGE_MAPPING_DOMAINS = {
 }
 DASHBOARD_ENTITY_PATTERN = re.compile(
     r"\b((?:binary_sensor|counter|input_boolean|input_button|input_datetime|"
-    r"input_number|input_select|input_text|script)\.luna_[a-z0-9_]+)\b"
+    r"input_number|input_select|input_text|script|select)\.luna_[a-z0-9_]+)\b"
 )
 INTEGRATION_PROVIDED_ENTITIES = {
     "binary_sensor.luna_aanwezigheid",
@@ -32,6 +32,15 @@ INTEGRATION_PROVIDED_ENTITIES = {
     "sensor.luna_gekoppelde_bronnen",
     "sensor.luna_temperatuur",
     "sensor.luna_vermogen",
+    "select.luna_aanwezigheidsbron",
+    "select.luna_temperatuurbron",
+    "select.luna_energiebron",
+    "select.luna_vermogenbron",
+    "select.luna_agendabron",
+    "select.luna_observatie_toevoegen",
+    "select.luna_observatie_verwijderen",
+    "select.luna_apparaat_toevoegen",
+    "select.luna_apparaat_verwijderen",
 }
 UNQUOTED_INLINE_COMMA_PATTERN = re.compile(
     r"data:\s*\{value:[ \t]*(?![\"'{])\S[^}\n]*,"
@@ -122,6 +131,7 @@ def validate() -> None:
         INTEGRATION / "entity.py",
         INTEGRATION / "binary_sensor.py",
         INTEGRATION / "sensor.py",
+        INTEGRATION / "select.py",
         INTEGRATION / "strings.json",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
@@ -198,4 +208,3 @@ def validate() -> None:
 if __name__ == "__main__":
     validate()
     print("Luna repository validation passed")
-
