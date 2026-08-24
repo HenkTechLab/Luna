@@ -101,6 +101,54 @@ script:
                 {% elif l == 'Português' %}Luna está no modo básico. Nenhum backend de IA local disponível.
                 {% else %}Luna werkt in basisstand. Er is geen lokale AI-backend beschikbaar.{% endif %}
 
+  luna_koppelingen_beheren:
+    alias: Luna koppelingen beheren
+    description: Voeg in één standaard Home Assistant-dialoog meerdere observaties en bestuurbare apparaten toe of verwijder ze.
+    icon: mdi:playlist-edit
+    mode: single
+    fields:
+      observaties_toevoegen:
+        name: Observaties toevoegen
+        description: Kies één of meerdere sensoren die Luna extra mag observeren.
+        default: []
+        selector:
+          entity:
+            domain: [sensor, binary_sensor]
+            multiple: true
+      observaties_verwijderen:
+        name: Observaties verwijderen
+        description: Kies één of meerdere observaties die uit Luna verwijderd moeten worden.
+        default: []
+        selector:
+          entity:
+            domain: [sensor, binary_sensor]
+            multiple: true
+      apparaten_toevoegen:
+        name: Bestuurbare apparaten toevoegen
+        description: Kies één of meerdere apparaten die Luna als bestuurbaar mag kennen. Dit activeert geen fysieke bediening.
+        default: []
+        selector:
+          entity:
+            domain: [light, switch, cover, climate, fan, lock, media_player]
+            multiple: true
+      apparaten_verwijderen:
+        name: Bestuurbare apparaten verwijderen
+        description: Kies één of meerdere apparaten die Luna niet langer als bestuurbaar mag kennen.
+        default: []
+        selector:
+          entity:
+            domain: [light, switch, cover, climate, fan, lock, media_player]
+            multiple: true
+    sequence:
+      - action: luna.add_mappings
+        data:
+          observation_entities: "{{ observaties_toevoegen | default([], true) }}"
+          control_entities: "{{ apparaten_toevoegen | default([], true) }}"
+      - action: luna.remove_mappings
+        data:
+          observation_entities: "{{ observaties_verwijderen | default([], true) }}"
+          control_entities: "{{ apparaten_verwijderen | default([], true) }}"
+
 automation:
   - id: luna_installatieprofiel_core
     alias: Luna installatieprofiel Core
@@ -220,4 +268,3 @@ automation:
       - action: input_text.set_value
         target: {entity_id: input_text.luna_memory_status}
         data: {value: Leeg klantgeheugen · lokale opslag · geen geïmporteerde privégegevens}
-
