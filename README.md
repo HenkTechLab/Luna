@@ -44,7 +44,9 @@ Werk Luna bij vanuit HACS en herstart Home Assistant. Omdat packages en dashboar
 
 ## Sensoren en apparaten koppelen
 
-Open na de installatie **Instellingen → Apparaten en diensten → Luna → Configureren**. Kies daar aanwezigheid, temperatuur, energie, vermogen, agenda en eventuele extra sensoren of apparaten. Luna maakt vaste eigen bronentiteiten aan en registreert veranderingen van gekozen sensoren lokaal in de tijdlijn.
+Bij de native dashboardvariant configureert de gebruiker Luna rechtstreeks via **Luna Command Center → Setup** met standaard Home Assistant-select-entiteiten en tile-cards. Er zijn keuzelijsten voor aanwezigheid, hoofdtemperatuur, energie, vermogen en agenda. Extra observaties en bestuurbare apparaten kunnen vanuit dezelfde pagina worden toegevoegd of verwijderd.
+
+De bestaande **Instellingen → Apparaten en diensten → Luna → Configureren** Options Flow blijft beschikbaar als alternatieve beheerroute. Beide interfaces schrijven naar dezelfde Luna-configuratie.
 
 Het selecteren van apparaten geeft Luna nog geen toestemming om ze te bedienen. Fysieke bediening blijft fail-closed en uit totdat de gebruiker deze afzonderlijk activeert.
 
@@ -57,4 +59,3 @@ Het selecteren van apparaten geeft Luna nog geen toestemming om ze te bedienen. 
 ## Documentatie
 
 Zie [INSTALLATIE.md](INSTALLATIE.md) voor de volledige Nederlandstalige installatie- en testprocedure. Andere talen staan onder [docs/](docs/README.md).
-
