@@ -295,7 +295,7 @@ views:
             content: |
               Kies hier rechtstreeks wat Luna mag observeren. **Niet ingesteld** is toegestaan. Het toevoegen van een bestuurbaar apparaat schakelt fysieke bediening niet in.
           - type: tile
-            entity: select.luna_aanwezigheidsbron
+            entity: select.luna_aanwezigheid
             name: Aanwezigheid
             icon: mdi:home-account
             features_position: bottom
@@ -303,7 +303,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_temperatuurbron
+            entity: select.luna_hoofdtemperatuur
             name: Hoofdtemperatuur
             icon: mdi:thermometer
             features_position: bottom
@@ -311,7 +311,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_energiebron
+            entity: select.luna_energie
             name: Energie
             icon: mdi:lightning-bolt
             features_position: bottom
@@ -319,7 +319,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_vermogenbron
+            entity: select.luna_vermogen
             name: Vermogen
             icon: mdi:flash
             features_position: bottom
@@ -327,7 +327,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_agendabron
+            entity: select.luna_agenda
             name: Agenda
             icon: mdi:calendar
             features_position: bottom
@@ -341,7 +341,7 @@ views:
             heading: Extra observaties
             icon: mdi:database-eye
           - type: tile
-            entity: select.luna_observatie_toevoegen
+            entity: select.luna_extra_observatie_toevoegen
             name: Observatie toevoegen
             icon: mdi:database-plus
             features_position: bottom
@@ -349,7 +349,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_observatie_verwijderen
+            entity: select.luna_extra_observatie_verwijderen
             name: Observatie verwijderen
             icon: mdi:database-minus
             features_position: bottom
