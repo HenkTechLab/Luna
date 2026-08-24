@@ -293,9 +293,9 @@ views:
             icon: mdi:tune-variant
           - type: markdown
             content: |
-              Kies hier rechtstreeks wat Luna mag observeren. **Niet ingesteld** is toegestaan. Het toevoegen van een bestuurbaar apparaat schakelt fysieke bediening niet in.
+              Kies hier rechtstreeks de hoofdbronnen van Luna. **Niet ingesteld** is toegestaan. Het toevoegen van een bestuurbaar apparaat schakelt fysieke bediening niet in.
           - type: tile
-            entity: select.luna_aanwezigheidsbron
+            entity: select.luna_aanwezigheid
             name: Aanwezigheid
             icon: mdi:home-account
             features_position: bottom
@@ -303,7 +303,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_temperatuurbron
+            entity: select.luna_hoofdtemperatuur
             name: Hoofdtemperatuur
             icon: mdi:thermometer
             features_position: bottom
@@ -311,7 +311,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_energiebron
+            entity: select.luna_energie
             name: Energie
             icon: mdi:lightning-bolt
             features_position: bottom
@@ -319,7 +319,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_vermogenbron
+            entity: select.luna_vermogen
             name: Vermogen
             icon: mdi:flash
             features_position: bottom
@@ -327,7 +327,7 @@ views:
               - type: select-options
                 style: dropdown
           - type: tile
-            entity: select.luna_agendabron
+            entity: select.luna_agenda
             name: Agenda
             icon: mdi:calendar
             features_position: bottom
@@ -338,53 +338,23 @@ views:
       - type: grid
         cards:
           - type: heading
-            heading: Extra observaties
-            icon: mdi:database-eye
+            heading: Extra observaties & apparaten
+            icon: mdi:playlist-edit
+          - type: markdown
+            content: |
+              Open **Koppelingen beheren**. Selecteer daar in één standaard Home Assistant-dialoog meerdere sensoren en apparaten tegelijk. Er is geen vaste limiet van vijf sensoren.
           - type: tile
-            entity: select.luna_observatie_toevoegen
-            name: Observatie toevoegen
-            icon: mdi:database-plus
-            features_position: bottom
-            features:
-              - type: select-options
-                style: dropdown
-          - type: tile
-            entity: select.luna_observatie_verwijderen
-            name: Observatie verwijderen
-            icon: mdi:database-minus
-            features_position: bottom
-            features:
-              - type: select-options
-                style: dropdown
+            entity: script.luna_koppelingen_beheren
+            name: Koppelingen beheren
+            icon: mdi:playlist-edit
+            tap_action:
+              action: more-info
+            hold_action:
+              action: none
           - type: tile
             entity: sensor.luna_gekoppelde_bronnen
             name: Aantal gekoppelde bronnen
             icon: mdi:database-eye
-
-      - type: grid
-        cards:
-          - type: heading
-            heading: Bestuurbare apparaten
-            icon: mdi:devices
-          - type: markdown
-            content: |
-              Hier kies je alleen welke apparaten Luna **kent als bestuurbaar**. Automatische fysieke bediening blijft afzonderlijk uit en fail-closed.
-          - type: tile
-            entity: select.luna_apparaat_toevoegen
-            name: Apparaat toevoegen
-            icon: mdi:devices-plus
-            features_position: bottom
-            features:
-              - type: select-options
-                style: dropdown
-          - type: tile
-            entity: select.luna_apparaat_verwijderen
-            name: Apparaat verwijderen
-            icon: mdi:devices-minus
-            features_position: bottom
-            features:
-              - type: select-options
-                style: dropdown
           - type: tile
             entity: sensor.luna_gekoppelde_apparaten
             name: Aantal gekoppelde apparaten
