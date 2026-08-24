@@ -15,7 +15,7 @@ DASHBOARD_NATIVE = "native"
 DASHBOARD_CUSTOM = "custom"
 DEFAULT_DASHBOARD_VARIANT = DASHBOARD_NATIVE
 
-PLATFORMS = ["binary_sensor", "sensor"]
+PLATFORMS = ["binary_sensor", "sensor", "select"]
 
 SOURCE_OPTION_KEYS = (
     CONF_PRESENCE_ENTITY,
@@ -24,4 +24,3 @@ SOURCE_OPTION_KEYS = (
     CONF_POWER_ENTITY,
     CONF_CALENDAR_ENTITY,
 )
-
