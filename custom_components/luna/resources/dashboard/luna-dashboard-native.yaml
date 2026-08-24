@@ -342,15 +342,13 @@ views:
             icon: mdi:playlist-edit
           - type: markdown
             content: |
-              Open **Koppelingen beheren**. Selecteer daar in één standaard Home Assistant-dialoog meerdere sensoren en apparaten tegelijk. Er is geen vaste limiet van vijf sensoren.
-          - type: tile
-            entity: script.luna_koppelingen_beheren
-            name: Koppelingen beheren
+              Open **Koppelingen beheren** en daarna **Configureren**. De native Luna-configuratie toont per veld één doorzoekbare lijst waarin je meerdere entiteiten tegelijk kunt selecteren. Reeds gekoppelde entiteiten verdwijnen automatisch uit **Toevoegen** en staan alleen nog bij **Verwijderen**.
+          - type: shortcut
+            text: Koppelingen beheren
             icon: mdi:playlist-edit
             tap_action:
-              action: more-info
-            hold_action:
-              action: none
+              action: navigate
+              navigation_path: /config/integrations/integration/luna
           - type: tile
             entity: sensor.luna_gekoppelde_bronnen
             name: Aantal gekoppelde bronnen
