@@ -311,9 +311,15 @@ views:
           - type: heading
             heading: Gekoppelde bronnen
             icon: mdi:connection
-          - type: markdown
-            content: |
-              Koppel sensoren via **Instellingen → Apparaten en diensten → Luna → Configureren**.
+          - type: button
+            name: Sensoren & apparaten koppelen
+            icon: mdi:tune-variant
+            show_state: false
+            tap_action:
+              action: navigate
+              navigation_path: /config/integrations/integration/luna
+            hold_action:
+              action: none
           - type: tile
             entity: binary_sensor.luna_aanwezigheid
             name: Aanwezigheid
@@ -373,4 +379,3 @@ views:
               **Fysieke bediening** blijft uit totdat alle gebruikte entiteiten bewust zijn gecontroleerd.
 
               **Lokale AI** adviseert alleen en is nooit een autorisatiebron.
-
