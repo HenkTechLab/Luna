@@ -288,38 +288,113 @@ views:
       - type: grid
         cards:
           - type: heading
-            heading: Installatie
+            heading: Sensoren & apparaten
+            heading_style: title
             icon: mdi:tune-variant
+          - type: markdown
+            content: |
+              Kies hier rechtstreeks wat Luna mag observeren. **Niet ingesteld** is toegestaan. Het toevoegen van een bestuurbaar apparaat schakelt fysieke bediening niet in.
           - type: tile
-            entity: input_select.luna_installatieprofiel
-            name: Installatieprofiel
-            icon: mdi:package-variant-closed
+            entity: select.luna_aanwezigheidsbron
+            name: Aanwezigheid
+            icon: mdi:home-account
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
           - type: tile
-            entity: input_text.luna_platformstatus
-            name: Platformstatus
-            icon: mdi:state-machine
+            entity: select.luna_temperatuurbron
+            name: Hoofdtemperatuur
+            icon: mdi:thermometer
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
           - type: tile
-            entity: input_text.luna_language_status
-            name: Taalstatus
-            icon: mdi:translate
+            entity: select.luna_energiebron
+            name: Energie
+            icon: mdi:lightning-bolt
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
           - type: tile
-            entity: input_text.luna_safety_status
-            name: Veiligheidsstatus
-            icon: mdi:shield-check
+            entity: select.luna_vermogenbron
+            name: Vermogen
+            icon: mdi:flash
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+          - type: tile
+            entity: select.luna_agendabron
+            name: Agenda
+            icon: mdi:calendar
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+
       - type: grid
         cards:
           - type: heading
-            heading: Gekoppelde bronnen
+            heading: Extra observaties
+            icon: mdi:database-eye
+          - type: tile
+            entity: select.luna_observatie_toevoegen
+            name: Observatie toevoegen
+            icon: mdi:database-plus
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+          - type: tile
+            entity: select.luna_observatie_verwijderen
+            name: Observatie verwijderen
+            icon: mdi:database-minus
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+          - type: tile
+            entity: sensor.luna_gekoppelde_bronnen
+            name: Aantal gekoppelde bronnen
+            icon: mdi:database-eye
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Bestuurbare apparaten
+            icon: mdi:devices
+          - type: markdown
+            content: |
+              Hier kies je alleen welke apparaten Luna **kent als bestuurbaar**. Automatische fysieke bediening blijft afzonderlijk uit en fail-closed.
+          - type: tile
+            entity: select.luna_apparaat_toevoegen
+            name: Apparaat toevoegen
+            icon: mdi:devices-plus
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+          - type: tile
+            entity: select.luna_apparaat_verwijderen
+            name: Apparaat verwijderen
+            icon: mdi:devices-minus
+            features_position: bottom
+            features:
+              - type: select-options
+                style: dropdown
+          - type: tile
+            entity: sensor.luna_gekoppelde_apparaten
+            name: Aantal gekoppelde apparaten
+            icon: mdi:devices
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Actuele Luna-bronnen
             icon: mdi:connection
-          - type: button
-            name: Sensoren & apparaten koppelen
-            icon: mdi:tune-variant
-            show_state: false
-            tap_action:
-              action: navigate
-              navigation_path: /config/integrations/integration/luna
-            hold_action:
-              action: none
           - type: tile
             entity: binary_sensor.luna_aanwezigheid
             name: Aanwezigheid
@@ -340,14 +415,29 @@ views:
             entity: sensor.luna_agenda
             name: Agenda
             icon: mdi:calendar
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Installatie
+            icon: mdi:tune-variant
           - type: tile
-            entity: sensor.luna_gekoppelde_bronnen
-            name: Aantal bronnen
-            icon: mdi:database-eye
+            entity: input_select.luna_installatieprofiel
+            name: Installatieprofiel
+            icon: mdi:package-variant-closed
           - type: tile
-            entity: sensor.luna_gekoppelde_apparaten
-            name: Aantal apparaten
-            icon: mdi:devices
+            entity: input_text.luna_platformstatus
+            name: Platformstatus
+            icon: mdi:state-machine
+          - type: tile
+            entity: input_text.luna_language_status
+            name: Taalstatus
+            icon: mdi:translate
+          - type: tile
+            entity: input_text.luna_safety_status
+            name: Veiligheidsstatus
+            icon: mdi:shield-check
+
       - type: grid
         cards:
           - type: heading
@@ -365,6 +455,7 @@ views:
             entity: input_text.luna_ai_queue_status
             name: Wachtrijstatus
             icon: mdi:format-list-bulleted
+
       - type: grid
         cards:
           - type: heading
