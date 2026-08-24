@@ -1,0 +1,53 @@
+add_mappings:
+  name: Koppelingen toevoegen
+  description: Voeg meerdere observatie-entiteiten of bestuurbare apparaten toe aan Luna zonder fysieke bediening te activeren.
+  fields:
+    observation_entities:
+      name: Observaties
+      description: Sensoren en binaire sensoren die Luna extra mag observeren.
+      selector:
+        entity:
+          domain:
+            - sensor
+            - binary_sensor
+          multiple: true
+    control_entities:
+      name: Bestuurbare apparaten
+      description: Apparaten die Luna als bestuurbaar mag kennen. Dit activeert geen fysieke bediening.
+      selector:
+        entity:
+          domain:
+            - light
+            - switch
+            - cover
+            - climate
+            - fan
+            - lock
+            - media_player
+          multiple: true
+
+remove_mappings:
+  name: Koppelingen verwijderen
+  description: Verwijder meerdere observatie-entiteiten of bestuurbare apparaten uit Luna.
+  fields:
+    observation_entities:
+      name: Observaties
+      selector:
+        entity:
+          domain:
+            - sensor
+            - binary_sensor
+          multiple: true
+    control_entities:
+      name: Bestuurbare apparaten
+      selector:
+        entity:
+          domain:
+            - light
+            - switch
+            - cover
+            - climate
+            - fan
+            - lock
+            - media_player
+          multiple: true
