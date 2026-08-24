@@ -126,7 +126,7 @@ async def async_setup_entry(
                 mode="add",
                 name="Apparaat toevoegen",
                 object_id="luna_apparaat_toevoegen",
-                icon="mdi:devices-plus",
+                icon="mdi:plus-circle-outline",
             ),
             LunaListMutationSelect(
                 hass,
@@ -135,7 +135,7 @@ async def async_setup_entry(
                 mode="remove",
                 name="Apparaat verwijderen",
                 object_id="luna_apparaat_verwijderen",
-                icon="mdi:devices-minus",
+                icon="mdi:minus-circle-outline",
             ),
         ]
     )
@@ -222,7 +222,7 @@ class LunaCoreSourceSelect(SelectEntity):
         description: LunaCoreSelectDescription,
     ) -> None:
         """Initialize the source selector."""
-        self.hass = hass
+        self._hass = hass
         self._entry = entry
         self._description = description
         self._attr_unique_id = f"{entry.entry_id}_{description.option_key}_select"
@@ -233,10 +233,10 @@ class LunaCoreSourceSelect(SelectEntity):
 
     @property
     def _mapping(self) -> dict[str, str]:
-        mapping = _candidate_map(self.hass, self._description.kind)
+        mapping = _candidate_map(self._hass, self._description.kind)
         current = self._entry.options.get(self._description.option_key)
         if current and current not in mapping.values():
-            state = self.hass.states.get(current)
+            state = self._hass.states.get(current)
             label = _display_name(state) if state is not None else current
             mapping[label] = current
         return mapping
@@ -278,10 +278,12 @@ class LunaCoreSourceSelect(SelectEntity):
         if new_options == dict(self._entry.options):
             return
 
-        self.hass.config_entries.async_update_entry(
+        self._hass.config_entries.async_update_entry(
             self._entry, options=new_options
         )
-        await self.hass.config_entries.async_reload(self._entry.entry_id)
+        self._hass.async_create_task(
+            self._hass.config_entries.async_reload(self._entry.entry_id)
+        )
 
 
 class LunaListMutationSelect(SelectEntity):
@@ -301,7 +303,7 @@ class LunaListMutationSelect(SelectEntity):
         icon: str,
     ) -> None:
         """Initialize an add/remove selector."""
-        self.hass = hass
+        self._hass = hass
         self._entry = entry
         self._mapping_key = mapping_key
         self._mode = mode
@@ -326,7 +328,7 @@ class LunaListMutationSelect(SelectEntity):
 
         if self._mode == "remove":
             mapping = _candidate_map(
-                self.hass, kind, only=configured
+                self._hass, kind, only=configured
             )
             missing = configured - set(mapping.values())
             for entity_id in sorted(missing):
@@ -340,7 +342,7 @@ class LunaListMutationSelect(SelectEntity):
                 for key in SOURCE_OPTION_KEYS
                 if (entity_id := self._entry.options.get(key))
             }
-        return _candidate_map(self.hass, kind, excluded=excluded)
+        return _candidate_map(self._hass, kind, excluded=excluded)
 
     @property
     def options(self) -> list[str]:
@@ -378,7 +380,9 @@ class LunaListMutationSelect(SelectEntity):
 
         new_options = dict(self._entry.options)
         new_options[self._mapping_key] = configured
-        self.hass.config_entries.async_update_entry(
+        self._hass.config_entries.async_update_entry(
             self._entry, options=new_options
         )
-        await self.hass.config_entries.async_reload(self._entry.entry_id)
+        self._hass.async_create_task(
+            self._hass.config_entries.async_reload(self._entry.entry_id)
+        )
